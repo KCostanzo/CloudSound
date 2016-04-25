@@ -9,7 +9,7 @@
 ## Cover Index
 ![cover]
 
-## ArtistIndex / NotebookIndexItem
+## ArtistIndex
 ![artist]
 
 ## User Page
