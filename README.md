@@ -1,4 +1,4 @@
-# FresherNote
+# CloudSound
 
 [Heroku link][heroku] **NB:** This should be a link to your production site
 
@@ -6,29 +6,32 @@
 
 ## Minimum Viable Product
 
-FresherNote is a web application inspired by Evernote that will be build using Ruby on Rails and React.js.  By the end of Week 9, this app will, at a minimum, satisfy the following criteria:
+CloudSound is a web application inspired by Soundcloud built using Ruby on Rails and React.js. By the end of week 9 this app will have, at minimum, the following features:
 
-- [ ] New account creation, login, and guest/demo login
+- [ ] Search bar navigation to find/select songs
+- [ ] Index (and Artist) pages to view songs and albums
+- [ ] Persistent now playing bar for songs and playlists
 - [ ] Smooth, bug-free navigation
-- [ ] Adequate seed data to demonstrate the site's features
-- [ ] The minimally necessary features for an Evernote-inspired site: note creation and saving, note editing, and notes organized into notebooks
+- [ ] Sufficient seed data to demonstrate features
 - [ ] Hosting on Heroku
-- [ ] CSS styling that is satisfactorily visually appealing
-- [ ] A production README, replacing this README (**NB**: check out the [sample production README](https://github.com/appacademy/sample-project-proposal/blob/master/docs/production_readme.md) -- you'll write this later)
+- [ ] Visually appealing CSS design
+- [ ] A production README
 
 ## Product Goals and Priorities
 
-FresherNote will allow users to do the following:
+CloudSound will allow users to do the following:
 
 <!-- This is a Markdown checklist. Use it to keep track of your
 progress. Put an x between the brackets for a checkmark: [x] -->
 
-- [ ] Create an account (MVP)
-- [ ] Log in / Log out, including as a Guest/Demo User (MVP)
-- [ ] Create, read, edit, and delete notes (MVP)
-- [ ] Organize notes within Notebooks (MVP)
-- [ ] Tag notes with multiple tags (expected feature, but not MVP)
-- [ ] Apply complex styling to notes while editing (expected feature, but not MVP)
+- [ ] Play Songs by Click interactions with Song Item Components (MVP)
+- [ ] Now Playing Bar persists between pages (MVP)
+- [ ] Search Songs / Artists in Search Bar (MVP)
+- [ ] Create an account (expected feature, but not MVP)
+- [ ] Log in / Log out, including as a Guest/Demo User (expected feature, but not MVP)
+- [ ] Navigate to Artist Pages with Artist Song Items (expected feature, but not MVP)
+- [ ] Select and Display Song Items on User Page (expected feature, but not MVP)
+- [ ] Playlist Functionality (expected feature, but not MVP)
 
 ## Design Docs
 * [View Wireframes][views]
@@ -45,24 +48,21 @@ progress. Put an x between the brackets for a checkmark: [x] -->
 
 ## Implementation Timeline
 
-### Phase 1: Backend setup and User Authentication (0.5 days)
+### Phase 1: Backend setup, Heroku Upload (0.5 days)
 
 **Objective:** Functioning rails project with Authentication
 
 - [ ] create new project
-- [ ] create `User` model
-- [ ] authentication
-- [ ] user signup/signin pages
-- [ ] blank landing page after signin
+- [ ] Upload to Heroku
 
-### Phase 2: Notes Model, API, and basic APIUtil (1.5 days)
+### Phase 2: Songs Model, API, and basic APIUtil (1.5 days)
 
-**Objective:** Notes can be created, read, edited and destroyed through
+**Objective:** Songs can be created, read, edited and destroyed through
 the API.
 
 - [ ] create `Note` model
 - [ ] seed the database with a small amount of test data
-- [ ] CRUD API for notes (`NotesController`)
+- [ ] CRUD API for notes (`SongsController`)
 - [ ] jBuilder views for notes
 - [ ] setup Webpack & Flux scaffold
 - [ ] setup `APIUtil` to interact with the API
@@ -70,16 +70,16 @@ the API.
 
 ### Phase 3: Flux Architecture and Router (1.5 days)
 
-**Objective:** Notes can be created, read, edited and destroyed with the
+**Objective:** Songs can be created, read, edited and destroyed with the
 user interface.
 
 - [ ] setup the flux loop with skeleton files
 - [ ] setup React Router
 - implement each note component, building out the flux loop as needed.
-  - [ ] `NotesIndex`
+  - [ ] `SongsIndex`
   - [ ] `NoteIndexItem`
   - [ ] `NoteForm`
-- [ ] save Notes to the DB when the form loses focus or is left idle
+- [ ] save Songs to the DB when the form loses focus or is left idle
   after editing.
 
 ### Phase 4: Start Styling (0.5 days)
