@@ -103,7 +103,7 @@ progress. Put an x between the brackets for a checkmark: [x] -->
 - [ ] User Page w/ playlists(B)
 - [ ] Animated box on Intro page (scroll down to cover?)(B)
 
-### Phase 8: Cleanup and Seeding (2 days)
+### Phase 7: Cleanup and Seeding (2 days)
 
 **objective:** Make the site feel more cohesive and awesome.
 
