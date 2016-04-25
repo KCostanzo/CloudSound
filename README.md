@@ -8,14 +8,12 @@
 
 CloudSound is a web application inspired by Soundcloud built using Ruby on Rails and React.js. By the end of week 9 this app will have, at minimum, the following features:
 
-- [ ] Search bar navigation to find/select songs
+- [ ] Search bar navigation to find songs/artists
 - [ ] Index (and Artist) pages to view songs and albums
 - [ ] Persistent now playing bar for songs and playlists
-- [ ] Smooth, bug-free navigation
-- [ ] Sufficient seed data to demonstrate features
-- [ ] Hosting on Heroku
+- [ ] Toggle Playback
 - [ ] Visually appealing CSS design
-- [ ] A production README
+
 
 ## Product Goals and Priorities
 
@@ -48,13 +46,13 @@ progress. Put an x between the brackets for a checkmark: [x] -->
 
 ## Implementation Timeline
 
-### Phase 1: Backend setup, Heroku Upload (0.5 days)
+### Phase 1: Backend setup, Heroku Upload (1 day)
 
 **Objective:** Functioning rails project with Authentication
 
 - [ ] create new project
 - [ ] Upload to Heroku
-- [ ] Front End Auth
+- [ ] Auth
 
 ### Phase 2: Flux Architecture and Router, Basic Components (1 day)
 
@@ -69,7 +67,6 @@ progress. Put an x between the brackets for a checkmark: [x] -->
   - [ ] `IndexItem`
 - [ ] Song Item click functions
 - [ ] Song Store holds music
-- [ ] create `Song` model
 
 ### Phase 3: Songs Model, Index Page, API, and basic APIUtil (1 days)
 
@@ -80,6 +77,7 @@ progress. Put an x between the brackets for a checkmark: [x] -->
 - [ ] setup `APIUtil` to interact with the API
 - [ ] test out API interaction in the console.
 - [ ] Begin search bar
+- [ ] Start Seeding Songs
 
 ### Phase 4: Search and Now Playing Bar (Audio Stream) (2 days)
 
@@ -90,11 +88,11 @@ progress. Put an x between the brackets for a checkmark: [x] -->
 - [ ] Persistent Stream bar in UI
 - [ ] Sample Seeds to test audio
 
-### Phase 5: CSS Styling (1 day)
+### Phase 5: Layout (.5 days)
 
 - [ ] Clean Up UI, original colors, backgrounds
 
-### Phase 6: Playlists OR Artist Page, extra features (1 day)
+### Phase 6: Playlists OR Artist Page, extra features (2 days)
 
 **Objective:** Playlist Feature and/or possible Artist Page (according to time)
 
@@ -103,7 +101,7 @@ progress. Put an x between the brackets for a checkmark: [x] -->
 - [ ] User Page w/ playlists(B)
 - [ ] Animated box on Intro page (scroll down to cover?)(B)
 
-### Phase 7: Cleanup and Seeding (2 days)
+### Phase 7: Cleanup and Seeding (1 day)
 
 **objective:** Make the site feel more cohesive and awesome.
 
@@ -114,6 +112,7 @@ progress. Put an x between the brackets for a checkmark: [x] -->
 ### Bonus Features (TBD)
 - [ ] User Page displaying songs/playlists
 - [ ] Animated searchbox on root page
+- [ ] User/Artist Add Track Feature (needs destroy track as well)
 - [ ] Infinite scroll for Cover Index
 
 [phase-one]: ./docs/phases/phase1.md
