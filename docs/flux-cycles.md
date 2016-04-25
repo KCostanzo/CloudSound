@@ -42,8 +42,6 @@ what you'll need to do.
 * `CoverIndex` component listens to `Song` store.
 * `ArtistIndex` component listens to `Song` store.
 
-
-
 ## SearchSuggestion Cycles
 
 * `fetchSearchSuggestions`

@@ -1,6 +1,6 @@
 # CloudSound
 
-[Heroku link][heroku] **NB:** This should be a link to your production site
+[Heroku link][heroku] **NB:** This will be a link to my production site
 
 [heroku]: http://www.herokuapp.com
 
@@ -26,7 +26,7 @@ progress. Put an x between the brackets for a checkmark: [x] -->
 
 - [ ] Play Songs by Click interactions with Song Item Components (MVP)
 - [ ] Now Playing Bar persists between pages (MVP)
-- [ ] Search Songs / Artists in Search Bar (MVP)
+- [ ] Search Songs in Search Bar (MVP)
 - [ ] Create an account (expected feature, but not MVP)
 - [ ] Log in / Log out, including as a Guest/Demo User (expected feature, but not MVP)
 - [ ] Navigate to Artist Pages with Artist Song Items (expected feature, but not MVP)
@@ -54,78 +54,56 @@ progress. Put an x between the brackets for a checkmark: [x] -->
 
 - [ ] create new project
 - [ ] Upload to Heroku
+- [ ] Front End Auth
 
-### Phase 2: Songs Model, API, and basic APIUtil (1.5 days)
+### Phase 2: Flux Architecture and Router, Basic Components (1 day)
 
-**Objective:** Songs can be created, read, edited and destroyed through
-the API.
+**Summary:** Songs seeded to store will be accessed through index items on user interface.
 
-- [ ] create `Note` model
-- [ ] seed the database with a small amount of test data
-- [ ] CRUD API for notes (`SongsController`)
-- [ ] jBuilder views for notes
 - [ ] setup Webpack & Flux scaffold
-- [ ] setup `APIUtil` to interact with the API
-- [ ] test out API interaction in the console.
-
-### Phase 3: Flux Architecture and Router (1.5 days)
-
-**Objective:** Songs can be created, read, edited and destroyed with the
-user interface.
-
 - [ ] setup the flux loop with skeleton files
 - [ ] setup React Router
-- implement each note component, building out the flux loop as needed.
-  - [ ] `SongsIndex`
-  - [ ] `NoteIndexItem`
-  - [ ] `NoteForm`
-- [ ] save Songs to the DB when the form loses focus or is left idle
-  after editing.
+- [ ] Cover Index View
+- implement each component, building out the flux loop as needed.
+  - [ ] `CoverIndex`
+  - [ ] `IndexItem`
+- [ ] Song Item click functions
+- [ ] Song Store holds music
+- [ ] create `Song` model
 
-### Phase 4: Start Styling (0.5 days)
+### Phase 3: Songs Model, Index Page, API, and basic APIUtil (1 days)
 
-**Objective:** Existing pages (including singup/signin) will look good.
+**Objective:** Songs can be accessed through Index Items
 
-- [ ] create a basic style guide
-- [ ] position elements on the page
-- [ ] add basic colors & styles
+- [ ] create `Song` model
+- [ ] API routes provide song urls
+- [ ] setup `APIUtil` to interact with the API
+- [ ] test out API interaction in the console.
+- [ ] Begin search bar
 
-### Phase 5: Notebooks (1 day)
+### Phase 4: Search and Now Playing Bar (Audio Stream) (2 days)
 
-**Objective:** Notes belong to Notebooks, and can be viewed by notebook.
+**Objective:** Stream Bar persists at bottom of page
 
-- [ ] create `Notebook` model
-- build out API, Flux loop, and components for:
-  - [ ] Notebook CRUD
-  - [ ] adding notes requires a notebook
-  - [ ] moving notes to a different notebook
-  - [ ] viewing notes by notebook
-- Use CSS to style new views
+- [ ] Complete Search Bar
+- [ ] Persistent Audio Streaming feature (via HTML5 audio or other)
+- [ ] Persistent Stream bar in UI
+- [ ] Sample Seeds to test audio
 
-Phase 3 adds organization to the Notes. Notes belong to a Notebook,
-which has its own `Index` view.
+### Phase 5: CSS Styling (1 day)
 
-### Phase 6: Tags (1.5 days)
+- [ ] Clean Up UI, original colors, backgrounds
 
-**Objective:** Notes can be tagged with multiple tags, and tags are searchable.
+### Phase 6: Playlists OR Artist Page, extra features (1 day)
 
-- [ ] create `Tag` model and join table
-- build out API, Flux loop, and components for:
-  - [ ] fetching tags for notebook
-  - [ ] adding tags to notebook
-  - [ ] creating tags while adding to notebooks
-  - [ ] searching notebooks by tag
-- [ ] Style new elements
+**Objective:** Playlist Feature and/or possible Artist Page (according to time)
 
-### Phase 7: Allow Complex Styling in Notes (0.5 days)
+- [ ] Stream Bar playlists
+- [ ] Artist pages feature owned songs
+- [ ] User Page w/ playlists(B)
+- [ ] Animated box on Intro page (scroll down to cover?)(B)
 
-**objective:** Enable complex styling of notes.
-
-- [ ] Integrate `react-quill` (based on Quill.js).
-- [ ] Use Rails helpers to sanitize HTML before rendering.
-- [ ] Style the new Quill elements.
-
-### Phase 8: Styling Cleanup and Seeding (1 day)
+### Phase 8: Cleanup and Seeding (2 days)
 
 **objective:** Make the site feel more cohesive and awesome.
 
@@ -134,11 +112,9 @@ which has its own `Index` view.
 - [ ] Add modals, transitions, and other styling flourishes.
 
 ### Bonus Features (TBD)
-- [ ] Search through notes for blocks of text
-- [ ] Pagination / infinite scroll for Notes Index
-- [ ] Set reminders on notes
-- [ ] Changelogs for Notes
-- [ ] Multiple sessions
+- [ ] User Page displaying songs/playlists
+- [ ] Animated searchbox on root page
+- [ ] Infinite scroll for Cover Index
 
 [phase-one]: ./docs/phases/phase1.md
 [phase-two]: ./docs/phases/phase2.md
