@@ -30,6 +30,6 @@ UserStore.__onDispatch = function(payload) {
       break;
   }
   this.__emitChange();
-}
+};
 
 module.exports = UserStore;

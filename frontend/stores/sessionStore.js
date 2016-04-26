@@ -58,6 +58,6 @@ SessionStore.__onDispatch = function(payload) {
       break;
   }
   this.__emitChange();
-}
+};
 
 module.exports = SessionStore;

@@ -1,5 +1,5 @@
 // var ClientActions = require('../actions/client_actions.js');
-var ServerActions = require('../actions.user_server_actions.js');
+var ServerActions = require('../actions/user_server_actions.js');
 
 module.exports = {
   loginUser: function(loginData) {
@@ -13,7 +13,7 @@ module.exports = {
       error: function(error) {
         ServerActions.receiveError(error);
       }
-    });
+    })
   },
 
   createUser: function(userData) {
@@ -27,7 +27,7 @@ module.exports = {
       error: function(error) {
         ServerActions.receiveError(error);
       }
-    });
+    })
   },
 
   logoutUser: function(user) {
@@ -37,7 +37,7 @@ module.exports = {
       success: function(user) {
         ServerActions.logout(user);
       }
-    });
+    })
   },
 
   updateUser: function(userData) {
