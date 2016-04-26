@@ -25,6 +25,9 @@ UserStore.__onDispatch = function(payload) {
     case UserConstants.USER_RECEIVED:
       setUser(payload.user);
       break;
+    case UserConstants.USER_UPDATED:
+      setUser(payload.user);
+      break;
   }
   this.__emitChange();
 }
