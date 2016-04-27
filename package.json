@@ -32,5 +32,14 @@
   "bugs": {
     "url": "https://github.com/KCostanzo/CloudSound/issues"
   },
-  "homepage": "https://github.com/KCostanzo/CloudSound#readme"
+  "homepage": "https://github.com/KCostanzo/CloudSound#readme",
+
+  "engines": {
+  "node": "4.1.1", 
+  "npm": "2.1.x"
+},
+
+"scripts": {
+  "postinstall": "./node_modules/.bin/webpack"
+}
 }
