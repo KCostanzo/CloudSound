@@ -28,6 +28,15 @@ module.exports = React.createClass ({
     console.log('succcesful login!');
   },
 
+  guestLogin: function(event) {
+    var user = { user: {
+      username: 'guest',
+      password: 'password369'
+    }};
+    ClientActions.loginUser(user);
+    console.log('guest login success');
+  },
+
   nameChange: function(event) {
     this.setState({username: event.target.value});
   },
@@ -40,6 +49,7 @@ module.exports = React.createClass ({
     return (
       <div>
       <button onClick={this.openModal}>Log In</button>
+      <button onClick={this.guestLogin}>Guest Account</button>
 
       <Modal isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
         <form onSubmit={this.loginUser}>

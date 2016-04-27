@@ -5,7 +5,7 @@ var SignUp = require('./sign_up.jsx');
 module.exports = React.createClass({
   render: function() {
     return (
-      <div id='main'>
+    <div id='main'>
       <SignUp/>
       <Login/>
     </div>)

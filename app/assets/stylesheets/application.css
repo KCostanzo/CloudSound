@@ -13,3 +13,22 @@
  *= require_tree .
  *= require_self
  */
+
+* {
+  font-family: sans-serif;
+}
+
+form {
+  margin: 30px;
+  padding: 30px;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+button {
+  float: right;
+}
+
+form input{
+  margin: 30px;
+}

@@ -55,6 +55,14 @@
 	
 	var App = __webpack_require__(245);
 	var Login = __webpack_require__(246);
+	// var CoverIndex = require('./components/cover_index.jsx');
+	
+	// var routes = (
+	//   <Route path='/' component={App}>
+	//     <IndexRoute component={CoverIndex}/>
+	//     <Route path='main' component={CoverIndex} />
+	//   </Route>
+	// );
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  Modal.setAppElement(document.body);
@@ -27431,6 +27439,15 @@
 	    console.log('succcesful login!');
 	  },
 	
+	  guestLogin: function (event) {
+	    var user = { user: {
+	        username: 'guest',
+	        password: 'password369'
+	      } };
+	    ClientActions.loginUser(user);
+	    console.log('guest login success');
+	  },
+	
 	  nameChange: function (event) {
 	    this.setState({ username: event.target.value });
 	  },
@@ -27447,6 +27464,11 @@
 	        'button',
 	        { onClick: this.openModal },
 	        'Log In'
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.guestLogin },
+	        'Guest Account'
 	      ),
 	      React.createElement(
 	        Modal,
