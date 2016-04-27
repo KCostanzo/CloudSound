@@ -11,19 +11,17 @@ var UStore = require('./stores/user_store.js');
 
 var App = require('./components/app.jsx');
 var Login = require('./components/login.jsx');
-// var CoverIndex = require('./components/cover_index.jsx');
 
-// var routes = (
-//   <Route path='/' component={App}>
-//     <IndexRoute component={CoverIndex}/>
-//     <Route path='main' component={CoverIndex} />
-//   </Route>
-// );
+var routes = (
+  <Route path='/' component={App}>
+  	<IndexRoute component={App}/>
+  </Route>
+);
 
 document.addEventListener('DOMContentLoaded', function() {
   Modal.setAppElement(document.body);
   ReactDOM.render(
-    <App />,
+    <Router history={hashHistory}>{routes}</Router>,
     document.getElementById('root')
   );
 });

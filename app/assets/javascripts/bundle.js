@@ -57,18 +57,20 @@
 	
 	var App = __webpack_require__(269);
 	var Login = __webpack_require__(270);
-	// var CoverIndex = require('./components/cover_index.jsx');
 	
-	// var routes = (
-	//   <Route path='/' component={App}>
-	//     <IndexRoute component={CoverIndex}/>
-	//     <Route path='main' component={CoverIndex} />
-	//   </Route>
-	// );
+	var routes = React.createElement(
+	  Route,
+	  { path: '/', component: App },
+	  React.createElement(IndexRoute, { component: App })
+	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  Modal.setAppElement(document.body);
-	  ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
+	  ReactDOM.render(React.createElement(
+	    Router,
+	    { history: hashHistory },
+	    routes
+	  ), document.getElementById('root'));
 	});
 
 /***/ },
@@ -34244,6 +34246,8 @@
 	  _users[user.id] = user;
 	};
 	
+	// var resetUsers = function(users) {};
+	
 	UserStore.allUsers = function () {
 	  return Object.keys(_users).map(function (key) {
 	    return _users[key];
@@ -34275,8 +34279,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Login = __webpack_require__(270);
-	var SignUp = __webpack_require__(274);
+	var Navbar = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./navbar.jsx\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -34285,8 +34288,8 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'main' },
-	      React.createElement(SignUp, null),
-	      React.createElement(Login, null)
+	      React.createElement(Navbar, null),
+	      this.props.children
 	    );
 	  }
 	});
@@ -34359,7 +34362,7 @@
 	      ),
 	      React.createElement(
 	        Modal,
-	        { isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
+	        { className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
 	        React.createElement(
 	          'form',
 	          { onSubmit: this.loginUser },
@@ -34510,86 +34513,6 @@
 	    });
 	  }
 	};
-
-/***/ },
-/* 274 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ClientActions = __webpack_require__(271);
-	var Modal = __webpack_require__(166);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  getInitialState: function () {
-	    return { modalOpen: false, username: '', password: '' };
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalOpen: false });
-	  },
-	
-	  openModal: function () {
-	    this.setState({ modalOpen: true });
-	  },
-	
-	  signupUser: function (event) {
-	    event.preventDefault();
-	    var user = { user: {
-	        username: this.state.username,
-	        password: this.state.password
-	      } };
-	    ClientActions.createUser(user);
-	    ClientActions.loginUser(user);
-	    this.setState({ username: '', password: '' });
-	    this.closeModal();
-	    console.log('succcesful sign up!');
-	  },
-	
-	  nameChange: function (event) {
-	    this.setState({ username: event.target.value });
-	  },
-	
-	  passChange: function (event) {
-	    this.setState({ password: event.target.value });
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'button',
-	        { onClick: this.openModal },
-	        'Sign Up'
-	      ),
-	      React.createElement(
-	        Modal,
-	        { isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
-	        React.createElement(
-	          'form',
-	          { onSubmit: this.signupUser },
-	          React.createElement(
-	            'label',
-	            null,
-	            'Username:',
-	            React.createElement('input', { type: 'text', value: this.state.username, onChange: this.nameChange })
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'label',
-	            null,
-	            'Password:',
-	            React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
-	          ),
-	          React.createElement('br', null),
-	          React.createElement('input', { type: 'submit', value: 'Sign Up!' })
-	        )
-	      )
-	    );
-	  }
-	});
 
 /***/ }
 /******/ ]);

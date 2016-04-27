@@ -1,13 +1,12 @@
 var React = require('react');
-var Login = require('./login.jsx');
-var SignUp = require('./sign_up.jsx');
+var Navbar = require('./navbar.jsx');
 
 module.exports = React.createClass({
   render: function() {
     return (
     <div id='main'>
-      <SignUp/>
-      <Login/>
+      <Navbar/>
+      {this.props.children}
     </div>)
   }
 });

@@ -42,7 +42,7 @@ module.exports = React.createClass ({
       <div>
       <button onClick={this.openModal}>Sign Up</button>
 
-      <Modal isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
+      <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
         <form onSubmit={this.signupUser}>
           <label>Username:
             <input type='text' value={this.state.username} onChange={this.nameChange}/>

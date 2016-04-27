@@ -10,6 +10,8 @@ var setUser = function(user) {
   _users[user.id] = user;
 };
 
+// var resetUsers = function(users) {};
+
 UserStore.allUsers = function() {
   return Object.keys(_users).map(function(key) {
     return _users[key];
