@@ -23,8 +23,6 @@ module.exports = React.createClass({
 		this.setState({userPresent: SessionStore.userPresent(), currentUser: SessionStore.currentUser()});
 	},
 
-	logout: function
-
 	render: function() {
 		return(
 		 <nav>
