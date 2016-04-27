@@ -19,7 +19,7 @@ var logout = function(user) {
 };
 
 var addErrors = function(errors) {
-  var temp = JSON.parse(errors);
+  var temp = errors;
   if (temp.length > 0) {
     temp.forEach(function(error) {
       _errors.push(error);
@@ -30,7 +30,7 @@ var addErrors = function(errors) {
 };
 
 SessionStore.errors = function() {
-  return _errrors;
+  return _errors;
 };
 
 SessionStore.emptyErrors = function() {

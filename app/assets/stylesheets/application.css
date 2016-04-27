@@ -39,6 +39,22 @@ form input{
   text-align: center
 }
 
+.cover-index {
+  position: relative;
+  top: 44px;
+}
+
+.songItem{
+  display: inline-block;
+/*  position: relative;
+*/  float: left;
+  margin: 9%;
+}
+nav img {
+  width:44px;
+  height:44px;
+  float: left;
+}
 nav {
   background-color: #444;
   width: 100%;

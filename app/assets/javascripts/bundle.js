@@ -54,15 +54,14 @@
 	var hashHistory = __webpack_require__(186).hashHistory;
 	var Store = __webpack_require__(245);
 	var UStore = __webpack_require__(268);
+	var ClientActions = __webpack_require__(271);
 	
 	var App = __webpack_require__(269);
 	var Login = __webpack_require__(270);
 	
-	var routes = React.createElement(
-	  Route,
-	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: App })
-	);
+	ClientActions.fetchCurrentUser();
+	
+	var routes = React.createElement(Route, { path: '/', component: App });
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  Modal.setAppElement(document.body);
@@ -27412,7 +27411,7 @@
 	};
 	
 	var addErrors = function (errors) {
-	  var temp = JSON.parse(errors);
+	  var temp = errors;
 	  if (temp.length > 0) {
 	    temp.forEach(function (error) {
 	      _errors.push(error);
@@ -27423,7 +27422,7 @@
 	};
 	
 	SessionStore.errors = function () {
-	  return _errrors;
+	  return _errors;
 	};
 	
 	SessionStore.emptyErrors = function () {
@@ -34226,7 +34225,8 @@
 	  ERROR_RECEIVED: 'ERROR_RECEIVED',
 	
 	  USER_RECEIVED: 'USER_RECEIVED',
-	  USER_UPDATED: 'USER_UPDATED'
+	  USER_UPDATED: 'USER_UPDATED',
+	  USER_FETCHED: 'USER_FETCHED'
 	
 	};
 
@@ -34280,6 +34280,7 @@
 
 	var React = __webpack_require__(1);
 	var Navbar = __webpack_require__(275);
+	var CoverPage = __webpack_require__(276);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -34289,6 +34290,7 @@
 	      'div',
 	      { id: 'main' },
 	      React.createElement(Navbar, null),
+	      React.createElement(CoverPage, null),
 	      this.props.children
 	    );
 	  }
@@ -34301,12 +34303,13 @@
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(271);
 	var Modal = __webpack_require__(166);
+	var Store = __webpack_require__(245);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
 	  getInitialState: function () {
-	    return { modalOpen: false, username: '', password: '' };
+	    return { modalOpen: false, username: '', password: '', errors: [] };
 	  },
 	
 	  closeModal: function () {
@@ -34324,9 +34327,13 @@
 	        password: this.state.password
 	      } };
 	    ClientActions.loginUser(user);
-	    this.setState({ username: '', password: '' });
-	    this.closeModal();
-	    console.log('succcesful login!');
+	    if (Store.userPresent()) {
+	      this.setState({ username: '', password: '' });
+	      this.closeModal();
+	      console.log('succcesful login!');
+	    } else {
+	      this.setState({ errors: Store.errors() });
+	    }
 	  },
 	
 	  guestLogin: function (event) {
@@ -34394,6 +34401,10 @@
 	var Util = __webpack_require__(272);
 	
 	module.exports = {
+	  fetchCurrentUser: function () {
+	    Util.fetchCurrentUser();
+	  },
+	
 	  loginUser: function (user) {
 	    Util.loginUser(user);
 	  },
@@ -34419,6 +34430,25 @@
 	var ServerActions = __webpack_require__(273);
 	
 	module.exports = {
+	  fetchCurrentUser: function () {
+	    $.ajax({
+	      method: 'GET',
+	      url: 'api/session',
+	      success: function (object) {
+	        if (object.username) {
+	          ServerActions.fetchCurrentUser(object);
+	        } else {
+	          ServerActions.receiveError(object);
+	        }
+	      },
+	      statusCode: {
+	        299: function (response) {
+	          console.log('no user logged in');
+	        }
+	      }
+	    });
+	  },
+	
 	  loginUser: function (loginData) {
 	    $.ajax({
 	      method: 'POST',
@@ -34439,7 +34469,11 @@
 	      url: 'api/users',
 	      data: userData,
 	      success: function (user) {
-	        ServerActions.create(user);
+	        if (user.username) {
+	          ServerActions.login(user);
+	        } else {
+	          ServerActions.receiveError(user);
+	        }
 	      },
 	      error: function (error) {
 	        ServerActions.receiveError(error);
@@ -34477,6 +34511,13 @@
 	var Constants = __webpack_require__(267);
 	
 	module.exports = {
+	  fetchCurrentUser: function (user) {
+	    Dispatcher.dispatch({
+	      actionType: Constants.LOGIN_USER,
+	      user: user
+	    });
+	  },
+	
 	  login: function (user) {
 	    Dispatcher.dispatch({
 	      actionType: Constants.LOGIN_USER,
@@ -34545,9 +34586,13 @@
 	      } };
 	    ClientActions.createUser(user);
 	    ClientActions.loginUser(user);
-	    this.setState({ username: '', password: '' });
-	    this.closeModal();
-	    console.log('succcesful sign up!');
+	    if (Store.userPresent()) {
+	      this.setState({ username: '', password: '' });
+	      this.closeModal();
+	      console.log('succcesful sign up!');
+	    } else {
+	      this.setState({ errors: Store.errors() });
+	    }
 	  },
 	
 	  nameChange: function (event) {
@@ -34601,12 +34646,14 @@
 	var React = __webpack_require__(1);
 	var Login = __webpack_require__(270);
 	var SignUp = __webpack_require__(274);
+	var ClientActions = __webpack_require__(271);
 	var SessionStore = __webpack_require__(245);
+	var hashHistory = __webpack_require__(186).hashHistory;
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
-		getInitalState: function () {
+		getInitialState: function () {
 			return {
 				userPresent: SessionStore.userPresent(),
 				currentUser: SessionStore.currentUser()
@@ -34625,15 +34672,117 @@
 			this.setState({ userPresent: SessionStore.userPresent(), currentUser: SessionStore.currentUser() });
 		},
 	
+		logoutUser: function (event) {
+			event.preventDefault();
+			ClientActions.logoutUser(this.state.currentUser);
+			console.log('logged out');
+		},
+	
+		linkToHome: function () {
+			hashHistory.push('/');
+		},
+	
+		//TODO: put search bar in nav
+		render: function () {
+			if (this.state.userPresent) {
+				return React.createElement(
+					'nav',
+					null,
+					React.createElement('img', { src: 'assets/home_logo.png', onClick: this.linkToHome }),
+					React.createElement(
+						'button',
+						{ onClick: this.logoutUser },
+						'Logout'
+					)
+				);
+			} else {
+				return React.createElement(
+					'nav',
+					null,
+					React.createElement('img', { src: 'assets/home_logo.png', onClick: this.linkToHome }),
+					React.createElement(SignUp, null),
+					React.createElement(Login, null)
+				);
+			}
+		}
+	});
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(271);
+	// var SongStore = require('../stores/song_store.js');
+	var IndexItem = __webpack_require__(277);
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		getInitialState: function () {
+			return {
+				songs: [{ id: 1, title: 'mysong', artist: 'stanzo' }, { id: 2, title: 'song2', artist: 'blur' }]
+			};
+		},
+	
+		// initialstate songs: []
+		// componentDidMount: function() {
+		// 	this.songListener = SongStore.addListener(this.songChange);
+		// },
+	
+		// componentWillUnmount: function() {
+		// 	this.songListener.remove();
+		// },
+	
+		// songChange: function() {
+		// 	this.setState({songs: SongStore.fetchSongs()});
+		// },
+	
 		render: function () {
 			return React.createElement(
-				'nav',
-				null,
-				React.createElement(SignUp, null),
-				React.createElement(Login, null)
+				'div',
+				{ className: 'cover-index' },
+				React.createElement(
+					'ul',
+					null,
+					this.state.songs.map(function (song) {
+						return React.createElement(IndexItem, { song: song, key: song.id });
+					})
+				)
 			);
 		}
 	});
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(271);
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		playSong: function (event) {
+			event.preventDefault();
+			ClientActions.playSong(this.props.song);
+		},
+	
+		render: function () {
+			return React.createElement(
+				'li',
+				{ className: 'songItem', onClick: this.playSong },
+				React.createElement(
+					'label',
+					null,
+					this.props.song.title,
+					React.createElement('br', null),
+					this.props.song.artist
+				)
+			);
+		}
+	});
+	// <img src={this.props.song.imgUrl} onClick={this.playSong} />
 
 /***/ }
 /******/ ]);

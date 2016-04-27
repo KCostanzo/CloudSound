@@ -24,9 +24,13 @@ module.exports = React.createClass ({
     }};
     ClientActions.createUser(user)
     ClientActions.loginUser(user);
-    this.setState({username: '', password: ''})
-    this.closeModal();
-    console.log('succcesful sign up!');
+    if (Store.userPresent()) {
+      this.setState({username: '', password: ''})
+      this.closeModal();
+      console.log('succcesful sign up!');
+    } else {
+      this.setState({errors: Store.errors()});
+    }
   },
 
   nameChange: function(event) {

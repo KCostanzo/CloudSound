@@ -6,12 +6,22 @@ class Api::SessionsController < ApplicationController
       login!(@user)
       render :loggedin
     else
-      render json: {errors: ["Invalid Username or Password"]}
+      render json: {errors: ["Invalid Username or Password"]}, status: 404
     end
   end
 
   def destroy
     logout!
     render json: {}
+  end
+
+  def show
+    if current_user 
+      @user = current_user
+      render "api/users/user_created"
+    else
+      @errors = nil
+      render "api/shared/errors", status: 299
+    end
   end
 end

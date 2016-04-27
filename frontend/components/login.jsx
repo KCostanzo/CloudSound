@@ -1,11 +1,12 @@
 var React = require('react');
 var ClientActions = require('../actions/client_actions.js');
 var Modal = require('react-modal');
+var Store = require('../stores/session_store.js');
 
 
 module.exports = React.createClass ({
   getInitialState: function() {
-    return({ modalOpen: false, username: '', password: ''});
+    return({ modalOpen: false, username: '', password: '', errors: []});
   },
 
   closeModal: function() {
@@ -23,9 +24,13 @@ module.exports = React.createClass ({
       password: this.state.password
     }};
     ClientActions.loginUser(user);
-    this.setState({username: '', password: ''})
-    this.closeModal();
-    console.log('succcesful login!');
+    if (Store.userPresent()) {
+      this.setState({username: '', password: ''})
+      this.closeModal();
+      console.log('succcesful login!');
+    } else {
+      this.setState({errors: Store.errors()});
+    }
   },
 
   guestLogin: function(event) {
@@ -53,6 +58,7 @@ module.exports = React.createClass ({
 
       <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
         <form onSubmit={this.loginUser}>
+
           <label>Username:
             <input type='text' value={this.state.username} onChange={this.nameChange}/>
           </label>
@@ -64,6 +70,7 @@ module.exports = React.createClass ({
           <br/>
 
           <input type='submit' value='Login!'/>
+
         </form>
       </Modal>
       </div>

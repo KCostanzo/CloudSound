@@ -8,13 +8,15 @@ var IndexRoute = require('react-router').IndexRoute;
 var hashHistory = require('react-router').hashHistory;
 var Store = require('./stores/session_store.js');
 var UStore = require('./stores/user_store.js');
+var ClientActions = require('./actions/client_actions.js');
 
 var App = require('./components/app.jsx');
 var Login = require('./components/login.jsx');
 
+ClientActions.fetchCurrentUser();
+
 var routes = (
   <Route path='/' component={App}>
-  	<IndexRoute component={App}/>
   </Route>
 );
 

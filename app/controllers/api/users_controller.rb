@@ -7,7 +7,7 @@ class Api::UsersController < ApplicationController
       login!(@user)
       render :user_created
     else
-      render json: {errors: @user.errors.full_messages}
+      render json: {errors: @user.errors.full_messages}, status: 401
     end
   end
 

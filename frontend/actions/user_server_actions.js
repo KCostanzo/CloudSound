@@ -2,6 +2,13 @@ var Dispatcher = require('../dispatcher/dispatcher.js');
 var Constants = require('../constants/allConstants.js');
 
 module.exports = {
+  fetchCurrentUser: function(user) {
+    Dispatcher.dispatch({
+      actionType: Constants.LOGIN_USER,
+      user: user
+    });
+  },
+
   login: function(user) {
     Dispatcher.dispatch({
       actionType: Constants.LOGIN_USER,

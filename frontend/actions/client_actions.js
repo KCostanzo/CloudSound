@@ -1,6 +1,10 @@
 var Util = require('../util/user_session_api_util.js');
 
 module.exports = {
+  fetchCurrentUser: function() {
+    Util.fetchCurrentUser();
+  },
+
   loginUser: function(user) {
     Util.loginUser(user);
   },

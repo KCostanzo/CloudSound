@@ -2,6 +2,23 @@
 var ServerActions = require('../actions/user_server_actions.js');
 
 module.exports = {
+  fetchCurrentUser: function() {
+    $.ajax({
+      method: 'GET',
+      url: 'api/session',
+      success: function(object) {
+        if (object.username) {
+        ServerActions.fetchCurrentUser(object)
+        } else {
+          ServerActions.receiveError(object)
+        }
+      },
+      statusCode: {
+        299: function(response) {console.log('no user logged in')}
+      }
+    })
+  },
+
   loginUser: function(loginData) {
     $.ajax({
       method: 'POST',
@@ -22,7 +39,11 @@ module.exports = {
       url: 'api/users',
       data: userData,
       success: function(user) {
-        ServerActions.create(user);
+        if (user.username) {
+        ServerActions.login(user);
+        } else {
+          ServerActions.receiveError(user);
+        }
       },
       error: function(error) {
         ServerActions.receiveError(error);
