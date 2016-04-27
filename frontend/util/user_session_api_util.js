@@ -22,7 +22,7 @@ module.exports = {
       url: 'api/users',
       data: userData,
       success: function(user) {
-        ServerActions.login(user);
+        ServerActions.create(user);
       },
       error: function(error) {
         ServerActions.receiveError(error);

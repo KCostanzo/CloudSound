@@ -10,6 +10,13 @@ module.exports = {
     console.log('login success');
   },
 
+  create: function(user) {
+    Dispatcher.dispatch({
+      actionType: Constants.USER_RECEIVED,
+      user: user
+    });
+  },
+
   receiveError: function(errors) {
     Dispatcher.dispatch({
       actionType: Constants.ERROR_RECEIVED,

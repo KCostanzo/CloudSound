@@ -6,11 +6,11 @@ var SessionStore = new Store(AppDispatcher);
 
 var _currentUser = null;
 var _errors = [];
-var _userPresent? = false;
+var _userPresent = false;
 
 var loginUser = function(user) {
   _currentUser = user;
-  _userPresent? = true;
+  _userPresent = true;
 };
 
 var logout = function(user) {
@@ -41,8 +41,8 @@ SessionStore.currentUser = function() {
   return _currentUser;
 };
 
-SessionStore.userPresent? = function() {
-  return _userPresent?;
+SessionStore.userPresent = function() {
+  return _userPresent;
 };
 
 SessionStore.__onDispatch = function(payload) {
@@ -59,5 +59,7 @@ SessionStore.__onDispatch = function(payload) {
   }
   this.__emitChange();
 };
+
+window.Store = SessionStore;
 
 module.exports = SessionStore;

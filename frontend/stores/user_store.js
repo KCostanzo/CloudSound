@@ -32,4 +32,6 @@ UserStore.__onDispatch = function(payload) {
   this.__emitChange();
 };
 
+window.UserStore = UserStore;
+
 module.exports = UserStore;
