@@ -19,6 +19,7 @@ module.exports = React.createClass ({
 
   loginUser: function(event) {
     event.preventDefault();
+    Store.emptyErrors();
     var user = {user: {
       username: this.state.username,
       password: this.state.password
@@ -50,6 +51,22 @@ module.exports = React.createClass ({
     this.setState({password: event.target.value})
   },
 
+  errors: function() {
+    if (this.state.errors.length === 0) {
+      return;
+    } else {
+      return (
+          <ul>
+            {
+              this.state.errors.map(function(error,idx) {
+                return <li key={idx}>{error}</li>
+              })
+            }
+          </ul>
+      )
+    }
+  },
+
   render: function() {
     return (
       <div>
@@ -58,6 +75,8 @@ module.exports = React.createClass ({
 
       <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
         <form onSubmit={this.loginUser}>
+          {this.errors()}
+          <br/>
 
           <label>Username:
             <input type='text' value={this.state.username} onChange={this.nameChange}/>

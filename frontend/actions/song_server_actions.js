@@ -14,5 +14,5 @@ module.exports = {
       		actionType: Constants.SONGS_ERROR,
      		 errors: errors
    		 });
- 	},
+ 	}
 };

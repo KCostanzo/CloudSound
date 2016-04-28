@@ -27411,12 +27411,8 @@
 	};
 	
 	var addErrors = function (errors) {
-	  var temp = errors;
-	  if (temp.length > 0) {
-	    temp.forEach(function (error) {
-	      _errors.push(error);
-	    });
-	  } else {
+	  var temp = errors.responseText;
+	  if (temp) {
 	    _errors.push(temp);
 	  }
 	};
@@ -34324,6 +34320,7 @@
 	
 	  loginUser: function (event) {
 	    event.preventDefault();
+	    Store.emptyErrors();
 	    var user = { user: {
 	        username: this.state.username,
 	        password: this.state.password
@@ -34355,6 +34352,24 @@
 	    this.setState({ password: event.target.value });
 	  },
 	
+	  errors: function () {
+	    if (this.state.errors.length === 0) {
+	      return;
+	    } else {
+	      return React.createElement(
+	        'ul',
+	        null,
+	        this.state.errors.map(function (error, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            error
+	          );
+	        })
+	      );
+	    }
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
@@ -34375,6 +34390,8 @@
 	        React.createElement(
 	          'form',
 	          { onSubmit: this.loginUser },
+	          this.errors(),
+	          React.createElement('br', null),
 	          React.createElement(
 	            'label',
 	            null,
@@ -34569,7 +34586,7 @@
 	  displayName: 'exports',
 	
 	  getInitialState: function () {
-	    return { modalOpen: false, username: '', password: '' };
+	    return { modalOpen: false, username: '', password: '', errors: [] };
 	  },
 	
 	  closeModal: function () {
@@ -34582,6 +34599,7 @@
 	
 	  signupUser: function (event) {
 	    event.preventDefault();
+	    Store.emptyErrors();
 	    var user = { user: {
 	        username: this.state.username,
 	        password: this.state.password
@@ -34605,6 +34623,24 @@
 	    this.setState({ password: event.target.value });
 	  },
 	
+	  errors: function () {
+	    if (this.state.errors.length === 0) {
+	      return;
+	    } else {
+	      return React.createElement(
+	        'ul',
+	        null,
+	        this.state.errors.map(function (error, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            error
+	          );
+	        })
+	      );
+	    }
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
@@ -34620,6 +34656,8 @@
 	        React.createElement(
 	          'form',
 	          { onSubmit: this.signupUser },
+	          this.errors(),
+	          React.createElement('br', null),
 	          React.createElement(
 	            'label',
 	            null,
@@ -34829,6 +34867,9 @@
 		switch (payload.actionType) {
 			case SongConstants.SONGS_RECEIVED:
 				resetSongs(payload.songs);
+				break;
+			case SongConstants.SONGS_ERROR:
+				setErrors(payload.errors);
 				break;
 	
 		}

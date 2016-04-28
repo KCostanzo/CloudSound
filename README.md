@@ -2,7 +2,7 @@
 
 [Heroku link][heroku] **NB:** This will be a link to my production site
 
-[heroku]: http://www.herokuapp.com
+[heroku]: https://cloudsoundapp.herokuapp.com
 
 ## Minimum Viable Product
 

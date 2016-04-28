@@ -19,13 +19,9 @@ var logout = function(user) {
 };
 
 var addErrors = function(errors) {
-  var temp = errors;
-  if (temp.length > 0) {
-    temp.forEach(function(error) {
-      _errors.push(error);
-    });
-  } else {
-    _errors.push(temp);
+  var temp = errors.responseText;
+  if (temp) {
+  _errors.push(temp);
   }
 };
 

@@ -39,6 +39,9 @@ SongStore.__onDispatch = function(payload) {
 		case SongConstants.SONGS_RECEIVED:
 			resetSongs(payload.songs);
 			break;
+		case SongConstants.SONGS_ERROR:
+			setErrors(payload.errors);
+			break;
 
 	}
 	this.__emitChange();
