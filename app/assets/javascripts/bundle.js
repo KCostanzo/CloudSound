@@ -34282,6 +34282,7 @@
 	var React = __webpack_require__(1);
 	var Navbar = __webpack_require__(275);
 	var CoverPage = __webpack_require__(276);
+	var NowPlayingBar = __webpack_require__(283);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -34292,7 +34293,8 @@
 	      { id: 'main' },
 	      React.createElement(Navbar, null),
 	      React.createElement(CoverPage, null),
-	      this.props.children
+	      this.props.children,
+	      React.createElement(NowPlayingBar, null)
 	    );
 	  }
 	});
@@ -34988,6 +34990,7 @@
 	
 	var addSong = function (song) {
 		_queue.push(song);
+		_nowPlaying = _queue[0];
 	};
 	
 	PlayStore.queue = function () {
@@ -34996,6 +34999,15 @@
 			queue.push(song);
 		});
 		return queue;
+	};
+	
+	PlayStore.nextSong = function () {
+		_queue.slice(1);
+		_nowPlaying = _queue[0];
+	};
+	
+	PlayStore.nowPlaying = function () {
+		return _nowPlaying;
 	};
 	
 	PlayStore.__onDispatch = function (payload) {
@@ -35013,6 +35025,97 @@
 	
 	window.Play = PlayStore;
 	module.exports = PlayStore;
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PlayStore = __webpack_require__(282);
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		getInitialState: function () {
+			return { currentSong: null, playing: false };
+		},
+	
+		componentDidMount: function () {
+			this.playListen = PlayStore.addListener(this.playChange);
+		},
+	
+		componentWillUnmount: function () {
+			this.playListen.remove();
+		},
+	
+		componentDidUpdate: function () {
+			var song = document.getElementsByTagName('audio')[0];
+			if (!song) {
+				return;
+			}
+			if (song.volume) {
+				song.volume = 0.54;
+			}
+		},
+	
+		playChange: function () {
+			if (PlayStore.nowPlaying()) {
+				this.setState({ currentSong: PlayStore.nowPlaying(), playing: true });
+			}
+		},
+	
+		songOver: function () {
+			this.setState({ currentSong: null, playing: false });
+		},
+	
+		play: function (event) {
+			event.preventDefault();
+			var play = document.getElementsByTagName('audio')[0].play();
+			this.setState({ currentSong: this.state.currentSong, playing: true });
+		},
+	
+		pause: function (event) {
+			event.preventDefault();
+			document.getElementsByTagName('audio')[0].pause();
+			this.setState({ currentSong: this.state.currentSong, playing: false });
+		},
+	
+		render: function () {
+			var song, player, playToggle;
+			if (this.state.currentSong) {
+				song = React.createElement('audio', { onEnded: this.songOver, src: this.state.currentSong.audio_url, autoPlay: true });
+			} else {
+				song = React.createElement('div', null);
+			}
+	
+			if (this.state.playing) {
+				playToggle = React.createElement(
+					'button',
+					{ className: 'playControl', onClick: this.pause },
+					'▌▌'
+				);
+			} else {
+				playToggle = React.createElement(
+					'button',
+					{ className: 'playControl', onClick: this.play },
+					'▶'
+				);
+			}
+	
+			if (this.state.currentSong) {
+				player = React.createElement(
+					'div',
+					{ className: 'playBar' },
+					song,
+					playToggle
+				);
+			} else {
+				player = React.createElement('div', null);
+			}
+	
+			return player;
+		}
+	});
 
 /***/ }
 /******/ ]);

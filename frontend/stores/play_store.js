@@ -15,6 +15,7 @@ var _nowPlaying = null;
 
 var addSong = function(song) {
 	_queue.push(song);
+	_nowPlaying = _queue[0];
 };
 
 PlayStore.queue = function() {
@@ -23,7 +24,16 @@ PlayStore.queue = function() {
 		queue.push(song);
 	})
 	return queue;
-}
+};
+
+PlayStore.nextSong = function() {
+	_queue.slice(1);
+	_nowPlaying = _queue[0];
+};
+
+PlayStore.nowPlaying = function() {
+	return _nowPlaying;
+};
 
 PlayStore.__onDispatch = function(payload) {
 	switch (payload.actionType) {
