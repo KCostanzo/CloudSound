@@ -54,6 +54,7 @@
 	var hashHistory = __webpack_require__(186).hashHistory;
 	var Store = __webpack_require__(245);
 	var SongStor = __webpack_require__(278);
+	var PlayStore = __webpack_require__(282);
 	var UStore = __webpack_require__(268);
 	var ClientActions = __webpack_require__(271);
 	
@@ -34807,7 +34808,7 @@
 	
 		playSong: function (event) {
 			event.preventDefault();
-			SongActions.playSong(this.props.song);
+			SongActions.playSong(this.props.song.id);
 		},
 	
 		render: function () {
@@ -34925,7 +34926,7 @@
 		getSong: function (songId) {
 			$.ajax({
 				method: 'GET',
-				url: 'api/songs' + songId,
+				url: 'api/songs/' + songId,
 				success: function (song) {
 					ServerActions.getSong(song);
 				},
@@ -34965,6 +34966,53 @@
 			});
 		}
 	};
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(246).Store;
+	var AppDispatcher = __webpack_require__(264);
+	var SongConstants = __webpack_require__(267);
+	
+	var PlayStore = new Store(AppDispatcher);
+	
+	var _queue = [];
+	var _errors = [];
+	
+	var setErrors = function (error) {
+		_errors.push(error);
+	};
+	
+	var _nowPlaying = null;
+	
+	var addSong = function (song) {
+		_queue.push(song);
+	};
+	
+	PlayStore.queue = function () {
+		var queue = [];
+		_queue.forEach(function (song) {
+			queue.push(song);
+		});
+		return queue;
+	};
+	
+	PlayStore.__onDispatch = function (payload) {
+		switch (payload.actionType) {
+			case SongConstants.SONG_RECEIVED:
+				addSong(payload.song);
+				break;
+			case SongConstants.SONGS_ERROR:
+				setErrors(payload.errors);
+				break;
+	
+		}
+		this.__emitChange();
+	};
+	
+	window.Play = PlayStore;
+	module.exports = PlayStore;
 
 /***/ }
 /******/ ]);

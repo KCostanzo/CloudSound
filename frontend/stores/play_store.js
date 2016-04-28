@@ -17,7 +17,15 @@ var addSong = function(song) {
 	_queue.push(song);
 };
 
-PlayStore.__onDispatch: function() {
+PlayStore.queue = function() {
+	var queue = [];
+	_queue.forEach(function(song) {
+		queue.push(song);
+	})
+	return queue;
+}
+
+PlayStore.__onDispatch = function(payload) {
 	switch (payload.actionType) {
 		case SongConstants.SONG_RECEIVED:
 			addSong(payload.song);
@@ -30,4 +38,5 @@ PlayStore.__onDispatch: function() {
 	this.__emitChange();
 };
 
+window.Play = PlayStore;
 module.exports = PlayStore;

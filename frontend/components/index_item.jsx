@@ -4,7 +4,7 @@ var SongActions = require('../actions/song_client_actions.js');
 module.exports = React.createClass({
 	playSong: function(event) {
 		event.preventDefault();
-		SongActions.playSong(this.props.song);
+		SongActions.playSong(this.props.song.id);
 	},
 
 	render: function() {

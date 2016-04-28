@@ -17,7 +17,7 @@ module.exports = {
 	getSong: function(songId) {
 		$.ajax({
 			method: 'GET',
-			url: 'api/songs' + songId,
+			url: 'api/songs/' + songId,
 			success: function(song) {
 				ServerActions.getSong(song);
 			},
