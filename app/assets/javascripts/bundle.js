@@ -34226,8 +34226,10 @@
 	
 	  USER_RECEIVED: 'USER_RECEIVED',
 	  USER_UPDATED: 'USER_UPDATED',
-	  USER_FETCHED: 'USER_FETCHED'
+	  USER_FETCHED: 'USER_FETCHED',
 	
+	  SONGS_RECEIVED: 'SONGS_RECEIVED',
+	  SONGS_ERROR: 'SONGS_ERROR'
 	};
 
 /***/ },
@@ -34712,8 +34714,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ClientActions = __webpack_require__(271);
-	// var SongStore = require('../stores/song_store.js');
+	var SongActions = __webpack_require__(279);
+	var SongStore = __webpack_require__(278);
 	var IndexItem = __webpack_require__(277);
 	
 	module.exports = React.createClass({
@@ -34721,22 +34723,22 @@
 	
 		getInitialState: function () {
 			return {
-				songs: [{ id: 1, title: 'mysong', artist: 'stanzo' }, { id: 2, title: 'song2', artist: 'blur' }]
+				songs: []
 			};
 		},
 	
-		// initialstate songs: []
-		// componentDidMount: function() {
-		// 	this.songListener = SongStore.addListener(this.songChange);
-		// },
+		componentDidMount: function () {
+			this.songListener = SongStore.addListener(this.songChange);
+			SongActions.fetchSongs();
+		},
 	
-		// componentWillUnmount: function() {
-		// 	this.songListener.remove();
-		// },
+		componentWillUnmount: function () {
+			this.songListener.remove();
+		},
 	
-		// songChange: function() {
-		// 	this.setState({songs: SongStore.fetchSongs()});
-		// },
+		songChange: function () {
+			this.setState({ songs: SongStore.all() });
+		},
 	
 		render: function () {
 			return React.createElement(
@@ -34783,6 +34785,113 @@
 		}
 	});
 	// <img src={this.props.song.imgUrl} onClick={this.playSong} />
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(246).Store;
+	var AppDispatcher = __webpack_require__(264);
+	var SongConstants = __webpack_require__(267);
+	
+	var SongStore = new Store(AppDispatcher);
+	
+	var _songs = {};
+	var _errors = [];
+	
+	var setErrors = function (errors) {
+		var temp = errors;
+		if (temp.length > 0) {
+			temp.forEach(function (error) {
+				_errors.push(error);
+			});
+		} else {
+			_errors.push(temp);
+		}
+	};
+	
+	var resetSongs = function (songs) {
+		_songs = {};
+	
+		songs.forEach(function (song) {
+			_songs[song.id] = song;
+		});
+	};
+	
+	SongStore.all = function () {
+		return [{ id: 1, title: 'mysong', artist: 'stanzo' }, { id: 2, title: 'song2', artist: 'blur' }];
+		// return Object.keys(_songs).map(function(key) {
+		// 	return _songs[key];
+		// })
+	};
+	
+	SongStore.__onDispatch = function (payload) {
+		switch (payload.actionType) {
+			case SongConstants.SONGS_RECEIVED:
+				resetSongs(payload.songs);
+				break;
+	
+		}
+		this.__emitChange();
+	};
+	
+	module.exports = SongStore;
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Util = __webpack_require__(280);
+	
+	module.exports = {
+		fetchSongs: function () {
+			Util.fetchSongs();
+		}
+	};
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ServerActions = __webpack_require__(281);
+	
+	module.exports = {
+		fetchSongs: function () {
+			$.ajax({
+				method: 'GET',
+				url: 'api/songs',
+				success: function (songs) {
+					ServerActions.getSongs(songs);
+				},
+				error: function (error) {
+					ServerActions.songError(error);
+				}
+			});
+		}
+	};
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(264);
+	var Constants = __webpack_require__(267);
+	
+	module.exports = {
+		getSongs: function (songs) {
+			Dispatcher.dispatch({
+				actionType: Constants.SONGS_RECEIVED,
+				songs: songs
+			});
+		},
+	
+		songError: function (errors) {
+			Dispatcher.dispatch({
+				actionType: Constants.SONGS_ERROR,
+				errors: errors
+			});
+		}
+	};
 
 /***/ }
 /******/ ]);

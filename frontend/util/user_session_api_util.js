@@ -8,7 +8,7 @@ module.exports = {
       url: 'api/session',
       success: function(object) {
         if (object.username) {
-        ServerActions.fetchCurrentUser(object)
+          ServerActions.fetchCurrentUser(object)
         } else {
           ServerActions.receiveError(object)
         }

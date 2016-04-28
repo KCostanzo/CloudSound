@@ -1,27 +1,27 @@
 var React = require('react');
-var ClientActions = require('../actions/client_actions.js');
-// var SongStore = require('../stores/song_store.js');
+var SongActions = require('../actions/song_client_actions.js');
+var SongStore = require('../stores/song_store.js');
 var IndexItem = require('./index_item.jsx');
 
 module.exports = React.createClass({
 	getInitialState: function() {
 		return {
-			songs: [{id: 1, title: 'mysong', artist: 'stanzo'},{id: 2, title: 'song2', artist: 'blur'}]
+			songs: []
 		}
 	},
 
-	// initialstate songs: []
-	// componentDidMount: function() {
-	// 	this.songListener = SongStore.addListener(this.songChange);
-	// },
+	componentDidMount: function() {
+		this.songListener = SongStore.addListener(this.songChange);
+		SongActions.fetchSongs();
+	},
 
-	// componentWillUnmount: function() {
-	// 	this.songListener.remove();
-	// },
+	componentWillUnmount: function() {
+		this.songListener.remove();
+	},
 
-	// songChange: function() {
-	// 	this.setState({songs: SongStore.fetchSongs()});
-	// },
+	songChange: function() {
+		this.setState({songs: SongStore.all()});
+	},
 
 	render: function() {
 		return (

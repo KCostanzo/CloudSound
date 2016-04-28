@@ -18,8 +18,6 @@
   font-family: sans-serif;
 }
 
-
-
 button {
   float: right;
 }
@@ -39,6 +37,10 @@ form input{
   text-align: center
 }
 
+.modal label {
+  text-align: center;
+}
+
 .cover-index {
   position: relative;
   top: 44px;
@@ -46,8 +48,7 @@ form input{
 
 .songItem{
   display: inline-block;
-/*  position: relative;
-*/  float: left;
+  float: left;
   margin: 9%;
 }
 nav img {
