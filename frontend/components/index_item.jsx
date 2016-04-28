@@ -10,7 +10,9 @@ module.exports = React.createClass({
 	render: function() {
 		return (
 			<li className='songItem' onClick={this.playSong}>
-				<label>
+				<img src={this.props.song.img_url} />
+				<br/>
+				<label className="indexText">
 					{this.props.song.title}<br/>{this.props.song.artist}
 				</label>
 			</li>

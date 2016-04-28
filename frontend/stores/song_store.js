@@ -27,11 +27,14 @@ var resetSongs = function(songs) {
 	})
 };
 
+SongStore.find = function(id) {
+	return _songs[id];
+}
+
 SongStore.all = function() {
-	return [{id: 1, title: 'mysong', artist: 'stanzo'},{id: 2, title: 'song2', artist: 'blur'}]
-	// return Object.keys(_songs).map(function(key) {
-	// 	return _songs[key];
-	// })
+	return Object.keys(_songs).map(function(key) {
+		return _songs[key];
+	});
 };
 
 SongStore.__onDispatch = function(payload) {
@@ -47,4 +50,5 @@ SongStore.__onDispatch = function(payload) {
 	this.__emitChange();
 };
 
+window.SongStore = SongStore
 module.exports = SongStore;

@@ -11,7 +11,7 @@ module.exports = {
 			error: function(error) {
 				ServerActions.songError(error);
 			}
-		});
+		})
 	},
 
 	getSong: function(songId) {
@@ -24,6 +24,6 @@ module.exports = {
 			error: function(error) {
 				ServerActions.songError(error);
 			}
-		});
+		})
 	}
-}
+};

@@ -53,6 +53,7 @@
 	var IndexRoute = __webpack_require__(186).IndexRoute;
 	var hashHistory = __webpack_require__(186).hashHistory;
 	var Store = __webpack_require__(245);
+	var SongStor = __webpack_require__(278);
 	var UStore = __webpack_require__(268);
 	var ClientActions = __webpack_require__(271);
 	
@@ -34813,9 +34814,11 @@
 			return React.createElement(
 				'li',
 				{ className: 'songItem', onClick: this.playSong },
+				React.createElement('img', { src: this.props.song.img_url }),
+				React.createElement('br', null),
 				React.createElement(
 					'label',
-					null,
+					{ className: 'indexText' },
 					this.props.song.title,
 					React.createElement('br', null),
 					this.props.song.artist
@@ -34857,11 +34860,14 @@
 		});
 	};
 	
+	SongStore.find = function (id) {
+		return _songs[id];
+	};
+	
 	SongStore.all = function () {
-		return [{ id: 1, title: 'mysong', artist: 'stanzo' }, { id: 2, title: 'song2', artist: 'blur' }];
-		// return Object.keys(_songs).map(function(key) {
-		// 	return _songs[key];
-		// })
+		return Object.keys(_songs).map(function (key) {
+			return _songs[key];
+		});
 	};
 	
 	SongStore.__onDispatch = function (payload) {
@@ -34877,6 +34883,7 @@
 		this.__emitChange();
 	};
 	
+	window.SongStore = SongStore;
 	module.exports = SongStore;
 
 /***/ },
