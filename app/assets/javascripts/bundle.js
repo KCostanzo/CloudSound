@@ -34225,7 +34225,8 @@
 	  USER_FETCHED: 'USER_FETCHED',
 	
 	  SONGS_RECEIVED: 'SONGS_RECEIVED',
-	  SONGS_ERROR: 'SONGS_ERROR'
+	  SONGS_ERROR: 'SONGS_ERROR',
+	  SONG_RECEIVED: 'SONG_RECEIVED'
 	};
 
 /***/ },
@@ -34798,14 +34799,14 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ClientActions = __webpack_require__(271);
+	var SongActions = __webpack_require__(279);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
 		playSong: function (event) {
 			event.preventDefault();
-			ClientActions.playSong(this.props.song);
+			SongActions.playSong(this.props.song);
 		},
 	
 		render: function () {
@@ -34887,6 +34888,10 @@
 	module.exports = {
 		fetchSongs: function () {
 			Util.fetchSongs();
+		},
+	
+		playSong: function (song) {
+			Util.getSong(song);
 		}
 	};
 
@@ -34908,6 +34913,19 @@
 					ServerActions.songError(error);
 				}
 			});
+		},
+	
+		getSong: function (songId) {
+			$.ajax({
+				method: 'GET',
+				url: 'api/songs' + songId,
+				success: function (song) {
+					ServerActions.getSong(song);
+				},
+				error: function (error) {
+					ServerActions.songError(error);
+				}
+			});
 		}
 	};
 
@@ -34923,6 +34941,13 @@
 			Dispatcher.dispatch({
 				actionType: Constants.SONGS_RECEIVED,
 				songs: songs
+			});
+		},
+	
+		getSong: function (song) {
+			Dispatcher.dispatch({
+				actionType: Constants.SONG_RECEIVED,
+				song: song
 			});
 		},
 	

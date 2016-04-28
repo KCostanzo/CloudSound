@@ -9,6 +9,13 @@ module.exports = {
 		})
 	},
 
+	getSong: function(song) {
+		Dispatcher.dispatch({
+			actionType: Constants.SONG_RECEIVED,
+			song: song
+		})
+	},
+
 	songError: function(errors) {
     	Dispatcher.dispatch({
       		actionType: Constants.SONGS_ERROR,
