@@ -41,14 +41,14 @@ module.exports = React.createClass({
 		if (this.state.userPresent) {
 			return (
 				<nav>
-					<img src='assets/home_logo.png' onClick={this.linkToHome}/>
+					<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg' onClick={this.linkToHome}/>
 					<button onClick={this.logoutUser}>Logout</button>
 				</nav>
 				)
 		} else {
 			return(
 				 <nav>
-				 	<img src='assets/home_logo.png' onClick={this.linkToHome} />
+				 	<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg' onClick={this.linkToHome} />
 		  			<SignUp/>
 		   			<Login/>
 		 		</nav>

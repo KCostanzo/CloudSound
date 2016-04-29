@@ -34734,7 +34734,7 @@
 				return React.createElement(
 					'nav',
 					null,
-					React.createElement('img', { src: 'assets/home_logo.png', onClick: this.linkToHome }),
+					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
 					React.createElement(
 						'button',
 						{ onClick: this.logoutUser },
@@ -34745,7 +34745,7 @@
 				return React.createElement(
 					'nav',
 					null,
-					React.createElement('img', { src: 'assets/home_logo.png', onClick: this.linkToHome }),
+					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
 					React.createElement(SignUp, null),
 					React.createElement(Login, null)
 				);
