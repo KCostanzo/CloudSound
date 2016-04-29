@@ -34840,8 +34840,8 @@
 		render: function () {
 			return React.createElement(
 				'li',
-				{ className: 'songItem', onClick: this.playSong },
-				React.createElement('img', { src: this.props.song.img_url }),
+				{ className: 'songItem' },
+				React.createElement('img', { src: this.props.song.img_url, onClick: this.playSong }),
 				React.createElement('br', null),
 				React.createElement(
 					'label',

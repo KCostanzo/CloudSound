@@ -16,8 +16,8 @@ module.exports = React.createClass({
 
 	render: function() {
 		return (
-			<li className='songItem' onClick={this.playSong} >
-				<img src={this.props.song.img_url} />
+			<li className='songItem'>
+				<img src={this.props.song.img_url} onClick={this.playSong}/>
 				<br/>
 				<label className="indexTitle">
 					{this.props.song.title}
