@@ -1,5 +1,6 @@
 var React = require('react');
 var PlayStore = require('../stores/play_store.js');
+var ClientActions = require('../actions/song_client_actions.js');
 
 module.exports = React.createClass({
 	getInitialState: function() {
@@ -46,6 +47,11 @@ module.exports = React.createClass({
 		this.setState({currentSong: this.state.currentSong, playing: false});
 	},
 
+	nextSong: function(event) {
+		event.preventDefault();
+		ClientActions.nextSong();
+	},
+
 	render: function() {
 		var song, player, playToggle;
 		if (this.state.currentSong) {
@@ -60,8 +66,10 @@ module.exports = React.createClass({
 			playToggle = <button className="playControl" onClick={this.play}>▶</button>
 		}
 
+		var next = (<button className="playControl" onClick={this.nextSong}>▶▌</button>)
+
 		if (this.state.currentSong) {
-			player = (<div className='playBar'>{song}{playToggle}</div>)
+			player = (<div className='playBar'>{song}{playToggle}{next}</div>)
 		} else {
 			player= <div/>
 		}

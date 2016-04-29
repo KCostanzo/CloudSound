@@ -34228,7 +34228,8 @@
 	
 	  SONGS_RECEIVED: 'SONGS_RECEIVED',
 	  SONGS_ERROR: 'SONGS_ERROR',
-	  SONG_RECEIVED: 'SONG_RECEIVED'
+	  SONG_RECEIVED: 'SONG_RECEIVED',
+	  NEXT_SONG: 'NEXT_SONG'
 	};
 
 /***/ },
@@ -34894,6 +34895,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Util = __webpack_require__(280);
+	var Dispatcher = __webpack_require__(264);
+	var Constants = __webpack_require__(267);
 	
 	module.exports = {
 		fetchSongs: function () {
@@ -34902,6 +34905,12 @@
 	
 		playSong: function (song) {
 			Util.getSong(song);
+		},
+	
+		nextSong: function () {
+			Dispatcher.dispatch({
+				actionType: Constants.NEXT_SONG
+			});
 		}
 	};
 
@@ -35001,8 +35010,8 @@
 		return queue;
 	};
 	
-	PlayStore.nextSong = function () {
-		_queue.slice(1);
+	var nextSong = function () {
+		_queue = _queue.slice(1);
 		_nowPlaying = _queue[0];
 	};
 	
@@ -35018,7 +35027,9 @@
 			case SongConstants.SONGS_ERROR:
 				setErrors(payload.errors);
 				break;
-	
+			case SongConstants.NEXT_SONG:
+				nextSong();
+				break;
 		}
 		this.__emitChange();
 	};
@@ -35032,6 +35043,7 @@
 
 	var React = __webpack_require__(1);
 	var PlayStore = __webpack_require__(282);
+	var ClientActions = __webpack_require__(279);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35080,6 +35092,11 @@
 			this.setState({ currentSong: this.state.currentSong, playing: false });
 		},
 	
+		nextSong: function (event) {
+			event.preventDefault();
+			ClientActions.nextSong();
+		},
+	
 		render: function () {
 			var song, player, playToggle;
 			if (this.state.currentSong) {
@@ -35102,12 +35119,19 @@
 				);
 			}
 	
+			var next = React.createElement(
+				'button',
+				{ className: 'playControl', onClick: this.nextSong },
+				'▶▌'
+			);
+	
 			if (this.state.currentSong) {
 				player = React.createElement(
 					'div',
 					{ className: 'playBar' },
 					song,
-					playToggle
+					playToggle,
+					next
 				);
 			} else {
 				player = React.createElement('div', null);

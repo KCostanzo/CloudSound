@@ -26,8 +26,8 @@ PlayStore.queue = function() {
 	return queue;
 };
 
-PlayStore.nextSong = function() {
-	_queue.slice(1);
+var nextSong = function() {
+	_queue = _queue.slice(1);
 	_nowPlaying = _queue[0];
 };
 
@@ -43,7 +43,9 @@ PlayStore.__onDispatch = function(payload) {
 		case SongConstants.SONGS_ERROR:
 			setErrors(payload.errors);
 			break;
-
+		case SongConstants.NEXT_SONG:
+			nextSong();
+			break;
 	}
 	this.__emitChange();
 };

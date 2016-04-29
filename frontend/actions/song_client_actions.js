@@ -1,4 +1,7 @@
 var Util = require('../util/songs_util.js');
+var Dispatcher = require('../dispatcher/dispatcher.js');
+var Constants = require('../constants/allConstants.js');
+
 
 module.exports = {
 	fetchSongs: function() {
@@ -7,5 +10,11 @@ module.exports = {
 
 	playSong: function(song) {
 		Util.getSong(song);
+	},
+
+	nextSong: function() {
+		Dispatcher.dispatch({
+			actionType: Constants.NEXT_SONG
+		});
 	}
 }
