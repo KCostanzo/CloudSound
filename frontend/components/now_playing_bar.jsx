@@ -33,6 +33,7 @@ module.exports = React.createClass({
 
 	songOver: function() {
 		this.setState({currentSong: null, playing: false});
+		ClientActions.nextSong();
 	},
 
 	play: function(event) {
@@ -69,7 +70,7 @@ module.exports = React.createClass({
 		var next = (<button className="playControl" onClick={this.nextSong}>▶▌</button>)
 
 		if (this.state.currentSong) {
-			player = (<div className='playBar'>{song}{playToggle}{next}</div>)
+			player = (<div className='playBar'>{song}{playToggle}{next} {this.state.currentSong.title}, {this.state.currentSong.artist}</div>)
 		} else {
 			player= <div/>
 		}

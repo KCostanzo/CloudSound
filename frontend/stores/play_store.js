@@ -18,6 +18,10 @@ var addSong = function(song) {
 	_nowPlaying = _queue[0];
 };
 
+var removeFromQueue = function(queueIdx) {
+	_queue.splice(queueIdx, 1);
+};
+
 PlayStore.queue = function() {
 	var queue = [];
 	_queue.forEach(function(song) {
@@ -45,6 +49,9 @@ PlayStore.__onDispatch = function(payload) {
 			break;
 		case SongConstants.NEXT_SONG:
 			nextSong();
+			break;
+		case SongConstants.QUEUE_REMOVE:
+			removeFromQueue(payload.idx);
 			break;
 	}
 	this.__emitChange();

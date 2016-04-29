@@ -14,6 +14,19 @@ module.exports = {
 		})
 	},
 
+	fetchArtistSongs: function() {
+		$.ajax({
+			method: 'GET',
+			url: 'api/songs',
+			success: function(songs) {
+				ServerActions.getArtistSongs(songs);
+			},
+			error: function(error) {
+				ServerActions.songError(error);
+			}
+		})
+	},
+
 	getSong: function(songId) {
 		$.ajax({
 			method: 'GET',

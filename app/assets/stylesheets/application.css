@@ -48,22 +48,24 @@ form input{
 .cover-index {
   position: absolute;
   top: 45px;
+  margin-right: 100px;
 }
 
 img {
-  width:50%;
-  height: 50%;
+  width:69%;
+  height: 69%;
   margin: 0px;
 }
 
 .songItem{
+  top: 45px;
   position: relative;
   display: inline-block;
   float: left;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  width: 360px;
-  height: 360px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  width: 270px;
+  height: 270px;
 }
 
 .playBar {
@@ -74,6 +76,9 @@ img {
   bottom: 0px;
   width: 100%;
   left: 0px;
+  text-align: left;
+  line-height: 51px;
+  color: white;
 }
 
 .playControl {
@@ -82,6 +87,25 @@ img {
   height: 30px;
   width: 30px;
 }
+
+.queueDisplay {
+  background-color: #444;
+  z-index: 1;
+  float: right;
+  margin-top: 45px;
+  width: 180px;
+  height: 100%;
+  text-align: center;
+  color: white;
+}
+
+.queueDisplay li {
+  list-style-type: circle;
+  border: solid black;
+  margin: 10px;
+}
+
+.queueSongRemove {}
 
 nav img {
   width:45px;

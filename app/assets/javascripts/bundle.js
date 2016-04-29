@@ -59,11 +59,15 @@
 	var ClientActions = __webpack_require__(271);
 	
 	var App = __webpack_require__(269);
-	var Login = __webpack_require__(270);
+	var CoverPage = __webpack_require__(276);
 	
 	ClientActions.fetchCurrentUser();
 	
-	var routes = React.createElement(Route, { path: '/', component: App });
+	var routes = React.createElement(
+	  Route,
+	  { path: '/', component: App },
+	  React.createElement(IndexRoute, { component: CoverPage })
+	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  Modal.setAppElement(document.body);
@@ -34229,7 +34233,9 @@
 	  SONGS_RECEIVED: 'SONGS_RECEIVED',
 	  SONGS_ERROR: 'SONGS_ERROR',
 	  SONG_RECEIVED: 'SONG_RECEIVED',
-	  NEXT_SONG: 'NEXT_SONG'
+	  NEXT_SONG: 'NEXT_SONG',
+	  ARTIST_SONGS: 'ARTIST_SONGS',
+	  QUEUE_REMOVE: 'QUEUE_REMOVE'
 	};
 
 /***/ },
@@ -34284,6 +34290,7 @@
 	var Navbar = __webpack_require__(275);
 	var CoverPage = __webpack_require__(276);
 	var NowPlayingBar = __webpack_require__(283);
+	var PlayQueue = __webpack_require__(284);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -34293,8 +34300,8 @@
 	      'div',
 	      { id: 'main' },
 	      React.createElement(Navbar, null),
-	      React.createElement(CoverPage, null),
 	      this.props.children,
+	      React.createElement(PlayQueue, null),
 	      React.createElement(NowPlayingBar, null)
 	    );
 	  }
@@ -34882,7 +34889,6 @@
 			case SongConstants.SONGS_ERROR:
 				setErrors(payload.errors);
 				break;
-	
 		}
 		this.__emitChange();
 	};
@@ -34911,6 +34917,13 @@
 			Dispatcher.dispatch({
 				actionType: Constants.NEXT_SONG
 			});
+		},
+	
+		removeFromQueue: function (qIdx) {
+			Dispatcher.dispatch({
+				actionType: Constants.QUEUE_REMOVE,
+				idx: qIdx
+			});
 		}
 	};
 
@@ -34927,6 +34940,19 @@
 				url: 'api/songs',
 				success: function (songs) {
 					ServerActions.getSongs(songs);
+				},
+				error: function (error) {
+					ServerActions.songError(error);
+				}
+			});
+		},
+	
+		fetchArtistSongs: function () {
+			$.ajax({
+				method: 'GET',
+				url: 'api/songs',
+				success: function (songs) {
+					ServerActions.getArtistSongs(songs);
 				},
 				error: function (error) {
 					ServerActions.songError(error);
@@ -35002,6 +35028,10 @@
 		_nowPlaying = _queue[0];
 	};
 	
+	var removeFromQueue = function (queueIdx) {
+		_queue.splice(queueIdx, 1);
+	};
+	
 	PlayStore.queue = function () {
 		var queue = [];
 		_queue.forEach(function (song) {
@@ -35029,6 +35059,9 @@
 				break;
 			case SongConstants.NEXT_SONG:
 				nextSong();
+				break;
+			case SongConstants.QUEUE_REMOVE:
+				removeFromQueue(payload.idx);
 				break;
 		}
 		this.__emitChange();
@@ -35078,6 +35111,7 @@
 	
 		songOver: function () {
 			this.setState({ currentSong: null, playing: false });
+			ClientActions.nextSong();
 		},
 	
 		play: function (event) {
@@ -35131,13 +35165,103 @@
 					{ className: 'playBar' },
 					song,
 					playToggle,
-					next
+					next,
+					' ',
+					this.state.currentSong.title,
+					', ',
+					this.state.currentSong.artist
 				);
 			} else {
 				player = React.createElement('div', null);
 			}
 	
 			return player;
+		}
+	});
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PlayStore = __webpack_require__(282);
+	var ClientActions = __webpack_require__(279);
+	var QueueItem = __webpack_require__(285);
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		getInitialState: function () {
+			return { nowPlaying: null, queue: [] };
+		},
+	
+		componentDidMount: function () {
+			this.playListen = PlayStore.addListener(this.playChange);
+		},
+	
+		componentWillUnmount: function () {
+			this.playListen.remove();
+		},
+	
+		playChange: function () {
+			if (PlayStore.nowPlaying()) {
+				this.setState({ nowPlaying: PlayStore.nowPlaying(), queue: PlayStore.queue() });
+			}
+		},
+	
+		render: function () {
+			if (this.state.nowPlaying) {
+				return React.createElement(
+					'div',
+					{ className: 'queueDisplay' },
+					React.createElement(
+						'h3',
+						null,
+						'Current Queue'
+					),
+					React.createElement(
+						'ul',
+						null,
+						this.state.queue.map(function (queueSong, idx) {
+							return React.createElement(QueueItem, { song: queueSong, key: idx, idx: idx });
+						})
+					)
+				);
+			} else {
+				return React.createElement('div', null);
+			}
+		}
+	});
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SongActions = __webpack_require__(279);
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		removeSongFromQueue: function (event) {
+			event.preventDefault();
+			SongActions.removeFromQueue(this.props.idx);
+		},
+	
+		render: function () {
+			return React.createElement(
+				'li',
+				{ className: 'queueItem' },
+				this.props.song.title,
+				', ',
+				this.props.song.artist,
+				React.createElement(
+					'button',
+					{ className: 'queueSongRemove', onClick: this.removeSongFromQueue },
+					'X'
+				),
+				React.createElement('br', null)
+			);
 		}
 	});
 

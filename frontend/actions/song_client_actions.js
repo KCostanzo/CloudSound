@@ -7,6 +7,7 @@ module.exports = {
 	fetchSongs: function() {
 		Util.fetchSongs();
 	},
+	
 
 	playSong: function(song) {
 		Util.getSong(song);
@@ -15,6 +16,13 @@ module.exports = {
 	nextSong: function() {
 		Dispatcher.dispatch({
 			actionType: Constants.NEXT_SONG
+		});
+	},
+
+	removeFromQueue: function(qIdx) {
+		Dispatcher.dispatch({
+			actionType: Constants.QUEUE_REMOVE,
+			idx: qIdx
 		});
 	}
 }

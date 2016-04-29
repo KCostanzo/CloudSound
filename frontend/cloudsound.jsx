@@ -13,12 +13,14 @@ var UStore = require('./stores/user_store.js');
 var ClientActions = require('./actions/client_actions.js');
 
 var App = require('./components/app.jsx');
-var Login = require('./components/login.jsx');
+var CoverPage = require('./components/cover_index.jsx');
+
 
 ClientActions.fetchCurrentUser();
 
 var routes = (
   <Route path='/' component={App}>
+  	<IndexRoute component={CoverPage} />
   </Route>
 );
 

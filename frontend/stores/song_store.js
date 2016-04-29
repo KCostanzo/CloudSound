@@ -17,7 +17,7 @@ var setErrors = function(errors) {
     _errors.push(temp);
   }
 
-}
+};
 
 var resetSongs = function(songs) {
 	_songs = {};
@@ -45,7 +45,6 @@ SongStore.__onDispatch = function(payload) {
 		case SongConstants.SONGS_ERROR:
 			setErrors(payload.errors);
 			break;
-
 	}
 	this.__emitChange();
 };
