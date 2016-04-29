@@ -134,8 +134,17 @@ nav {
 }
 
 nav button {
-  margin-top: -22px;
-  margin-left: 6px;
+  float: right;
+  height: 24px;
+  margin-top: 12px;
+  margin-left: 0px;
   margin-right: 30px;
-  margin-bottom: 6px;
+  margin-bottom: 0px;
+}
+
+nav button.unlogged {
+  margin-top: 0px;
+  display: inline-block;
+  position: relative;
+  top: -35px;
 }

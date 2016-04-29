@@ -61,6 +61,7 @@
 	var App = __webpack_require__(269);
 	var CoverPage = __webpack_require__(276);
 	var ArtistIndex = __webpack_require__(286);
+	var UserIndex = __webpack_require__(287);
 	
 	ClientActions.fetchCurrentUser();
 	
@@ -68,7 +69,8 @@
 	  Route,
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: CoverPage }),
-	  React.createElement(Route, { path: 'artists/:artist', component: ArtistIndex })
+	  React.createElement(Route, { path: 'artists/:artist', component: ArtistIndex }),
+	  React.createElement(Route, { path: 'users/:user_id', component: UserIndex })
 	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
@@ -34396,12 +34398,12 @@
 	      null,
 	      React.createElement(
 	        'button',
-	        { onClick: this.openModal },
+	        { className: 'unlogged', onClick: this.openModal },
 	        'Log In'
 	      ),
 	      React.createElement(
 	        'button',
-	        { onClick: this.guestLogin },
+	        { className: 'unlogged', onClick: this.guestLogin },
 	        'Guest Account'
 	      ),
 	      React.createElement(
@@ -34667,7 +34669,7 @@
 	      null,
 	      React.createElement(
 	        'button',
-	        { onClick: this.openModal },
+	        { className: 'unlogged', onClick: this.openModal },
 	        'Sign Up'
 	      ),
 	      React.createElement(
@@ -34742,12 +34744,16 @@
 			hashHistory.push('/');
 		},
 	
+		linkToUser: function () {
+			hashHistory.push('users/' + currentUser.id);
+		},
+	
 		//TODO: put search bar in nav
 		render: function () {
 			if (this.state.userPresent) {
 				return React.createElement(
 					'nav',
-					null,
+					{ className: 'logged' },
 					' Cloud Sound',
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
 					React.createElement(
@@ -35338,6 +35344,52 @@
 			return React.createElement(
 				'div',
 				{ className: 'artist-index' },
+				React.createElement(
+					'ul',
+					null,
+					this.state.songs.map(function (song) {
+						return React.createElement(IndexItem, { song: song, key: song.id });
+					})
+				)
+			);
+		}
+	});
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SongActions = __webpack_require__(279);
+	var SongStore = __webpack_require__(278);
+	var IndexItem = __webpack_require__(277);
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		getInitialState: function () {
+			return {
+				songs: []
+			};
+		},
+	
+		componentDidMount: function () {
+			this.songListener = SongStore.addListener(this.songChange);
+			SongActions.fetchUserSongs(this.props.params.user_id);
+		},
+	
+		componentWillUnmount: function () {
+			this.songListener.remove();
+		},
+	
+		songChange: function () {
+			this.setState({ songs: SongStore.all() });
+		},
+	
+		render: function () {
+			return React.createElement(
+				'div',
+				{ className: 'user-index' },
 				React.createElement(
 					'ul',
 					null,

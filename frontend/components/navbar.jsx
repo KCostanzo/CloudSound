@@ -35,12 +35,15 @@ module.exports = React.createClass({
 		hashHistory.push('/');
 	},
 
+	linkToUser: function() {
+		hashHistory.push('users/' + currentUser.id)
+	},
 
 //TODO: put search bar in nav
 	render: function() {
 		if (this.state.userPresent) {
 			return (
-				<nav> Cloud Sound
+				<nav className="logged"> Cloud Sound
 					<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg' onClick={this.linkToHome}/>
 					<button onClick={this.logoutUser}>Logout</button>
 				</nav>

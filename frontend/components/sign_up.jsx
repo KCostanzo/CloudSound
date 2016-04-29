@@ -61,7 +61,7 @@ module.exports = React.createClass ({
   render: function() {
     return (
       <div>
-      <button onClick={this.openModal}>Sign Up</button>
+      <button className="unlogged" onClick={this.openModal}>Sign Up</button>
 
       <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
         <form onSubmit={this.signupUser}>
