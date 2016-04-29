@@ -1,5 +1,6 @@
 var React = require('react');
 var SongActions = require('../actions/song_client_actions.js');
+var hashHistory = require('react-router').hashHistory;
 
 module.exports = React.createClass({
 	playSong: function(event) {
@@ -7,14 +8,21 @@ module.exports = React.createClass({
 		SongActions.playSong(this.props.song.id);
 	},
 
+	artistRoute: function(event) {
+		event.preventDefault();
+		// var betterRoute = this.props.song.artist.split(" ").join("%20");
+		hashHistory.push("artists/"+ this.props.song.artist);
+	},
+
 	render: function() {
 		return (
-			<li className='songItem' onClick={this.playSong}>
+			<li className='songItem' onClick={this.playSong} >
 				<img src={this.props.song.img_url} />
 				<br/>
-				<label className="indexText">
-					{this.props.song.title}<br/>{this.props.song.artist}
-				</label>
+				<label className="indexTitle">
+					{this.props.song.title}
+				</label><br/>
+				<label className="artistLink" onClick={this.artistRoute} artist={this.props.song.artist}>{this.props.song.artist}</label>
 			</li>
 		);
 	}

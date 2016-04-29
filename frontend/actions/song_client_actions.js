@@ -8,6 +8,9 @@ module.exports = {
 		Util.fetchSongs();
 	},
 	
+	fetchArtistSongs: function(artist) {
+		Util.fetchArtistSongs(artist);
+	},
 
 	playSong: function(song) {
 		Util.getSong(song);

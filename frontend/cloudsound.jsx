@@ -14,6 +14,7 @@ var ClientActions = require('./actions/client_actions.js');
 
 var App = require('./components/app.jsx');
 var CoverPage = require('./components/cover_index.jsx');
+var ArtistIndex = require('./components/artist_index.jsx');
 
 
 ClientActions.fetchCurrentUser();
@@ -21,6 +22,7 @@ ClientActions.fetchCurrentUser();
 var routes = (
   <Route path='/' component={App}>
   	<IndexRoute component={CoverPage} />
+  	<Route path="artists/:artist" component={ArtistIndex} />
   </Route>
 );
 

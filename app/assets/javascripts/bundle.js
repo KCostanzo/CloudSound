@@ -60,13 +60,15 @@
 	
 	var App = __webpack_require__(269);
 	var CoverPage = __webpack_require__(276);
+	var ArtistIndex = __webpack_require__(286);
 	
 	ClientActions.fetchCurrentUser();
 	
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: CoverPage })
+	  React.createElement(IndexRoute, { component: CoverPage }),
+	  React.createElement(Route, { path: 'artists/:artist', component: ArtistIndex })
 	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
@@ -34306,6 +34308,11 @@
 	    );
 	  }
 	});
+	// <video autoPlay loop>
+	//   <source
+	//     src="http://res.cloudinary.com/mr-costanzo/video/upload/v1461954942/videoplayback_rg6kkg.mp4"
+	//     type="video/mp4"/>
+	// </video>
 
 /***/ },
 /* 270 */
@@ -34741,6 +34748,7 @@
 				return React.createElement(
 					'nav',
 					null,
+					' Cloud Sound',
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
 					React.createElement(
 						'button',
@@ -34752,6 +34760,7 @@
 				return React.createElement(
 					'nav',
 					null,
+					' Cloud Sound',
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
 					React.createElement(SignUp, null),
 					React.createElement(Login, null)
@@ -34812,6 +34821,7 @@
 
 	var React = __webpack_require__(1);
 	var SongActions = __webpack_require__(279);
+	var hashHistory = __webpack_require__(186).hashHistory;
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -34819,6 +34829,12 @@
 		playSong: function (event) {
 			event.preventDefault();
 			SongActions.playSong(this.props.song.id);
+		},
+	
+		artistRoute: function (event) {
+			event.preventDefault();
+			// var betterRoute = this.props.song.artist.split(" ").join("%20");
+			hashHistory.push("artists/" + this.props.song.artist);
 		},
 	
 		render: function () {
@@ -34829,9 +34845,13 @@
 				React.createElement('br', null),
 				React.createElement(
 					'label',
-					{ className: 'indexText' },
-					this.props.song.title,
-					React.createElement('br', null),
+					{ className: 'indexTitle' },
+					this.props.song.title
+				),
+				React.createElement('br', null),
+				React.createElement(
+					'label',
+					{ className: 'artistLink', onClick: this.artistRoute, artist: this.props.song.artist },
 					this.props.song.artist
 				)
 			);
@@ -34889,6 +34909,9 @@
 			case SongConstants.SONGS_ERROR:
 				setErrors(payload.errors);
 				break;
+			case SongConstants.ARTIST_SONGS:
+				resetSongs(payload.songs);
+				break;
 		}
 		this.__emitChange();
 	};
@@ -34907,6 +34930,10 @@
 	module.exports = {
 		fetchSongs: function () {
 			Util.fetchSongs();
+		},
+	
+		fetchArtistSongs: function (artist) {
+			Util.fetchArtistSongs(artist);
 		},
 	
 		playSong: function (song) {
@@ -34947,10 +34974,11 @@
 			});
 		},
 	
-		fetchArtistSongs: function () {
+		fetchArtistSongs: function (artist) {
+			artist.split(" ").join("%20");
 			$.ajax({
 				method: 'GET',
-				url: 'api/songs',
+				url: 'api/artist/' + artist,
 				success: function (songs) {
 					ServerActions.getArtistSongs(songs);
 				},
@@ -34985,6 +35013,13 @@
 		getSongs: function (songs) {
 			Dispatcher.dispatch({
 				actionType: Constants.SONGS_RECEIVED,
+				songs: songs
+			});
+		},
+	
+		getArtistSongs: function (songs) {
+			Dispatcher.dispatch({
+				actionType: Constants.ARTIST_SONGS,
 				songs: songs
 			});
 		},
@@ -35024,8 +35059,11 @@
 	var _nowPlaying = null;
 	
 	var addSong = function (song) {
-		_queue.push(song);
-		_nowPlaying = _queue[0];
+		if (!_nowPlaying) {
+			_nowPlaying = song;
+		} else {
+			_queue.push(song);
+		}
 	};
 	
 	var removeFromQueue = function (queueIdx) {
@@ -35041,8 +35079,8 @@
 	};
 	
 	var nextSong = function () {
-		_queue = _queue.slice(1);
 		_nowPlaying = _queue[0];
+		_queue = _queue.slice(1);
 	};
 	
 	PlayStore.nowPlaying = function () {
@@ -35261,6 +35299,52 @@
 					'X'
 				),
 				React.createElement('br', null)
+			);
+		}
+	});
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SongActions = __webpack_require__(279);
+	var SongStore = __webpack_require__(278);
+	var IndexItem = __webpack_require__(277);
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		getInitialState: function () {
+			return {
+				songs: []
+			};
+		},
+	
+		componentDidMount: function () {
+			this.songListener = SongStore.addListener(this.songChange);
+			SongActions.fetchArtistSongs(this.props.params.artist);
+		},
+	
+		componentWillUnmount: function () {
+			this.songListener.remove();
+		},
+	
+		songChange: function () {
+			this.setState({ songs: SongStore.all() });
+		},
+	
+		render: function () {
+			return React.createElement(
+				'div',
+				{ className: 'artist-index' },
+				React.createElement(
+					'ul',
+					null,
+					this.state.songs.map(function (song) {
+						return React.createElement(IndexItem, { song: song, key: song.id });
+					})
+				)
 			);
 		}
 	});

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: "static_pages#root"
-  namespace :api, default: {format: :json} do
+  namespace :api, defaults: {format: :json} do
 
     resources :users, only: [:create,:update,:show]
 
@@ -8,5 +8,6 @@ Rails.application.routes.draw do
 
     resources :songs, except: [:new, :edit]
 
+    	get 'artist/:artist', to: 'songs#index_by_artist'
   end
 end

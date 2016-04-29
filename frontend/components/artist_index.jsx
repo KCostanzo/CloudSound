@@ -12,7 +12,7 @@ module.exports = React.createClass({
 
 	componentDidMount: function() {
 		this.songListener = SongStore.addListener(this.songChange);
-		SongActions.fetchSongs();
+		SongActions.fetchArtistSongs(this.props.params.artist);
 	},
 
 	componentWillUnmount: function() {
@@ -25,7 +25,7 @@ module.exports = React.createClass({
 
 	render: function() {
 		return (
-			<div className='cover-index'>
+			<div className='artist-index'>
 					<ul>
 						{
 							this.state.songs.map(function(song) {

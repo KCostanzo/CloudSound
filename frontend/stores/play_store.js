@@ -14,8 +14,11 @@ var setErrors = function(error) {
 var _nowPlaying = null;
 
 var addSong = function(song) {
-	_queue.push(song);
-	_nowPlaying = _queue[0];
+	if (!_nowPlaying) {
+		_nowPlaying = song;
+	} else {
+		_queue.push(song);
+	}
 };
 
 var removeFromQueue = function(queueIdx) {
@@ -31,8 +34,8 @@ PlayStore.queue = function() {
 };
 
 var nextSong = function() {
-	_queue = _queue.slice(1);
 	_nowPlaying = _queue[0];
+	_queue = _queue.slice(1);
 };
 
 PlayStore.nowPlaying = function() {

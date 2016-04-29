@@ -15,3 +15,8 @@ module.exports = React.createClass({
     </div>)
   }
 });
+        // <video autoPlay loop>
+        //   <source
+        //     src="http://res.cloudinary.com/mr-costanzo/video/upload/v1461954942/videoplayback_rg6kkg.mp4"
+        //     type="video/mp4"/>
+        // </video>

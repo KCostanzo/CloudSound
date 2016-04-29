@@ -5,6 +5,11 @@ class Api::SongsController < ApplicationController
 		render 'api/songs/index'
 	end
 
+	def index_by_artist
+		@songs= Song.where(artist: params[:artist])
+		render 'api/songs/index'
+	end
+
 	def create
 		@song = Song.new(song_params)
 		if @song.save

@@ -45,6 +45,9 @@ SongStore.__onDispatch = function(payload) {
 		case SongConstants.SONGS_ERROR:
 			setErrors(payload.errors);
 			break;
+		case SongConstants.ARTIST_SONGS:
+			resetSongs(payload.songs);
+			break;
 	}
 	this.__emitChange();
 };

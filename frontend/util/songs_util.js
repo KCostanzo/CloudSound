@@ -14,10 +14,11 @@ module.exports = {
 		})
 	},
 
-	fetchArtistSongs: function() {
+	fetchArtistSongs: function(artist) {
+		artist.split(" ").join("%20")
 		$.ajax({
 			method: 'GET',
-			url: 'api/songs',
+			url: 'api/artist/' + artist,
 			success: function(songs) {
 				ServerActions.getArtistSongs(songs);
 			},
