@@ -27,6 +27,37 @@ var resetSongs = function(songs) {
 	})
 };
 
+SongStore.findSongs = function(partialTitle) {
+	var possSongs = [];
+	if (partialTitle.length < 3) {
+		return [];
+	}
+	var songs = SongStore.all();
+	songs.forEach(function(song) {
+		var repeat = false;
+		// for (var i = 0; i < possSongs.length; i++) {
+		// 	if(song.title === possSongs[i]) {
+		// 		repeat = true;
+		// 	}
+		// }
+		// if (repeat) {
+		// 	return;
+		// }
+		for (var i = 0; i < (song.title.length - partialTitle.length +1); i++) {
+			var match = true;
+			for (var j = 0; j < partialTitle.length; j++) {
+				if(partialTitle[j].toUpperCase() !== song.title[i+j].toUpperCase()) {
+					match = false;
+				}
+ 			}
+			if (match) {
+				possSongs.push(song);
+			}
+		}
+	})
+	return possSongs;
+};
+
 SongStore.find = function(id) {
 	return _songs[id];
 }

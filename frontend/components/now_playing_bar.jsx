@@ -21,7 +21,7 @@ module.exports = React.createClass({
 	    	return;
 	    }
 	    if (song.volume) {
-	      song.volume = 0.54;
+	      song.volume = 0.63;
 	    }
 	 },
 

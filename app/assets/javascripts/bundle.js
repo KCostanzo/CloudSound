@@ -34711,6 +34711,7 @@
 	var ClientActions = __webpack_require__(271);
 	var SessionStore = __webpack_require__(245);
 	var hashHistory = __webpack_require__(186).hashHistory;
+	var Search = __webpack_require__(288);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -34756,9 +34757,10 @@
 					{ className: 'logged' },
 					' Cloud Sound',
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
+					React.createElement(Search, null),
 					React.createElement(
 						'button',
-						{ onClick: this.logoutUser },
+						{ className: 'logOut', onClick: this.logoutUser },
 						'Logout'
 					)
 				);
@@ -34768,6 +34770,7 @@
 					null,
 					' Cloud Sound',
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
+					React.createElement(Search, null),
 					React.createElement(SignUp, null),
 					React.createElement(Login, null)
 				);
@@ -34895,6 +34898,37 @@
 		songs.forEach(function (song) {
 			_songs[song.id] = song;
 		});
+	};
+	
+	SongStore.findSongs = function (partialTitle) {
+		var possSongs = [];
+		if (partialTitle.length < 3) {
+			return [];
+		}
+		var songs = SongStore.all();
+		songs.forEach(function (song) {
+			var repeat = false;
+			// for (var i = 0; i < possSongs.length; i++) {
+			// 	if(song.title === possSongs[i]) {
+			// 		repeat = true;
+			// 	}
+			// }
+			// if (repeat) {
+			// 	return;
+			// }
+			for (var i = 0; i < song.title.length - partialTitle.length + 1; i++) {
+				var match = true;
+				for (var j = 0; j < partialTitle.length; j++) {
+					if (partialTitle[j].toUpperCase() !== song.title[i + j].toUpperCase()) {
+						match = false;
+					}
+				}
+				if (match) {
+					possSongs.push(song);
+				}
+			}
+		});
+		return possSongs;
 	};
 	
 	SongStore.find = function (id) {
@@ -35057,12 +35091,11 @@
 	
 	var _queue = [];
 	var _errors = [];
+	var _nowPlaying = null;
 	
 	var setErrors = function (error) {
 		_errors.push(error);
 	};
-	
-	var _nowPlaying = null;
 	
 	var addSong = function (song) {
 		if (!_nowPlaying) {
@@ -35143,7 +35176,7 @@
 				return;
 			}
 			if (song.volume) {
-				song.volume = 0.54;
+				song.volume = 0.63;
 			}
 		},
 	
@@ -35399,6 +35432,78 @@
 				)
 			);
 		}
+	});
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	var SongActions = __webpack_require__(279);
+	var SongStore = __webpack_require__(278);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  getInitialState: function () {
+	    return { songName: "" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.songListener = SongStore.addListener(this.getSongs);
+	    SongActions.fetchSongs();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.songListener.remove();
+	  },
+	
+	  fillSongName: function (e) {
+	    var song = SongStore.find(e.target.value);
+	    this.setState({ songName: "" });
+	    hashHistory.push({ pathname: 'artists/' + song.artist });
+	  },
+	
+	  getSongs: function () {
+	    return SongStore.findSongs(this.state.songName);
+	  },
+	
+	  updateSong: function (e) {
+	    this.setState({ songName: e.target.value });
+	  },
+	
+	  render: function () {
+	    var songs = this.getSongs();
+	    var songList = [];
+	    if (songs.length > 0) {
+	      songs.forEach(function (song) {
+	        if (songList.length < 9) {
+	          songList.push(React.createElement(
+	            'li',
+	            { className: 'songListItem', key: song.id, song: song, value: song.id },
+	            song.title
+	          ));
+	        }
+	      });
+	    } else {
+	      songList = "";
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'searchBox' },
+	      React.createElement('input', { className: 'songSearch', type: 'text',
+	        placeholder: 'Song Name Here',
+	        onChange: this.updateSong, value: this.state.songName }),
+	      React.createElement(
+	        'ul',
+	        { className: 'songSearchList', onClick: this.fillSongName
+	        },
+	        songList
+	      )
+	    );
+	  }
 	});
 
 /***/ }

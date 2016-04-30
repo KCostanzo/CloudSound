@@ -6,12 +6,11 @@ var PlayStore = new Store(AppDispatcher);
 
 var _queue = [];
 var _errors = [];
+var _nowPlaying = null;
 
 var setErrors = function(error) {
 	_errors.push(error);
 };
-
-var _nowPlaying = null;
 
 var addSong = function(song) {
 	if (!_nowPlaying) {

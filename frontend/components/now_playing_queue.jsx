@@ -24,20 +24,20 @@ module.exports = React.createClass({
 
 	render: function() {
 		if (this.state.nowPlaying) {
-		return (
-			<div className="queueDisplay">
-			<h3>Current Queue</h3>
-			<ul>
-				{
-					this.state.queue.map(function(queueSong, idx) {
-						return <QueueItem song={queueSong} key={idx} idx={idx} />
-					})
-				}
-			</ul>
-			</div>
-			)
-		} else {
-			return <div/>
+			return (
+				<div className="queueDisplay">
+				<h3>Current Queue</h3>
+				<ul>
+					{
+						this.state.queue.map(function(queueSong, idx) {
+							return <QueueItem song={queueSong} key={idx} idx={idx} />
+						})
+					}
+				</ul>
+				</div>
+				)
+			} else {
+				return <div/>
 		}
 	}
 });

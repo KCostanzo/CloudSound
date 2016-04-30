@@ -4,6 +4,7 @@ var SignUp = require('./sign_up.jsx');
 var ClientActions = require('../actions/client_actions.js');
 var SessionStore = require('../stores/session_store.js');
 var hashHistory = require('react-router').hashHistory;
+var Search = require('./song_search.jsx');
 
 module.exports = React.createClass({
 	getInitialState: function() {
@@ -45,13 +46,15 @@ module.exports = React.createClass({
 			return (
 				<nav className="logged"> Cloud Sound
 					<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg' onClick={this.linkToHome}/>
-					<button onClick={this.logoutUser}>Logout</button>
+					<Search />
+					<button className="logOut" onClick={this.logoutUser}>Logout</button>
 				</nav>
 				)
 		} else {
 			return(
 				 <nav> Cloud Sound
 				 	<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg' onClick={this.linkToHome} />
+				 	<Search />
 		  			<SignUp/>
 		   			<Login/>
 		 		</nav>
