@@ -58,11 +58,6 @@ SongStore.findSongs = function(partialTitle) {
 	// return possSongs;
 
 	songs.forEach(function(song) {
-		// if ((song.title.toLowerCase().match(".*" + partialTitle + ".*")) || (song.title.match(".*" + partialTitle + ".*"))) {
-		// 	possSongs.push(song);
-		// } else if ((song.artist.toLowerCase().match(".*" + partialTitle + ".*")) || (song.artist.match(".*"+partialTitle+".*"))) {
-		// 	possSongs.push(song)
-		// }
 		if (song.title.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
 			possSongs.push(song);
 		} else if (song.artist.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {

@@ -34755,7 +34755,12 @@
 				return React.createElement(
 					'nav',
 					{ className: 'logged' },
-					' Cloud Sound',
+					' ',
+					React.createElement(
+						'h2',
+						{ onClick: this.linkToHome },
+						'Cloud Sound'
+					),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
 					React.createElement(Search, null),
 					React.createElement(
@@ -34768,7 +34773,12 @@
 				return React.createElement(
 					'nav',
 					null,
-					' Cloud Sound',
+					' ',
+					React.createElement(
+						'h2',
+						{ onClick: this.linkToHome },
+						'Cloud Sound'
+					),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
 					React.createElement(Search, null),
 					React.createElement(SignUp, null),
@@ -34931,11 +34941,6 @@
 		// return possSongs;
 	
 		songs.forEach(function (song) {
-			// if ((song.title.toLowerCase().match(".*" + partialTitle + ".*")) || (song.title.match(".*" + partialTitle + ".*"))) {
-			// 	possSongs.push(song);
-			// } else if ((song.artist.toLowerCase().match(".*" + partialTitle + ".*")) || (song.artist.match(".*"+partialTitle+".*"))) {
-			// 	possSongs.push(song)
-			// }
 			if (song.title.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
 				possSongs.push(song);
 			} else if (song.artist.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
