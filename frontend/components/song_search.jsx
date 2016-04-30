@@ -47,7 +47,7 @@ module.exports = React.createClass({
     return (
       <div className="searchBox">
         <input className="songSearch" type="text"
-            placeholder="Song Name Here"
+            placeholder="Song or Artist Name Here"
             onChange={this.updateSong} value={this.state.songName} />
         <ul className="songSearchList" onClick={this.fillSongName}
         >{songList}</ul>

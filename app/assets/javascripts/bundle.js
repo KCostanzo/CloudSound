@@ -34906,26 +34906,40 @@
 			return [];
 		}
 		var songs = SongStore.all();
+		// songs.forEach(function(song) {
+		// 	var repeat = false;
+		// for (var i = 0; i < possSongs.length; i++) {
+		// 	if(song.title === possSongs[i]) {
+		// 		repeat = true;
+		// 	}
+		// }
+		// if (repeat) {
+		// 	return;
+		// }
+		// 	for (var i = 0; i < (song.title.length - partialTitle.length +1); i++) {
+		// 		var match = true;
+		// 		for (var j = 0; j < partialTitle.length; j++) {
+		// 			if(partialTitle[j].toUpperCase() !== song.title[i+j].toUpperCase()) {
+		// 				match = false;
+		// 			}
+		// 			}
+		// 		if (match) {
+		// 			possSongs.push(song);
+		// 		}
+		// 	}
+		// })
+		// return possSongs;
+	
 		songs.forEach(function (song) {
-			var repeat = false;
-			// for (var i = 0; i < possSongs.length; i++) {
-			// 	if(song.title === possSongs[i]) {
-			// 		repeat = true;
-			// 	}
+			// if ((song.title.toLowerCase().match(".*" + partialTitle + ".*")) || (song.title.match(".*" + partialTitle + ".*"))) {
+			// 	possSongs.push(song);
+			// } else if ((song.artist.toLowerCase().match(".*" + partialTitle + ".*")) || (song.artist.match(".*"+partialTitle+".*"))) {
+			// 	possSongs.push(song)
 			// }
-			// if (repeat) {
-			// 	return;
-			// }
-			for (var i = 0; i < song.title.length - partialTitle.length + 1; i++) {
-				var match = true;
-				for (var j = 0; j < partialTitle.length; j++) {
-					if (partialTitle[j].toUpperCase() !== song.title[i + j].toUpperCase()) {
-						match = false;
-					}
-				}
-				if (match) {
-					possSongs.push(song);
-				}
+			if (song.title.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
+				possSongs.push(song);
+			} else if (song.artist.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
+				possSongs.push(song);
 			}
 		});
 		return possSongs;
@@ -35494,7 +35508,7 @@
 	      'div',
 	      { className: 'searchBox' },
 	      React.createElement('input', { className: 'songSearch', type: 'text',
-	        placeholder: 'Song Name Here',
+	        placeholder: 'Song or Artist Name Here',
 	        onChange: this.updateSong, value: this.state.songName }),
 	      React.createElement(
 	        'ul',
