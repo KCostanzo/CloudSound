@@ -34353,7 +34353,7 @@
 	      this.closeModal();
 	      console.log('succcesful login!');
 	    } else {
-	      this.setState({ errors: Store.errors() });
+	      this.setState({ errors: Store.errors(), password: '' });
 	    }
 	  },
 	
@@ -34398,12 +34398,12 @@
 	      null,
 	      React.createElement(
 	        'button',
-	        { className: 'unlogged', onClick: this.openModal },
+	        { className: 'unlogged', onClick: this.openModal, disabled: this.state.modalOpen },
 	        'Log In'
 	      ),
 	      React.createElement(
 	        'button',
-	        { className: 'unlogged', onClick: this.guestLogin },
+	        { className: 'unlogged', onClick: this.guestLogin, disabled: this.state.modalOpen },
 	        'Guest Account'
 	      ),
 	      React.createElement(
@@ -34413,6 +34413,12 @@
 	          'form',
 	          { onSubmit: this.loginUser },
 	          this.errors(),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'h3',
+	            null,
+	            'Sign In!'
+	          ),
 	          React.createElement('br', null),
 	          React.createElement(
 	            'label',
@@ -34633,7 +34639,7 @@
 	      this.closeModal();
 	      console.log('succcesful sign up!');
 	    } else {
-	      this.setState({ errors: Store.errors() });
+	      this.setState({ errors: Store.errors(), password: '' });
 	    }
 	  },
 	
@@ -34669,7 +34675,7 @@
 	      null,
 	      React.createElement(
 	        'button',
-	        { className: 'unlogged', onClick: this.openModal },
+	        { className: 'unlogged', onClick: this.openModal, disabled: this.state.modalOpen },
 	        'Sign Up'
 	      ),
 	      React.createElement(
@@ -34679,6 +34685,12 @@
 	          'form',
 	          { onSubmit: this.signupUser },
 	          this.errors(),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'h3',
+	            null,
+	            'Sign Up!'
+	          ),
 	          React.createElement('br', null),
 	          React.createElement(
 	            'label',
@@ -34761,7 +34773,7 @@
 						{ onClick: this.linkToHome },
 						'Cloud Sound'
 					),
-					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
+					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
 					React.createElement(Search, null),
 					React.createElement(
 						'button',
@@ -34779,7 +34791,7 @@
 						{ onClick: this.linkToHome },
 						'Cloud Sound'
 					),
-					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1461896329/CSlogo_git2j6.jpg', onClick: this.linkToHome }),
+					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
 					React.createElement(Search, null),
 					React.createElement(SignUp, null),
 					React.createElement(Login, null)

@@ -64,6 +64,11 @@ img {
   margin: 0px;
 }
 
+img:hover {
+  cursor: hand;
+  cursor: pointer;
+}
+
 .songItem{
   top: 45px;
   position: relative;
@@ -118,6 +123,11 @@ img {
   margin: 10px;
 }
 
+.queueDisplay li:hover {
+  cursor: hand;
+  cursor: pointer;
+}
+
 .queueSongRemove {}
 
 nav img {
@@ -148,6 +158,11 @@ nav h2 {
   font-size: 100%;
   margin-top: 0px;
   margin-left: 57px;
+}
+
+nav h2:hover {
+  cursor: hand;
+  cursor: pointer;
 }
 
 .searchBox {

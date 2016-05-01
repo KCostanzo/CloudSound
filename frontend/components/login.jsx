@@ -30,7 +30,7 @@ module.exports = React.createClass ({
       this.closeModal();
       console.log('succcesful login!');
     } else {
-      this.setState({errors: Store.errors()});
+      this.setState({errors: Store.errors(), password: ''});
     }
   },
 
@@ -70,12 +70,15 @@ module.exports = React.createClass ({
   render: function() {
     return (
       <div>
-      <button className="unlogged" onClick={this.openModal}>Log In</button>
-      <button className="unlogged" onClick={this.guestLogin}>Guest Account</button>
+      <button className="unlogged" onClick={this.openModal} disabled={this.state.modalOpen}>Log In</button>
+      <button className="unlogged" onClick={this.guestLogin} disabled={this.state.modalOpen}>Guest Account</button>
 
       <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
         <form onSubmit={this.loginUser}>
           {this.errors()}
+          <br/>
+
+          <h3>Sign In!</h3>
           <br/>
 
           <label>Username:
