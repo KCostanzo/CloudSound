@@ -33,29 +33,6 @@ SongStore.findSongs = function(partialTitle) {
 		return [];
 	}
 	var songs = SongStore.all();
-	// songs.forEach(function(song) {
-		// 	var repeat = false;
-		// for (var i = 0; i < possSongs.length; i++) {
-		// 	if(song.title === possSongs[i]) {
-		// 		repeat = true;
-		// 	}
-		// }
-		// if (repeat) {
-		// 	return;
-		// }
-	// 	for (var i = 0; i < (song.title.length - partialTitle.length +1); i++) {
-	// 		var match = true;
-	// 		for (var j = 0; j < partialTitle.length; j++) {
-	// 			if(partialTitle[j].toUpperCase() !== song.title[i+j].toUpperCase()) {
-	// 				match = false;
-	// 			}
-	 // 			}
-	// 		if (match) {
-	// 			possSongs.push(song);
-	// 		}
-	// 	}
-	// })
-	// return possSongs;
 
 	songs.forEach(function(song) {
 		if (song.title.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {

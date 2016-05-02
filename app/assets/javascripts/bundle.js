@@ -53,15 +53,15 @@
 	var IndexRoute = __webpack_require__(186).IndexRoute;
 	var hashHistory = __webpack_require__(186).hashHistory;
 	var Store = __webpack_require__(245);
-	var SongStor = __webpack_require__(278);
-	var PlayStore = __webpack_require__(282);
-	var UStore = __webpack_require__(268);
+	var SongStor = __webpack_require__(268);
+	var PlayStore = __webpack_require__(269);
+	var UStore = __webpack_require__(270);
 	var ClientActions = __webpack_require__(271);
 	
-	var App = __webpack_require__(269);
-	var CoverPage = __webpack_require__(276);
-	var ArtistIndex = __webpack_require__(286);
-	var UserIndex = __webpack_require__(287);
+	var App = __webpack_require__(274);
+	var CoverPage = __webpack_require__(282);
+	var ArtistIndex = __webpack_require__(287);
+	var UserIndex = __webpack_require__(288);
 	
 	ClientActions.fetchCurrentUser();
 	
@@ -34247,6 +34247,151 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(246).Store;
+	var AppDispatcher = __webpack_require__(264);
+	var SongConstants = __webpack_require__(267);
+	
+	var SongStore = new Store(AppDispatcher);
+	
+	var _songs = {};
+	var _errors = [];
+	
+	var setErrors = function (errors) {
+		var temp = errors;
+		if (temp.length > 0) {
+			temp.forEach(function (error) {
+				_errors.push(error);
+			});
+		} else {
+			_errors.push(temp);
+		}
+	};
+	
+	var resetSongs = function (songs) {
+		_songs = {};
+	
+		songs.forEach(function (song) {
+			_songs[song.id] = song;
+		});
+	};
+	
+	SongStore.findSongs = function (partialTitle) {
+		var possSongs = [];
+		if (partialTitle.length < 3) {
+			return [];
+		}
+		var songs = SongStore.all();
+	
+		songs.forEach(function (song) {
+			if (song.title.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
+				possSongs.push(song);
+			} else if (song.artist.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
+				possSongs.push(song);
+			}
+		});
+		return possSongs;
+	};
+	
+	SongStore.find = function (id) {
+		return _songs[id];
+	};
+	
+	SongStore.all = function () {
+		return Object.keys(_songs).map(function (key) {
+			return _songs[key];
+		});
+	};
+	
+	SongStore.__onDispatch = function (payload) {
+		switch (payload.actionType) {
+			case SongConstants.SONGS_RECEIVED:
+				resetSongs(payload.songs);
+				break;
+			case SongConstants.SONGS_ERROR:
+				setErrors(payload.errors);
+				break;
+			case SongConstants.ARTIST_SONGS:
+				resetSongs(payload.songs);
+				break;
+		}
+		this.__emitChange();
+	};
+	
+	window.SongStore = SongStore;
+	module.exports = SongStore;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(246).Store;
+	var AppDispatcher = __webpack_require__(264);
+	var SongConstants = __webpack_require__(267);
+	
+	var PlayStore = new Store(AppDispatcher);
+	
+	var _queue = [];
+	var _errors = [];
+	var _nowPlaying = null;
+	
+	var setErrors = function (error) {
+		_errors.push(error);
+	};
+	
+	var addSong = function (song) {
+		if (!_nowPlaying) {
+			_nowPlaying = song;
+		} else {
+			_queue.push(song);
+		}
+	};
+	
+	var removeFromQueue = function (queueIdx) {
+		_queue.splice(queueIdx, 1);
+	};
+	
+	PlayStore.queue = function () {
+		var queue = [];
+		_queue.forEach(function (song) {
+			queue.push(song);
+		});
+		return queue;
+	};
+	
+	var nextSong = function () {
+		_nowPlaying = _queue[0];
+		_queue = _queue.slice(1);
+	};
+	
+	PlayStore.nowPlaying = function () {
+		return _nowPlaying;
+	};
+	
+	PlayStore.__onDispatch = function (payload) {
+		switch (payload.actionType) {
+			case SongConstants.SONG_RECEIVED:
+				addSong(payload.song);
+				break;
+			case SongConstants.SONGS_ERROR:
+				setErrors(payload.errors);
+				break;
+			case SongConstants.NEXT_SONG:
+				nextSong();
+				break;
+			case SongConstants.QUEUE_REMOVE:
+				removeFromQueue(payload.idx);
+				break;
+		}
+		this.__emitChange();
+	};
+	
+	window.Play = PlayStore;
+	module.exports = PlayStore;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(246).Store;
 	var Dispatcher = __webpack_require__(264);
 	var UserConstants = __webpack_require__(267);
 	
@@ -34285,161 +34430,6 @@
 	window.UserStore = UserStore;
 	
 	module.exports = UserStore;
-
-/***/ },
-/* 269 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var Navbar = __webpack_require__(275);
-	var CoverPage = __webpack_require__(276);
-	var NowPlayingBar = __webpack_require__(283);
-	var PlayQueue = __webpack_require__(284);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { id: 'main' },
-	      React.createElement(Navbar, null),
-	      this.props.children,
-	      React.createElement(PlayQueue, null),
-	      React.createElement(NowPlayingBar, null)
-	    );
-	  }
-	});
-	// <video autoPlay loop>
-	//   <source
-	//     src="http://res.cloudinary.com/mr-costanzo/video/upload/v1461954942/videoplayback_rg6kkg.mp4"
-	//     type="video/mp4"/>
-	// </video>
-
-/***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ClientActions = __webpack_require__(271);
-	var Modal = __webpack_require__(166);
-	var Store = __webpack_require__(245);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  getInitialState: function () {
-	    return { modalOpen: false, username: '', password: '', errors: [] };
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalOpen: false });
-	  },
-	
-	  openModal: function () {
-	    this.setState({ modalOpen: true });
-	  },
-	
-	  loginUser: function (event) {
-	    event.preventDefault();
-	    Store.emptyErrors();
-	    var user = { user: {
-	        username: this.state.username,
-	        password: this.state.password
-	      } };
-	    ClientActions.loginUser(user);
-	    if (Store.userPresent()) {
-	      this.setState({ username: '', password: '' });
-	      this.closeModal();
-	      console.log('succcesful login!');
-	    } else {
-	      this.setState({ errors: Store.errors(), password: '' });
-	    }
-	  },
-	
-	  guestLogin: function (event) {
-	    var user = { user: {
-	        username: 'guest',
-	        password: 'password369'
-	      } };
-	    ClientActions.loginUser(user);
-	    console.log('guest login success');
-	  },
-	
-	  nameChange: function (event) {
-	    this.setState({ username: event.target.value });
-	  },
-	
-	  passChange: function (event) {
-	    this.setState({ password: event.target.value });
-	  },
-	
-	  errors: function () {
-	    if (this.state.errors.length === 0) {
-	      return;
-	    } else {
-	      return React.createElement(
-	        'ul',
-	        null,
-	        this.state.errors.map(function (error, idx) {
-	          return React.createElement(
-	            'li',
-	            { key: idx },
-	            error
-	          );
-	        })
-	      );
-	    }
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'button',
-	        { className: 'unlogged', onClick: this.openModal, disabled: this.state.modalOpen },
-	        'Log In'
-	      ),
-	      React.createElement(
-	        'button',
-	        { className: 'unlogged', onClick: this.guestLogin, disabled: this.state.modalOpen },
-	        'Guest Account'
-	      ),
-	      React.createElement(
-	        Modal,
-	        { className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
-	        React.createElement(
-	          'form',
-	          { onSubmit: this.loginUser },
-	          this.errors(),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'h3',
-	            null,
-	            'Sign In!'
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'label',
-	            null,
-	            'Username:',
-	            React.createElement('input', { type: 'text', value: this.state.username, onChange: this.nameChange })
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'label',
-	            null,
-	            'Password:',
-	            React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
-	          ),
-	          React.createElement('br', null),
-	          React.createElement('input', { type: 'submit', value: 'Login!' })
-	        )
-	      )
-	    );
-	  }
-	});
 
 /***/ },
 /* 271 */
@@ -34607,6 +34597,248 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var Navbar = __webpack_require__(275);
+	var CoverPage = __webpack_require__(282);
+	var NowPlayingBar = __webpack_require__(284);
+	var PlayQueue = __webpack_require__(285);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'main' },
+	      React.createElement(Navbar, null),
+	      this.props.children,
+	      React.createElement(PlayQueue, null),
+	      React.createElement(NowPlayingBar, null)
+	    );
+	  }
+	});
+	// <video autoPlay loop>
+	//   <source
+	//     src="http://res.cloudinary.com/mr-costanzo/video/upload/v1461954942/videoplayback_rg6kkg.mp4"
+	//     type="video/mp4"/>
+	// </video>
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Login = __webpack_require__(276);
+	var SignUp = __webpack_require__(277);
+	var ClientActions = __webpack_require__(271);
+	var SessionStore = __webpack_require__(245);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	var Search = __webpack_require__(278);
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		getInitialState: function () {
+			return {
+				userPresent: SessionStore.userPresent(),
+				currentUser: SessionStore.currentUser()
+			};
+		},
+	
+		componentDidMount: function () {
+			this.SSListener = SessionStore.addListener(this.storeChange);
+		},
+	
+		componentWillUnmount: function () {
+			this.SSListener.remove();
+		},
+	
+		storeChange: function () {
+			this.setState({ userPresent: SessionStore.userPresent(), currentUser: SessionStore.currentUser() });
+		},
+	
+		logoutUser: function (event) {
+			event.preventDefault();
+			ClientActions.logoutUser(this.state.currentUser);
+			console.log('logged out');
+		},
+	
+		linkToHome: function () {
+			hashHistory.push('/');
+		},
+	
+		linkToUser: function () {
+			hashHistory.push('users/' + currentUser.id);
+		},
+	
+		//TODO: put search bar in nav
+		render: function () {
+			if (this.state.userPresent) {
+				return React.createElement(
+					'nav',
+					{ className: 'logged' },
+					' ',
+					React.createElement(
+						'h2',
+						{ onClick: this.linkToHome },
+						'Cloud Sound'
+					),
+					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
+					React.createElement(Search, null),
+					React.createElement(
+						'button',
+						{ className: 'logOut', onClick: this.logoutUser },
+						'Logout'
+					)
+				);
+			} else {
+				return React.createElement(
+					'nav',
+					null,
+					' ',
+					React.createElement(
+						'h2',
+						{ onClick: this.linkToHome },
+						'Cloud Sound'
+					),
+					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
+					React.createElement(Search, null),
+					React.createElement(SignUp, null),
+					React.createElement(Login, null)
+				);
+			}
+		}
+	});
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(271);
+	var Modal = __webpack_require__(166);
+	var Store = __webpack_require__(245);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  getInitialState: function () {
+	    return { modalOpen: false, username: '', password: '', errors: [] };
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalOpen: false });
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalOpen: true });
+	  },
+	
+	  loginUser: function (event) {
+	    event.preventDefault();
+	    Store.emptyErrors();
+	    var user = { user: {
+	        username: this.state.username,
+	        password: this.state.password
+	      } };
+	    ClientActions.loginUser(user);
+	    if (Store.userPresent()) {
+	      this.setState({ username: '', password: '' });
+	      this.closeModal();
+	      console.log('succcesful login!');
+	    } else {
+	      this.setState({ errors: Store.errors(), password: '' });
+	    }
+	  },
+	
+	  guestLogin: function (event) {
+	    var user = { user: {
+	        username: 'guest',
+	        password: 'password369'
+	      } };
+	    ClientActions.loginUser(user);
+	    console.log('guest login success');
+	  },
+	
+	  nameChange: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  passChange: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
+	  errors: function () {
+	    if (this.state.errors.length === 0) {
+	      return;
+	    } else {
+	      return React.createElement(
+	        'ul',
+	        null,
+	        this.state.errors.map(function (error, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            error
+	          );
+	        })
+	      );
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'button',
+	        { className: 'unlogged', onClick: this.openModal, disabled: this.state.modalOpen },
+	        'Log In'
+	      ),
+	      React.createElement(
+	        'button',
+	        { className: 'unlogged', onClick: this.guestLogin, disabled: this.state.modalOpen },
+	        'Guest Account'
+	      ),
+	      React.createElement(
+	        Modal,
+	        { className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.loginUser },
+	          this.errors(),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'h3',
+	            null,
+	            'Sign In!'
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'label',
+	            null,
+	            'Username:',
+	            React.createElement('input', { type: 'text', value: this.state.username, onChange: this.nameChange })
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'label',
+	            null,
+	            'Password:',
+	            React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
+	          ),
+	          React.createElement('br', null),
+	          React.createElement('input', { type: 'submit', value: 'Login!' })
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(271);
 	var Modal = __webpack_require__(166);
 	
@@ -34714,281 +34946,76 @@
 	});
 
 /***/ },
-/* 275 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var Login = __webpack_require__(270);
-	var SignUp = __webpack_require__(274);
-	var ClientActions = __webpack_require__(271);
-	var SessionStore = __webpack_require__(245);
-	var hashHistory = __webpack_require__(186).hashHistory;
-	var Search = __webpack_require__(288);
-	
-	module.exports = React.createClass({
-		displayName: 'exports',
-	
-		getInitialState: function () {
-			return {
-				userPresent: SessionStore.userPresent(),
-				currentUser: SessionStore.currentUser()
-			};
-		},
-	
-		componentDidMount: function () {
-			this.SSListener = SessionStore.addListener(this.storeChange);
-		},
-	
-		componentWillUnmount: function () {
-			this.SSListener.remove();
-		},
-	
-		storeChange: function () {
-			this.setState({ userPresent: SessionStore.userPresent(), currentUser: SessionStore.currentUser() });
-		},
-	
-		logoutUser: function (event) {
-			event.preventDefault();
-			ClientActions.logoutUser(this.state.currentUser);
-			console.log('logged out');
-		},
-	
-		linkToHome: function () {
-			hashHistory.push('/');
-		},
-	
-		linkToUser: function () {
-			hashHistory.push('users/' + currentUser.id);
-		},
-	
-		//TODO: put search bar in nav
-		render: function () {
-			if (this.state.userPresent) {
-				return React.createElement(
-					'nav',
-					{ className: 'logged' },
-					' ',
-					React.createElement(
-						'h2',
-						{ onClick: this.linkToHome },
-						'Cloud Sound'
-					),
-					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
-					React.createElement(Search, null),
-					React.createElement(
-						'button',
-						{ className: 'logOut', onClick: this.logoutUser },
-						'Logout'
-					)
-				);
-			} else {
-				return React.createElement(
-					'nav',
-					null,
-					' ',
-					React.createElement(
-						'h2',
-						{ onClick: this.linkToHome },
-						'Cloud Sound'
-					),
-					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
-					React.createElement(Search, null),
-					React.createElement(SignUp, null),
-					React.createElement(Login, null)
-				);
-			}
-		}
-	});
-
-/***/ },
-/* 276 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var SongActions = __webpack_require__(279);
-	var SongStore = __webpack_require__(278);
-	var IndexItem = __webpack_require__(277);
-	
-	module.exports = React.createClass({
-		displayName: 'exports',
-	
-		getInitialState: function () {
-			return {
-				songs: []
-			};
-		},
-	
-		componentDidMount: function () {
-			this.songListener = SongStore.addListener(this.songChange);
-			SongActions.fetchSongs();
-		},
-	
-		componentWillUnmount: function () {
-			this.songListener.remove();
-		},
-	
-		songChange: function () {
-			this.setState({ songs: SongStore.all() });
-		},
-	
-		render: function () {
-			return React.createElement(
-				'div',
-				{ className: 'cover-index' },
-				React.createElement(
-					'ul',
-					null,
-					this.state.songs.map(function (song) {
-						return React.createElement(IndexItem, { song: song, key: song.id });
-					})
-				)
-			);
-		}
-	});
-
-/***/ },
-/* 277 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var SongActions = __webpack_require__(279);
-	var hashHistory = __webpack_require__(186).hashHistory;
-	
-	module.exports = React.createClass({
-		displayName: 'exports',
-	
-		playSong: function (event) {
-			event.preventDefault();
-			SongActions.playSong(this.props.song.id);
-		},
-	
-		artistRoute: function (event) {
-			event.preventDefault();
-			// var betterRoute = this.props.song.artist.split(" ").join("%20");
-			hashHistory.push("artists/" + this.props.song.artist);
-		},
-	
-		render: function () {
-			return React.createElement(
-				'li',
-				{ className: 'songItem' },
-				React.createElement('img', { src: this.props.song.img_url, onClick: this.playSong }),
-				React.createElement('br', null),
-				React.createElement(
-					'label',
-					{ className: 'indexTitle' },
-					this.props.song.title
-				),
-				React.createElement('br', null),
-				React.createElement(
-					'label',
-					{ className: 'artistLink', onClick: this.artistRoute, artist: this.props.song.artist },
-					this.props.song.artist
-				)
-			);
-		}
-	});
-	// <img src={this.props.song.imgUrl} onClick={this.playSong} />
-
-/***/ },
 /* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(246).Store;
-	var AppDispatcher = __webpack_require__(264);
-	var SongConstants = __webpack_require__(267);
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	var SongActions = __webpack_require__(279);
+	var SongStore = __webpack_require__(268);
 	
-	var SongStore = new Store(AppDispatcher);
+	module.exports = React.createClass({
+	  displayName: 'exports',
 	
-	var _songs = {};
-	var _errors = [];
+	  getInitialState: function () {
+	    return { songName: "" };
+	  },
 	
-	var setErrors = function (errors) {
-		var temp = errors;
-		if (temp.length > 0) {
-			temp.forEach(function (error) {
-				_errors.push(error);
-			});
-		} else {
-			_errors.push(temp);
-		}
-	};
+	  componentDidMount: function () {
+	    this.songListener = SongStore.addListener(this.getSongs);
+	    SongActions.fetchSongs();
+	  },
 	
-	var resetSongs = function (songs) {
-		_songs = {};
+	  componentWillUnmount: function () {
+	    this.songListener.remove();
+	  },
 	
-		songs.forEach(function (song) {
-			_songs[song.id] = song;
-		});
-	};
+	  fillSongName: function (e) {
+	    var song = SongStore.find(e.target.value);
+	    this.setState({ songName: "" });
+	    hashHistory.push({ pathname: 'artists/' + song.artist });
+	  },
 	
-	SongStore.findSongs = function (partialTitle) {
-		var possSongs = [];
-		if (partialTitle.length < 3) {
-			return [];
-		}
-		var songs = SongStore.all();
-		// songs.forEach(function(song) {
-		// 	var repeat = false;
-		// for (var i = 0; i < possSongs.length; i++) {
-		// 	if(song.title === possSongs[i]) {
-		// 		repeat = true;
-		// 	}
-		// }
-		// if (repeat) {
-		// 	return;
-		// }
-		// 	for (var i = 0; i < (song.title.length - partialTitle.length +1); i++) {
-		// 		var match = true;
-		// 		for (var j = 0; j < partialTitle.length; j++) {
-		// 			if(partialTitle[j].toUpperCase() !== song.title[i+j].toUpperCase()) {
-		// 				match = false;
-		// 			}
-		// 			}
-		// 		if (match) {
-		// 			possSongs.push(song);
-		// 		}
-		// 	}
-		// })
-		// return possSongs;
+	  getSongs: function () {
+	    return SongStore.findSongs(this.state.songName);
+	  },
 	
-		songs.forEach(function (song) {
-			if (song.title.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
-				possSongs.push(song);
-			} else if (song.artist.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
-				possSongs.push(song);
-			}
-		});
-		return possSongs;
-	};
+	  updateSong: function (e) {
+	    this.setState({ songName: e.target.value });
+	  },
 	
-	SongStore.find = function (id) {
-		return _songs[id];
-	};
+	  render: function () {
+	    var songs = this.getSongs();
+	    var songList = [];
+	    if (songs.length > 0) {
+	      songs.forEach(function (song) {
+	        if (songList.length < 9) {
+	          songList.push(React.createElement(
+	            'li',
+	            { className: 'songListItem', key: song.id, song: song, value: song.id },
+	            song.title
+	          ));
+	        }
+	      });
+	    } else {
+	      songList = "";
+	    }
 	
-	SongStore.all = function () {
-		return Object.keys(_songs).map(function (key) {
-			return _songs[key];
-		});
-	};
-	
-	SongStore.__onDispatch = function (payload) {
-		switch (payload.actionType) {
-			case SongConstants.SONGS_RECEIVED:
-				resetSongs(payload.songs);
-				break;
-			case SongConstants.SONGS_ERROR:
-				setErrors(payload.errors);
-				break;
-			case SongConstants.ARTIST_SONGS:
-				resetSongs(payload.songs);
-				break;
-		}
-		this.__emitChange();
-	};
-	
-	window.SongStore = SongStore;
-	module.exports = SongStore;
+	    return React.createElement(
+	      'div',
+	      { className: 'searchBox' },
+	      React.createElement('input', { className: 'songSearch', type: 'text',
+	        placeholder: 'Song or Artist Name Here',
+	        onChange: this.updateSong, value: this.state.songName }),
+	      React.createElement(
+	        'ul',
+	        { className: 'songSearchList', onClick: this.fillSongName
+	        },
+	        songList
+	      )
+	    );
+	  }
+	});
 
 /***/ },
 /* 279 */
@@ -35114,76 +35141,98 @@
 /* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(246).Store;
-	var AppDispatcher = __webpack_require__(264);
-	var SongConstants = __webpack_require__(267);
+	var React = __webpack_require__(1);
+	var SongActions = __webpack_require__(279);
+	var SongStore = __webpack_require__(268);
+	var IndexItem = __webpack_require__(283);
 	
-	var PlayStore = new Store(AppDispatcher);
+	module.exports = React.createClass({
+		displayName: 'exports',
 	
-	var _queue = [];
-	var _errors = [];
-	var _nowPlaying = null;
+		getInitialState: function () {
+			return {
+				songs: []
+			};
+		},
 	
-	var setErrors = function (error) {
-		_errors.push(error);
-	};
+		componentDidMount: function () {
+			this.songListener = SongStore.addListener(this.songChange);
+			SongActions.fetchSongs();
+		},
 	
-	var addSong = function (song) {
-		if (!_nowPlaying) {
-			_nowPlaying = song;
-		} else {
-			_queue.push(song);
+		componentWillUnmount: function () {
+			this.songListener.remove();
+		},
+	
+		songChange: function () {
+			this.setState({ songs: SongStore.all() });
+		},
+	
+		render: function () {
+			return React.createElement(
+				'div',
+				{ className: 'cover-index' },
+				React.createElement(
+					'ul',
+					null,
+					this.state.songs.map(function (song) {
+						return React.createElement(IndexItem, { song: song, key: song.id });
+					})
+				)
+			);
 		}
-	};
-	
-	var removeFromQueue = function (queueIdx) {
-		_queue.splice(queueIdx, 1);
-	};
-	
-	PlayStore.queue = function () {
-		var queue = [];
-		_queue.forEach(function (song) {
-			queue.push(song);
-		});
-		return queue;
-	};
-	
-	var nextSong = function () {
-		_nowPlaying = _queue[0];
-		_queue = _queue.slice(1);
-	};
-	
-	PlayStore.nowPlaying = function () {
-		return _nowPlaying;
-	};
-	
-	PlayStore.__onDispatch = function (payload) {
-		switch (payload.actionType) {
-			case SongConstants.SONG_RECEIVED:
-				addSong(payload.song);
-				break;
-			case SongConstants.SONGS_ERROR:
-				setErrors(payload.errors);
-				break;
-			case SongConstants.NEXT_SONG:
-				nextSong();
-				break;
-			case SongConstants.QUEUE_REMOVE:
-				removeFromQueue(payload.idx);
-				break;
-		}
-		this.__emitChange();
-	};
-	
-	window.Play = PlayStore;
-	module.exports = PlayStore;
+	});
 
 /***/ },
 /* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var PlayStore = __webpack_require__(282);
+	var SongActions = __webpack_require__(279);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		playSong: function (event) {
+			event.preventDefault();
+			SongActions.playSong(this.props.song.id);
+		},
+	
+		artistRoute: function (event) {
+			event.preventDefault();
+			// var betterRoute = this.props.song.artist.split(" ").join("%20");
+			hashHistory.push("artists/" + this.props.song.artist);
+		},
+	
+		render: function () {
+			return React.createElement(
+				'li',
+				{ className: 'songItem' },
+				React.createElement('img', { src: this.props.song.img_url, onClick: this.playSong }),
+				React.createElement('br', null),
+				React.createElement(
+					'label',
+					{ className: 'indexTitle' },
+					this.props.song.title
+				),
+				React.createElement('br', null),
+				React.createElement(
+					'label',
+					{ className: 'artistLink', onClick: this.artistRoute, artist: this.props.song.artist },
+					this.props.song.artist
+				)
+			);
+		}
+	});
+	// <img src={this.props.song.imgUrl} onClick={this.playSong} />
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PlayStore = __webpack_require__(269);
 	var ClientActions = __webpack_require__(279);
 	
 	module.exports = React.createClass({
@@ -35202,12 +35251,12 @@
 		},
 	
 		componentDidUpdate: function () {
-			var song = document.getElementsByTagName('audio')[0];
+			var song = document.getElementById('nowPlaying');
 			if (!song) {
 				return;
 			}
 			if (song.volume) {
-				song.volume = 0.63;
+				song.volume = 0.75;
 			}
 		},
 	
@@ -35224,14 +35273,29 @@
 	
 		play: function (event) {
 			event.preventDefault();
-			var play = document.getElementsByTagName('audio')[0].play();
+			var play = document.getElementById('nowPlaying').play();
 			this.setState({ currentSong: this.state.currentSong, playing: true });
 		},
 	
 		pause: function (event) {
 			event.preventDefault();
-			document.getElementsByTagName('audio')[0].pause();
+			document.getElementById('nowPlaying').pause();
 			this.setState({ currentSong: this.state.currentSong, playing: false });
+		},
+	
+		setProgress: function () {
+			var audioPlayer = document.getElementById('nowPlaying');
+			var bar = document.getElementById('bar');
+			bar.style.width = parseInt(audioPlayer.currentTime / audioPlayer.duration * 100, 10) + "%";
+		},
+	
+		updateProgress: function (e) {
+			e.preventDefault();
+			var audioPlayer = document.getElementById('nowPlaying');
+			var clickSpot = (e.pageX - this.refs['progressBar'].offsetLeft) / this.refs["progressBar"].offsetWidth;
+			var clickTime = clickSpot * audioPlayer.duration;
+	
+			audioPlayer.currentTime = clickTime;
 		},
 	
 		nextSong: function (event) {
@@ -35242,7 +35306,7 @@
 		render: function () {
 			var song, player, playToggle;
 			if (this.state.currentSong) {
-				song = React.createElement('audio', { onEnded: this.songOver, src: this.state.currentSong.audio_url, autoPlay: true });
+				song = React.createElement('audio', { id: 'nowPlaying', onTimeUpdate: this.setProgress, onEnded: this.songOver, src: this.state.currentSong.audio_url, autoPlay: true });
 			} else {
 				song = React.createElement('div', null);
 			}
@@ -35266,6 +35330,11 @@
 				{ className: 'playControl', onClick: this.nextSong },
 				'▶▌'
 			);
+			var progress = React.createElement(
+				'div',
+				{ id: 'progress', ref: 'progressBar', onClick: this.updateProgress },
+				React.createElement('div', { id: 'bar' })
+			);
 	
 			if (this.state.currentSong) {
 				player = React.createElement(
@@ -35277,7 +35346,9 @@
 					' ',
 					this.state.currentSong.title,
 					', ',
-					this.state.currentSong.artist
+					this.state.currentSong.artist,
+					' ',
+					progress
 				);
 			} else {
 				player = React.createElement('div', null);
@@ -35288,13 +35359,13 @@
 	});
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var PlayStore = __webpack_require__(282);
+	var PlayStore = __webpack_require__(269);
 	var ClientActions = __webpack_require__(279);
-	var QueueItem = __webpack_require__(285);
+	var QueueItem = __webpack_require__(286);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35342,7 +35413,7 @@
 	});
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -35374,13 +35445,13 @@
 	});
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SongActions = __webpack_require__(279);
-	var SongStore = __webpack_require__(278);
-	var IndexItem = __webpack_require__(277);
+	var SongStore = __webpack_require__(268);
+	var IndexItem = __webpack_require__(283);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35420,13 +35491,13 @@
 	});
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SongActions = __webpack_require__(279);
-	var SongStore = __webpack_require__(278);
-	var IndexItem = __webpack_require__(277);
+	var SongStore = __webpack_require__(268);
+	var IndexItem = __webpack_require__(283);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35463,78 +35534,6 @@
 				)
 			);
 		}
-	});
-
-/***/ },
-/* 288 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var hashHistory = __webpack_require__(186).hashHistory;
-	var SongActions = __webpack_require__(279);
-	var SongStore = __webpack_require__(278);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  getInitialState: function () {
-	    return { songName: "" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.songListener = SongStore.addListener(this.getSongs);
-	    SongActions.fetchSongs();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.songListener.remove();
-	  },
-	
-	  fillSongName: function (e) {
-	    var song = SongStore.find(e.target.value);
-	    this.setState({ songName: "" });
-	    hashHistory.push({ pathname: 'artists/' + song.artist });
-	  },
-	
-	  getSongs: function () {
-	    return SongStore.findSongs(this.state.songName);
-	  },
-	
-	  updateSong: function (e) {
-	    this.setState({ songName: e.target.value });
-	  },
-	
-	  render: function () {
-	    var songs = this.getSongs();
-	    var songList = [];
-	    if (songs.length > 0) {
-	      songs.forEach(function (song) {
-	        if (songList.length < 9) {
-	          songList.push(React.createElement(
-	            'li',
-	            { className: 'songListItem', key: song.id, song: song, value: song.id },
-	            song.title
-	          ));
-	        }
-	      });
-	    } else {
-	      songList = "";
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'searchBox' },
-	      React.createElement('input', { className: 'songSearch', type: 'text',
-	        placeholder: 'Song or Artist Name Here',
-	        onChange: this.updateSong, value: this.state.songName }),
-	      React.createElement(
-	        'ul',
-	        { className: 'songSearchList', onClick: this.fillSongName
-	        },
-	        songList
-	      )
-	    );
-	  }
 	});
 
 /***/ }
