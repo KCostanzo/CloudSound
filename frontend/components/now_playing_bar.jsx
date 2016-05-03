@@ -27,7 +27,9 @@ module.exports = React.createClass({
 
 	playChange: function() {
 		if (PlayStore.nowPlaying()) {
-		this.setState({currentSong: PlayStore.nowPlaying(), playing: true});
+			if (this.state.currentSong !== PlayStore.nowPlaying()) {
+				this.setState({currentSong: PlayStore.nowPlaying(), playing: true});
+			}
 		}
 	},
 
@@ -61,7 +63,7 @@ module.exports = React.createClass({
 		var clickTime = clickSpot * audioPlayer.duration;
 
 		audioPlayer.currentTime = clickTime;
-	},
+	}, 
 
 	nextSong: function(event) {
 		event.preventDefault();

@@ -10,7 +10,8 @@ module.exports = React.createClass({
 	getInitialState: function() {
 		return({
 			userPresent: SessionStore.userPresent(),
-			currentUser: SessionStore.currentUser()
+			currentUser: SessionStore.currentUser(),
+			currentlyClicked: false
 		});
 	},
 
@@ -40,6 +41,14 @@ module.exports = React.createClass({
 		hashHistory.push('users/' + currentUser.id)
 	},
 
+	clickedLogin: function() {
+		this.setState({currentlyClicked: true})
+	},
+
+	enableButtons: function() {
+		this.setState({currentlyClicked: false})
+	},
+
 //TODO: put search bar in nav
 	render: function() {
 		if (this.state.userPresent) {
@@ -55,8 +64,8 @@ module.exports = React.createClass({
 				 <nav> <h2 onClick={this.linkToHome}>Cloud Sound</h2>
 				 	<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png' onClick={this.linkToHome} />
 				 	<Search />
-		  			<SignUp />
-		   			<Login/>
+		  			<SignUp clickedLogin={this.clickedLogin} currentlyClicked={this.state.currentlyClicked} enableButtons={this.enableButtons} />
+		   			<Login clickedLogin={this.clickedLogin} currentlyClicked={this.state.currentlyClicked} enableButtons={this.enableButtons}/>
 		 		</nav>
 		)
 		}

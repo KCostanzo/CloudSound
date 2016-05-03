@@ -34640,7 +34640,8 @@
 		getInitialState: function () {
 			return {
 				userPresent: SessionStore.userPresent(),
-				currentUser: SessionStore.currentUser()
+				currentUser: SessionStore.currentUser(),
+				currentlyClicked: false
 			};
 		},
 	
@@ -34668,6 +34669,14 @@
 	
 		linkToUser: function () {
 			hashHistory.push('users/' + currentUser.id);
+		},
+	
+		clickedLogin: function () {
+			this.setState({ currentlyClicked: true });
+		},
+	
+		enableButtons: function () {
+			this.setState({ currentlyClicked: false });
 		},
 	
 		//TODO: put search bar in nav
@@ -34702,8 +34711,8 @@
 					),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
 					React.createElement(Search, null),
-					React.createElement(SignUp, null),
-					React.createElement(Login, null)
+					React.createElement(SignUp, { clickedLogin: this.clickedLogin, currentlyClicked: this.state.currentlyClicked, enableButtons: this.enableButtons }),
+					React.createElement(Login, { clickedLogin: this.clickedLogin, currentlyClicked: this.state.currentlyClicked, enableButtons: this.enableButtons })
 				);
 			}
 		}
@@ -34727,10 +34736,12 @@
 	
 	  closeModal: function () {
 	    this.setState({ modalOpen: false });
+	    this.props.enableButtons();
 	  },
 	
 	  openModal: function () {
 	    this.setState({ modalOpen: true });
+	    this.props.clickedLogin();
 	  },
 	
 	  loginUser: function (event) {
@@ -34791,12 +34802,12 @@
 	      null,
 	      React.createElement(
 	        'button',
-	        { className: 'unlogged', onClick: this.openModal, disabled: this.state.modalOpen },
+	        { className: 'unlogged', onClick: this.openModal, disabled: this.props.currentlyClicked },
 	        'Log In'
 	      ),
 	      React.createElement(
 	        'button',
-	        { className: 'unlogged', onClick: this.guestLogin, disabled: this.state.modalOpen },
+	        { className: 'unlogged', onClick: this.guestLogin, disabled: this.props.currentlyClicked },
 	        'Guest Account'
 	      ),
 	      React.createElement(
@@ -34851,10 +34862,12 @@
 	
 	  closeModal: function () {
 	    this.setState({ modalOpen: false });
+	    this.props.enableButtons();
 	  },
 	
 	  openModal: function () {
 	    this.setState({ modalOpen: true });
+	    this.props.clickedLogin();
 	  },
 	
 	  signupUser: function (event) {
@@ -34907,7 +34920,7 @@
 	      null,
 	      React.createElement(
 	        'button',
-	        { className: 'unlogged', onClick: this.openModal, disabled: this.state.modalOpen },
+	        { className: 'unlogged', onClick: this.openModal, disabled: this.props.currentlyClicked },
 	        'Sign Up'
 	      ),
 	      React.createElement(
@@ -35262,7 +35275,9 @@
 	
 		playChange: function () {
 			if (PlayStore.nowPlaying()) {
-				this.setState({ currentSong: PlayStore.nowPlaying(), playing: true });
+				if (this.state.currentSong !== PlayStore.nowPlaying()) {
+					this.setState({ currentSong: PlayStore.nowPlaying(), playing: true });
+				}
 			}
 		},
 	
@@ -35452,6 +35467,7 @@
 	var SongActions = __webpack_require__(279);
 	var SongStore = __webpack_require__(268);
 	var IndexItem = __webpack_require__(283);
+	var hashHistory = __webpack_require__(186).hashHistory;
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35475,6 +35491,10 @@
 			this.setState({ songs: SongStore.all() });
 		},
 	
+		linkToHome: function () {
+			hashHistory.push('/');
+		},
+	
 		render: function () {
 			return React.createElement(
 				'div',
@@ -35485,6 +35505,11 @@
 					this.state.songs.map(function (song) {
 						return React.createElement(IndexItem, { song: song, key: song.id });
 					})
+				),
+				React.createElement(
+					'p',
+					{ className: 'linkArtistHome', onClick: this.linkToHome },
+					'Back to Home'
 				)
 			);
 		}
@@ -35519,6 +35544,10 @@
 	
 		songChange: function () {
 			this.setState({ songs: SongStore.all() });
+		},
+	
+		linkToHome: function () {
+			hashHistory.push('/');
 		},
 	
 		render: function () {

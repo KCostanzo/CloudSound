@@ -11,10 +11,12 @@ module.exports = React.createClass ({
 
   closeModal: function() {
     this.setState({modalOpen: false});
+    this.props.enableButtons();
   },
 
   openModal: function() {
     this.setState({modalOpen: true});
+    this.props.clickedLogin();
   },
 
   loginUser: function(event) {
@@ -70,8 +72,8 @@ module.exports = React.createClass ({
   render: function() {
     return (
       <div>
-      <button className="unlogged" onClick={this.openModal} disabled={this.state.modalOpen}>Log In</button>
-      <button className="unlogged" onClick={this.guestLogin} disabled={this.state.modalOpen}>Guest Account</button>
+      <button className="unlogged" onClick={this.openModal} disabled={this.props.currentlyClicked}>Log In</button>
+      <button className="unlogged" onClick={this.guestLogin} disabled={this.props.currentlyClicked}>Guest Account</button>
 
       <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
         <form onSubmit={this.loginUser}>

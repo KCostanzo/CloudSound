@@ -23,6 +23,10 @@ module.exports = React.createClass({
 		this.setState({songs: SongStore.all()});
 	},
 
+	linkToHome: function() {
+		hashHistory.push('/');
+	},
+
 	render: function() {
 		return (
 			<div className='user-index'>

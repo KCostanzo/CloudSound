@@ -2,6 +2,7 @@ var React = require('react');
 var SongActions = require('../actions/song_client_actions.js');
 var SongStore = require('../stores/song_store.js');
 var IndexItem = require('./index_item.jsx');
+var hashHistory = require('react-router').hashHistory;
 
 module.exports = React.createClass({
 	getInitialState: function() {
@@ -23,6 +24,10 @@ module.exports = React.createClass({
 		this.setState({songs: SongStore.all()});
 	},
 
+	linkToHome: function() {
+		hashHistory.push('/');
+	},
+
 	render: function() {
 		return (
 			<div className='artist-index'>
@@ -33,6 +38,7 @@ module.exports = React.createClass({
 							})
 						}
 					</ul>
+					<p className="linkArtistHome" onClick={this.linkToHome}>Back to Home</p>
 				</div>
 			);
 	}
