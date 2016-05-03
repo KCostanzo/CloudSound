@@ -1,4 +1,5 @@
 var ServerActions = require('../actions/song_server_actions.js');
+var LikeActions = require('../actions/like_actions.js');
 
 module.exports = {
 	fetchSongs: function() {
@@ -39,5 +40,32 @@ module.exports = {
 				ServerActions.songError(error);
 			}
 		})
-	}
+	},
+
+	// createLike: function(songId) {
+	// 	// debugger;
+	// 	$.ajax({
+	// 		method: 'POST',
+	// 		url: 'api/likes',
+	// 		success: function(like) {
+	// 			LikeActions.likeCreated(like);
+	// 		},
+	// 		error: function(error) {
+	// 			LikeActions.likeError(error);
+	// 		}
+	// 	})
+	// },
+
+	// getLikedSongs: function() {
+	// 	$.ajax({
+	// 		method: 'GET',
+	// 		url: 'api/likes',
+	// 		success: function(songs) {
+	// 			LikeActions.getLikedSongs(songs);
+	// 		},
+	// 		error: function(error) {
+	// 			LikeActions.likeError(error);
+	// 		}
+	// 	})
+	// }
 };

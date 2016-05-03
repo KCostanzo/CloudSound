@@ -9,5 +9,10 @@ Rails.application.routes.draw do
     resources :songs, except: [:new, :edit]
 
     	get 'artist/:artist', to: 'songs#index_by_artist'
+
+	resources :likes, only: [:index,:create]
+
+		# get 'likes/:user_id', to: 'likes#index_songs'
   end
+
 end

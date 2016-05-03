@@ -2,6 +2,7 @@ var React = require('react');
 var SongActions = require('../actions/song_client_actions.js');
 var SongStore = require('../stores/song_store.js');
 var IndexItem = require('./index_item.jsx');
+var LikeActions = require('../actions/like_actions.js');
 
 module.exports = React.createClass({
 	getInitialState: function() {
@@ -13,6 +14,7 @@ module.exports = React.createClass({
 	componentDidMount: function() {
 		this.songListener = SongStore.addListener(this.songChange);
 		SongActions.fetchSongs();
+		LikeActions.getLiked();
 	},
 
 	componentWillUnmount: function() {

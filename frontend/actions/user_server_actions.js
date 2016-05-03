@@ -14,7 +14,6 @@ module.exports = {
       actionType: Constants.LOGIN_USER,
       user: user
     });
-    console.log('login success');
   },
 
   create: function(user) {
