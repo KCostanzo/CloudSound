@@ -27,5 +27,19 @@ module.exports = {
 				LikeActions.likeError(error);
 			}
 		})
+	},
+
+	unlikeSong: function(songId) {
+		$.ajax({
+			method: 'DELETE',
+			url: 'api/likes/' + songId,
+			data: {song_id: songId},
+			success: function(like) {
+				LikeActions.unlike(like);
+			},
+			error: function(error) {
+				LikeActions.likeError(error)
+			}
+		})
 	}
-}
+};

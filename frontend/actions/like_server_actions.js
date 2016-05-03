@@ -16,6 +16,13 @@ module.exports = {
 		});
 	},
 
+	unlike: function(like) {
+		Dispatcher.dispatch({
+			actionType: Constants.UNLIKED,
+			like: like
+		});
+	},
+
 	likeError: function(error) {
 	}
 }

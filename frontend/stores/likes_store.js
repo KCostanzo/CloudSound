@@ -11,14 +11,17 @@ var addSong = function(like) {
 };
 
 var resetSongs = function(songs) {
-	if (songs.length > 0) {
-		_likedSongs = [];
-	
-		songs.forEach(function(song) {
-			_likedSongs.push(song.id);
-		});
-	}
+	_likedSongs = [];
+
+	songs.songs.forEach(function(song) {
+		_likedSongs.push(song.id);
+	});
 };
+
+var removeSong = function(like) {
+	var idx = _likedSongs.indexOf(parseInt(like.song_id));
+	_likedSongs.splice(idx, 1);
+};	
 
 LikeStore.all = function() {
 	var songIds = [];
@@ -29,6 +32,15 @@ LikeStore.all = function() {
 	return songIds;
 };
 
+LikeStore.songLiked = function(songId) {
+	for (var i = 0; i < _likedSongs.length; i++) {
+		if(_likedSongs[i] === songId) {
+			return true;
+		}
+	};
+	return false;
+};
+
 LikeStore.__onDispatch = function(payload) {
 	switch(payload.actionType) {
 		case Constants.LIKED_SONGS:
@@ -36,6 +48,9 @@ LikeStore.__onDispatch = function(payload) {
 			break;
 		case Constants.LIKE_MADE:
 			addSong(payload.like);
+			break;
+		case Constants.UNLIKED:
+			removeSong(payload.like);
 			break;
 	}
 	this.__emitChange();

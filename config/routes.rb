@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
     	get 'artist/:artist', to: 'songs#index_by_artist'
 
-	resources :likes, only: [:index,:create]
+	resources :likes, only: [:index,:create,:destroy]
 
 		# get 'likes/:user_id', to: 'likes#index_songs'
   end

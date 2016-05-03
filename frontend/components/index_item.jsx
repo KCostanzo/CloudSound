@@ -3,23 +3,30 @@ var SongActions = require('../actions/song_client_actions.js');
 var hashHistory = require('react-router').hashHistory;
 var LikeActions = require('../actions/like_actions.js');
 var SessionStore = require('../stores/session_store.js');
+var LikeStore = require('../stores/likes_store.js')
 
 
 module.exports = React.createClass({
 	getInitialState: function() {
-		return {userLoggedIn: SessionStore.userPresent()}
+		return {userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id)}
 	},
 
 	componentDidMount: function() {
 		this.userListener = SessionStore.addListener(this.userPresence);
+		this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 	},
 
 	componentWillUnmount: function() {
 		this.userListener.remove();
+		this.likeStoreListen.remove();
 	},
 
 	userPresence: function() {
 		this.setState({ userLoggedIn: SessionStore.userPresent() });
+	},
+
+	likesUpdate: function() {
+		this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
 	},
 
 	playSong: function(event) {
@@ -35,12 +42,21 @@ module.exports = React.createClass({
 
 	createLike: function(event) {
 		event.preventDefault();
-		LikeActions.createLike(this.props.song.id)
+		LikeActions.createLike(this.props.song.id);
+	},
+
+	unlike: function(event) {
+		event.preventDefault();
+		LikeActions.unlike(this.props.song.id);
 	},
 
 	buttonToggle: function() {
 		if (this.state.userLoggedIn) {
-			return <button className="like" onClick={this.createLike}>Like</button>
+			if (this.state.songLiked) {
+				return <button className="like" onClick={this.unlike}>Unlike</button>
+			} else{
+				return <button className="like" onClick={this.createLike}>Like</button>
+			}
 		} else {
 			return <div/>
 		}

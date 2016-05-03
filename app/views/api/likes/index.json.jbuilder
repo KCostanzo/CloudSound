@@ -1,1 +1,1 @@
-json.songs @user.songs
+json.songs @user.liked_songs

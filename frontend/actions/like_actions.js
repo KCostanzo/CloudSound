@@ -4,11 +4,14 @@ var Constants = require('../constants/allConstants');
 
 module.exports = {
 	createLike: function(songId) {
-		// debugger;
 		Util.createLike(songId);
 	},
 
 	getLiked: function() {
 		Util.getLikedSongs();
 	},
+
+	unlike: function(songId) {
+		Util.unlikeSong(songId);
+	}
 };

@@ -34243,7 +34243,8 @@
 	  QUEUE_REMOVE: 'QUEUE_REMOVE',
 	
 	  LIKED_SONGS: 'LIKED_SONGS',
-	  LIKE_MADE: 'LIKE_MADE'
+	  LIKE_MADE: 'LIKE_MADE',
+	  UNLIKED: 'UNLIKED'
 	};
 
 /***/ },
@@ -35135,6 +35136,7 @@
 			this.songListener = SongStore.addListener(this.songChange);
 			SongActions.fetchSongs();
 			LikeActions.getLiked();
+			// debugger;
 		},
 	
 		componentWillUnmount: function () {
@@ -35169,24 +35171,31 @@
 	var hashHistory = __webpack_require__(186).hashHistory;
 	var LikeActions = __webpack_require__(289);
 	var SessionStore = __webpack_require__(245);
+	var LikeStore = __webpack_require__(293);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
 		getInitialState: function () {
-			return { userLoggedIn: SessionStore.userPresent() };
+			return { userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id) };
 		},
 	
 		componentDidMount: function () {
 			this.userListener = SessionStore.addListener(this.userPresence);
+			this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 		},
 	
 		componentWillUnmount: function () {
 			this.userListener.remove();
+			this.likeStoreListen.remove();
 		},
 	
 		userPresence: function () {
 			this.setState({ userLoggedIn: SessionStore.userPresent() });
+		},
+	
+		likesUpdate: function () {
+			this.setState({ songLiked: LikeStore.songLiked(this.props.song.id) });
 		},
 	
 		playSong: function (event) {
@@ -35205,13 +35214,26 @@
 			LikeActions.createLike(this.props.song.id);
 		},
 	
+		unlike: function (event) {
+			event.preventDefault();
+			LikeActions.unlike(this.props.song.id);
+		},
+	
 		buttonToggle: function () {
 			if (this.state.userLoggedIn) {
-				return React.createElement(
-					'button',
-					{ className: 'like', onClick: this.createLike },
-					'Like'
-				);
+				if (this.state.songLiked) {
+					return React.createElement(
+						'button',
+						{ className: 'like', onClick: this.unlike },
+						'Unlike'
+					);
+				} else {
+					return React.createElement(
+						'button',
+						{ className: 'like', onClick: this.createLike },
+						'Like'
+					);
+				}
 			} else {
 				return React.createElement('div', null);
 			}
@@ -35575,12 +35597,15 @@
 	
 	module.exports = {
 		createLike: function (songId) {
-			// debugger;
 			Util.createLike(songId);
 		},
 	
 		getLiked: function () {
 			Util.getLikedSongs();
+		},
+	
+		unlike: function (songId) {
+			Util.unlikeSong(songId);
 		}
 	};
 
@@ -35617,6 +35642,20 @@
 					LikeActions.likeError(error);
 				}
 			});
+		},
+	
+		unlikeSong: function (songId) {
+			$.ajax({
+				method: 'DELETE',
+				url: 'api/likes/' + songId,
+				data: { song_id: songId },
+				success: function (like) {
+					LikeActions.unlike(like);
+				},
+				error: function (error) {
+					LikeActions.likeError(error);
+				}
+			});
 		}
 	};
 
@@ -35642,6 +35681,13 @@
 			});
 		},
 	
+		unlike: function (like) {
+			Dispatcher.dispatch({
+				actionType: Constants.UNLIKED,
+				like: like
+			});
+		},
+	
 		likeError: function (error) {}
 	};
 
@@ -35662,13 +35708,16 @@
 	};
 	
 	var resetSongs = function (songs) {
-		if (songs.length > 0) {
-			_likedSongs = [];
+		_likedSongs = [];
 	
-			songs.forEach(function (song) {
-				_likedSongs.push(song.id);
-			});
-		}
+		songs.songs.forEach(function (song) {
+			_likedSongs.push(song.id);
+		});
+	};
+	
+	var removeSong = function (like) {
+		var idx = _likedSongs.indexOf(parseInt(like.song_id));
+		_likedSongs.splice(idx, 1);
 	};
 	
 	LikeStore.all = function () {
@@ -35680,6 +35729,15 @@
 		return songIds;
 	};
 	
+	LikeStore.songLiked = function (songId) {
+		for (var i = 0; i < _likedSongs.length; i++) {
+			if (_likedSongs[i] === songId) {
+				return true;
+			}
+		};
+		return false;
+	};
+	
 	LikeStore.__onDispatch = function (payload) {
 		switch (payload.actionType) {
 			case Constants.LIKED_SONGS:
@@ -35687,6 +35745,9 @@
 				break;
 			case Constants.LIKE_MADE:
 				addSong(payload.like);
+				break;
+			case Constants.UNLIKED:
+				removeSong(payload.like);
 				break;
 		}
 		this.__emitChange();

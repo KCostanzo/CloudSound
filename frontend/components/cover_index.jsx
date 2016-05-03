@@ -15,6 +15,7 @@ module.exports = React.createClass({
 		this.songListener = SongStore.addListener(this.songChange);
 		SongActions.fetchSongs();
 		LikeActions.getLiked();
+		// debugger;
 	},
 
 	componentWillUnmount: function() {

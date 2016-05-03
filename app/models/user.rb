@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
 
   has_many :songs
   has_many :playlists
+  has_many :likes
+  has_many :liked_songs,
+    through: :likes,
+    source: :liked_song
 
   attr_reader :password
 
