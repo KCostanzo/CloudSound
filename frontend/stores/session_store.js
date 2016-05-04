@@ -31,7 +31,7 @@ SessionStore.errors = function() {
 
 SessionStore.emptyErrors = function() {
   _errors = [];
-}
+};
 
 SessionStore.currentUser = function() {
   return _currentUser;

@@ -29,7 +29,7 @@ var resetSongs = function(songs) {
 
 SongStore.findSongs = function(partialTitle) {
 	var possSongs = [];
-	if (partialTitle.length < 3) {
+	if (partialTitle.length < 2) {
 		return [];
 	}
 	var songs = SongStore.all();
@@ -52,6 +52,15 @@ SongStore.all = function() {
 	return Object.keys(_songs).map(function(key) {
 		return _songs[key];
 	});
+};
+
+SongStore.likedSongs = function(songIds) {
+	userSongs = [];
+	songIds.forEach(function(songId) {
+		userSongs.push(_songs[songId]);
+	})
+
+	return userSongs;
 };
 
 SongStore.__onDispatch = function(payload) {

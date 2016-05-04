@@ -37,7 +37,7 @@ module.exports = React.createClass({
     if(songs.length > 0){
       songs.forEach(function(song){
         if(songList.length < 9){
-          songList.push(<li className="songListItem" key={song.id} song={song} value={song.id}>{song.title}</li>);
+          songList.push(<li className="songListItem" key={song.id} song={song} value={song.id}>{song.title}, {song.artist}</li>);
         }
       });
     }  else{

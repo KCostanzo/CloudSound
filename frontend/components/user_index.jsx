@@ -1,30 +1,39 @@
 var React = require('react');
+var hashHistory = require('react-router').hashHistory;
 var SongActions = require('../actions/song_client_actions.js');
+var LikeActions = require('../actions/like_actions.js');
 var SongStore = require('../stores/song_store.js');
+var LikeStore = require('../stores/likes_store.js');
 var IndexItem = require('./index_item.jsx');
 
 module.exports = React.createClass({
 	getInitialState: function() {
 		return {
-			songs: []
+			songIds: [], songs: []
 		}
 	},
 
 	componentDidMount: function() {
-		this.songListener = SongStore.addListener(this.songChange);
-		SongActions.fetchUserSongs(this.props.params.user_id);
+		this.likeListen = LikeStore.addListener(this.likeChange);
+		LikeActions.getLiked();
+		LikeStore.all();
 	},
 
 	componentWillUnmount: function() {
-		this.songListener.remove();
+		this.likeListen.remove();
 	},
 
-	songChange: function() {
-		this.setState({songs: SongStore.all()});
+	likeChange: function() {
+		this.setState({songIds: LikeStore.all()});
+		this.setSongs(this.state.songIds);
 	},
 
 	linkToHome: function() {
 		hashHistory.push('/');
+	},
+
+	setSongs: function() {
+		this.setState({songs: SongStore.likedSongs(this.state.songIds)});
 	},
 
 	render: function() {
@@ -33,10 +42,12 @@ module.exports = React.createClass({
 					<ul>
 						{
 							this.state.songs.map(function(song) {
-								return <IndexItem song={song} key={song.id} />
+								return <IndexItem song={song} key={song.id + 1000} />
 							})
 						}
 					</ul>
+					<p className="linkArtistHome" onClick={this.linkToHome}>Back to Home</p>
+					<p className="alertUserLikes">(Liked Songs go Here)</p>
 				</div>
 			);
 	}

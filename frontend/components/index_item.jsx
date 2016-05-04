@@ -3,7 +3,8 @@ var SongActions = require('../actions/song_client_actions.js');
 var hashHistory = require('react-router').hashHistory;
 var LikeActions = require('../actions/like_actions.js');
 var SessionStore = require('../stores/session_store.js');
-var LikeStore = require('../stores/likes_store.js')
+var LikeStore = require('../stores/likes_store.js');
+var PlayStore = require('../stores/play_store.js');
 
 
 module.exports = React.createClass({
@@ -32,6 +33,7 @@ module.exports = React.createClass({
 	playSong: function(event) {
 		event.preventDefault();
 		SongActions.playSong(this.props.song.id);
+		// this.setState({ songPlaying: true });
 	},
 
 	artistRoute: function(event) {
@@ -61,6 +63,14 @@ module.exports = React.createClass({
 			return <div id='imgSpace'/>
 		}
 	},
+
+	// playButton: function() {
+	// 	if (this.state.songPlaying) {
+	// 		return <button className="imgPlay" onClick={this.playSong}>+</button>
+	// 	} else {
+	// 		return <button className="imgPlay" onClick={this.playSong}>▶</button>
+	// 	}
+	// },
 
 	buttonShow: function() {
 		document.getElementsByClassName('imgPlay').style.display = "block";

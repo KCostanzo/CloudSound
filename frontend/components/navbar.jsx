@@ -40,16 +40,17 @@ module.exports = React.createClass({
 		hashHistory.push('/');
 	},
 
-	linkToUser: function() {
-		hashHistory.push('users/' + currentUser.id)
-	},
-
 	clickedLogin: function() {
 		this.setState({currentlyClicked: true})
 	},
 
 	enableButtons: function() {
 		this.setState({currentlyClicked: false})
+		// LikeActions.getLiked();
+	},
+
+	sendUser: function() {
+		hashHistory.push("users/" + this.state.currentUser.id);
 	},
 
 //TODO: put search bar in nav
@@ -59,6 +60,7 @@ module.exports = React.createClass({
 				<nav className="logged"> <h2 onClick={this.linkToHome}>Cloud Sound</h2>
 					<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png' onClick={this.linkToHome}/>
 					<Search />
+					<button className="userPage" onClick={this.sendUser}>User Page</button>
 					<button className="logOut" onClick={this.logoutUser}>Logout</button>
 				</nav>
 				)

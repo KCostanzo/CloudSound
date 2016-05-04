@@ -34281,7 +34281,7 @@
 	
 	SongStore.findSongs = function (partialTitle) {
 		var possSongs = [];
-		if (partialTitle.length < 3) {
+		if (partialTitle.length < 2) {
 			return [];
 		}
 		var songs = SongStore.all();
@@ -34304,6 +34304,15 @@
 		return Object.keys(_songs).map(function (key) {
 			return _songs[key];
 		});
+	};
+	
+	SongStore.likedSongs = function (songIds) {
+		userSongs = [];
+		songIds.forEach(function (songId) {
+			userSongs.push(_songs[songId]);
+		});
+	
+		return userSongs;
 	};
 	
 	SongStore.__onDispatch = function (payload) {
@@ -34631,16 +34640,17 @@
 			hashHistory.push('/');
 		},
 	
-		linkToUser: function () {
-			hashHistory.push('users/' + currentUser.id);
-		},
-	
 		clickedLogin: function () {
 			this.setState({ currentlyClicked: true });
 		},
 	
 		enableButtons: function () {
 			this.setState({ currentlyClicked: false });
+			// LikeActions.getLiked();
+		},
+	
+		sendUser: function () {
+			hashHistory.push("users/" + this.state.currentUser.id);
 		},
 	
 		//TODO: put search bar in nav
@@ -34657,6 +34667,11 @@
 					),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
 					React.createElement(Search, null),
+					React.createElement(
+						'button',
+						{ className: 'userPage', onClick: this.sendUser },
+						'User Page'
+					),
 					React.createElement(
 						'button',
 						{ className: 'logOut', onClick: this.logoutUser },
@@ -34853,7 +34868,7 @@
 	    } else {
 	      this.setState({ errors: Store.errors(), password: '' });
 	    }
-	    LikeActions.getLiked();
+	    // LikeActions.getLiked();
 	  },
 	
 	  nameChange: function (event) {
@@ -34974,7 +34989,9 @@
 	          songList.push(React.createElement(
 	            'li',
 	            { className: 'songListItem', key: song.id, song: song, value: song.id },
-	            song.title
+	            song.title,
+	            ', ',
+	            song.artist
 	          ));
 	        }
 	      });
@@ -35125,9 +35142,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(186).hashHistory;
 	var SongActions = __webpack_require__(279);
 	var SongStore = __webpack_require__(268);
 	var SessionStore = __webpack_require__(245);
+	var LikeStore = __webpack_require__(293);
 	var IndexItem = __webpack_require__(283);
 	var LikeActions = __webpack_require__(289);
 	
@@ -35142,7 +35161,7 @@
 	
 		componentDidMount: function () {
 			this.songListener = SongStore.addListener(this.songChange);
-			// this.sessionListen = SessionStore.addListener(this.sessionChange);
+			// this.userListen = SessionStore.addListener(this.userChange);
 			SongActions.fetchSongs();
 			LikeActions.getLiked();
 			// debugger;
@@ -35150,21 +35169,23 @@
 	
 		componentWillUnmount: function () {
 			this.songListener.remove();
-			// this.sessionListen.remove()
+			// this.userListen.remove();
 		},
 	
 		songChange: function () {
 			this.setState({ songs: SongStore.all() });
 		},
 	
-		sessionChange: function () {
-			// LikeActions.getLiked();
-		},
+		// userChange: function() {
+		// 	this.setState({ likes: LikeActions.getLiked() });
+		// },
 	
 		render: function () {
 			return React.createElement(
 				'div',
 				{ className: 'cover-index' },
+				React.createElement('br', null),
+				'Click Play to Play Song or Add to Queue',
 				React.createElement(
 					'ul',
 					null,
@@ -35186,6 +35207,7 @@
 	var LikeActions = __webpack_require__(289);
 	var SessionStore = __webpack_require__(245);
 	var LikeStore = __webpack_require__(293);
+	var PlayStore = __webpack_require__(269);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35215,6 +35237,7 @@
 		playSong: function (event) {
 			event.preventDefault();
 			SongActions.playSong(this.props.song.id);
+			// this.setState({ songPlaying: true });
 		},
 	
 		artistRoute: function (event) {
@@ -35252,6 +35275,14 @@
 				return React.createElement('div', { id: 'imgSpace' });
 			}
 		},
+	
+		// playButton: function() {
+		// 	if (this.state.songPlaying) {
+		// 		return <button className="imgPlay" onClick={this.playSong}>+</button>
+		// 	} else {
+		// 		return <button className="imgPlay" onClick={this.playSong}>▶</button>
+		// 	}
+		// },
 	
 		buttonShow: function () {
 			document.getElementsByClassName('imgPlay').style.display = "block";
@@ -35562,8 +35593,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(186).hashHistory;
 	var SongActions = __webpack_require__(279);
+	var LikeActions = __webpack_require__(289);
 	var SongStore = __webpack_require__(268);
+	var LikeStore = __webpack_require__(293);
 	var IndexItem = __webpack_require__(283);
 	
 	module.exports = React.createClass({
@@ -35571,25 +35605,31 @@
 	
 		getInitialState: function () {
 			return {
-				songs: []
+				songIds: [], songs: []
 			};
 		},
 	
 		componentDidMount: function () {
-			this.songListener = SongStore.addListener(this.songChange);
-			SongActions.fetchUserSongs(this.props.params.user_id);
+			this.likeListen = LikeStore.addListener(this.likeChange);
+			LikeActions.getLiked();
+			LikeStore.all();
 		},
 	
 		componentWillUnmount: function () {
-			this.songListener.remove();
+			this.likeListen.remove();
 		},
 	
-		songChange: function () {
-			this.setState({ songs: SongStore.all() });
+		likeChange: function () {
+			this.setState({ songIds: LikeStore.all() });
+			this.setSongs(this.state.songIds);
 		},
 	
 		linkToHome: function () {
 			hashHistory.push('/');
+		},
+	
+		setSongs: function () {
+			this.setState({ songs: SongStore.likedSongs(this.state.songIds) });
 		},
 	
 		render: function () {
@@ -35600,8 +35640,18 @@
 					'ul',
 					null,
 					this.state.songs.map(function (song) {
-						return React.createElement(IndexItem, { song: song, key: song.id });
+						return React.createElement(IndexItem, { song: song, key: song.id + 1000 });
 					})
+				),
+				React.createElement(
+					'p',
+					{ className: 'linkArtistHome', onClick: this.linkToHome },
+					'Back to Home'
+				),
+				React.createElement(
+					'p',
+					{ className: 'alertUserLikes' },
+					'(Liked Songs go Here)'
 				)
 			);
 		}
@@ -35742,6 +35792,8 @@
 		var idx = _likedSongs.indexOf(parseInt(like.song_id));
 		_likedSongs.splice(idx, 1);
 	};
+	
+	LikeStore.fetchUserSongs = function (userId) {};
 	
 	LikeStore.all = function () {
 		var songIds = [];
