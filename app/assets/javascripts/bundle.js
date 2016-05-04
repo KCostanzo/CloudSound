@@ -34591,6 +34591,7 @@
 	var Login = __webpack_require__(276);
 	var SignUp = __webpack_require__(277);
 	var ClientActions = __webpack_require__(271);
+	var LikeActions = __webpack_require__(289);
 	var SessionStore = __webpack_require__(245);
 	var hashHistory = __webpack_require__(186).hashHistory;
 	var Search = __webpack_require__(278);
@@ -34616,11 +34617,13 @@
 	
 		storeChange: function () {
 			this.setState({ userPresent: SessionStore.userPresent(), currentUser: SessionStore.currentUser() });
+			// LikeActions.getLiked();
 		},
 	
 		logoutUser: function (event) {
 			event.preventDefault();
 			ClientActions.logoutUser(this.state.currentUser);
+			this.enableButtons();
 			console.log('logged out');
 		},
 	
@@ -34687,6 +34690,7 @@
 	var ClientActions = __webpack_require__(271);
 	var Modal = __webpack_require__(166);
 	var Store = __webpack_require__(245);
+	var LikeActions = __webpack_require__(289);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -34713,6 +34717,7 @@
 	        password: this.state.password
 	      } };
 	    ClientActions.loginUser(user);
+	    // LikeActions.getLiked();
 	    if (Store.userPresent()) {
 	      this.setState({ username: '', password: '' });
 	      this.closeModal();
@@ -34728,6 +34733,7 @@
 	        password: 'password369'
 	      } };
 	    ClientActions.loginUser(user);
+	    // LikeActions.getLiked();
 	    console.log('guest login success');
 	  },
 	
@@ -34847,6 +34853,7 @@
 	    } else {
 	      this.setState({ errors: Store.errors(), password: '' });
 	    }
+	    LikeActions.getLiked();
 	  },
 	
 	  nameChange: function (event) {
@@ -35120,6 +35127,7 @@
 	var React = __webpack_require__(1);
 	var SongActions = __webpack_require__(279);
 	var SongStore = __webpack_require__(268);
+	var SessionStore = __webpack_require__(245);
 	var IndexItem = __webpack_require__(283);
 	var LikeActions = __webpack_require__(289);
 	
@@ -35134,6 +35142,7 @@
 	
 		componentDidMount: function () {
 			this.songListener = SongStore.addListener(this.songChange);
+			// this.sessionListen = SessionStore.addListener(this.sessionChange);
 			SongActions.fetchSongs();
 			LikeActions.getLiked();
 			// debugger;
@@ -35141,10 +35150,15 @@
 	
 		componentWillUnmount: function () {
 			this.songListener.remove();
+			// this.sessionListen.remove()
 		},
 	
 		songChange: function () {
 			this.setState({ songs: SongStore.all() });
+		},
+	
+		sessionChange: function () {
+			// LikeActions.getLiked();
 		},
 	
 		render: function () {
@@ -35235,15 +35249,24 @@
 					);
 				}
 			} else {
-				return React.createElement('div', null);
+				return React.createElement('div', { id: 'imgSpace' });
 			}
+		},
+	
+		buttonShow: function () {
+			document.getElementsByClassName('imgPlay').style.display = "block";
 		},
 	
 		render: function () {
 			return React.createElement(
 				'li',
 				{ className: 'songItem' },
-				React.createElement('img', { src: this.props.song.img_url, onClick: this.playSong }),
+				React.createElement('img', { src: this.props.song.img_url, onHover: this.buttonShow }),
+				React.createElement(
+					'button',
+					{ className: 'imgPlay', onClick: this.playSong },
+					'▶'
+				),
 				this.buttonToggle(),
 				React.createElement('br', null),
 				React.createElement(
@@ -35351,13 +35374,13 @@
 			if (this.state.playing) {
 				playToggle = React.createElement(
 					'button',
-					{ className: 'playControl', onClick: this.pause },
+					{ className: 'playControlToggle', onClick: this.pause },
 					'▌▌'
 				);
 			} else {
 				playToggle = React.createElement(
 					'button',
-					{ className: 'playControl', onClick: this.play },
+					{ className: 'playControlToggle', onClick: this.play },
 					'▶'
 				);
 			}
@@ -35708,6 +35731,9 @@
 	};
 	
 	var resetSongs = function (songs) {
+		if (!songs.songs) {
+			return;
+		}
 		_likedSongs = [];
 	
 		songs.songs.forEach(function (song) {

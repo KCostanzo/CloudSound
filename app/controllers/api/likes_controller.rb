@@ -1,8 +1,13 @@
 class Api::LikesController < ApplicationController
 
 	def index
-		@user = current_user
-		render :index
+		if current_user
+			@user = current_user
+			render :index
+		else
+			@errors = nil
+      		render "api/shared/errors", status: 299
+    	end
 	end
 
 	def create

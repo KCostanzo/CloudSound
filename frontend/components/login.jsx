@@ -2,6 +2,7 @@ var React = require('react');
 var ClientActions = require('../actions/client_actions.js');
 var Modal = require('react-modal');
 var Store = require('../stores/session_store.js');
+var LikeActions = require('../actions/like_actions.js');
 
 
 module.exports = React.createClass ({
@@ -27,6 +28,7 @@ module.exports = React.createClass ({
       password: this.state.password
     }};
     ClientActions.loginUser(user);
+    // LikeActions.getLiked();
     if (Store.userPresent()) {
       this.setState({username: '', password: ''})
       this.closeModal();
@@ -42,6 +44,7 @@ module.exports = React.createClass ({
       password: 'password369'
     }};
     ClientActions.loginUser(user);
+    // LikeActions.getLiked();
     console.log('guest login success');
   },
 

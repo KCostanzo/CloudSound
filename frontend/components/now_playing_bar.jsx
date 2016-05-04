@@ -79,9 +79,9 @@ module.exports = React.createClass({
 		}
 
 		if (this.state.playing) {
-			playToggle = <button className="playControl" onClick={this.pause}>▌▌</button>;
+			playToggle = <button className="playControlToggle" onClick={this.pause}>▌▌</button>;
 		} else {
-			playToggle = <button className="playControl" onClick={this.play}>▶</button>
+			playToggle = <button className="playControlToggle" onClick={this.play}>▶</button>
 		}
 
 		var next = (<button className="playControl" onClick={this.nextSong}>▶▌</button>)

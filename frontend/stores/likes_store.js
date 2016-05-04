@@ -11,6 +11,9 @@ var addSong = function(like) {
 };
 
 var resetSongs = function(songs) {
+	if(!songs.songs) {
+		return;
+	}
 	_likedSongs = [];
 
 	songs.songs.forEach(function(song) {

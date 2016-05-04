@@ -58,18 +58,23 @@ module.exports = React.createClass({
 				return <button className="like" onClick={this.createLike}>Like</button>
 			}
 		} else {
-			return <div/>
+			return <div id='imgSpace'/>
 		}
+	},
+
+	buttonShow: function() {
+		document.getElementsByClassName('imgPlay').style.display = "block";
 	},
 
 	render: function() {
 		return (
 			<li className='songItem'>
-				<img src={this.props.song.img_url} onClick={this.playSong}/>
+				<img src={this.props.song.img_url} onHover={this.buttonShow}/>
+				<button className="imgPlay" onClick={this.playSong}>▶</button>
 				{this.buttonToggle()}
 				<br/>
 				<label className="indexTitle">
-					{this.props.song.title}
+				{this.props.song.title}
 				</label><br/>
 				<label className="artistLink" onClick={this.artistRoute} artist={this.props.song.artist}>{this.props.song.artist}</label>
 			</li>

@@ -106,24 +106,40 @@ img:hover {
 
 #progress {
   float: left;
+  position: relative;
   margin: 15px;
   border: 1px solid black;
   width: 400px;
   z-index: 2;
   cursor: pointer;
+  left: 90px;
+  margin-right: 100px;
 }
 
 #bar {
+  position: relative;
   height: 16px;
   background: #79bbff;
   z-index: 2;
 }
 
 .playControl {
+  margin: 8px;
+  margin-left: -455px;
+  position: absolute;
   float: left;
-  margin: 10px;
+  /*margin: 10px;*/
   height: 30px;
   width: 30px;
+}
+
+.playControlToggle {
+  position: absolute;
+  margin: 8px;
+  float: left;
+  height: 30px;
+  width: 30px;
+  margin-left: -502px;
 }
 
 .playControl:hover {
@@ -248,6 +264,7 @@ nav button {
 
 nav button.logOut {
   margin-top: -27px;
+  position: relative;
 }
 
 nav button.unlogged {
@@ -293,6 +310,33 @@ button:hover {
   background-color:#378de5;
 }
 button:active {
-  position:relative;
+  position:absolute;
   top:1px;
+}
+
+.imgPlay {
+  /*display: none;*/
+  position: absolute;
+  padding: 10px;
+  margin: 0px;
+  margin-top: 40px;
+  margin-left: -110px;
+}
+
+.like {
+  /*display: none;*/
+  padding: 10px;
+  position: absolute;
+  margin: 0px;
+  margin-top: 125px;
+  margin-left: -120px;
+}
+
+#imgSpace {
+  position: absolute;
+  margin: 0px;
+}
+
+li label {
+  margin: 0px;
 }
