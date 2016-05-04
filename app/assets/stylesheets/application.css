@@ -198,18 +198,14 @@ img:hover {
 }
 
 .queueDisplay li:hover {
-  cursor: hand;
   cursor: pointer;
 }
 
 .queueSongRemove {
   /*display: block;*/
   position: absolute;
-}
-
-.queueSongRemove:active {
-  position:absolute;
-  right: 60px;
+  top: 0px;
+  right: -20px;
 }
 
 nav img {
@@ -347,6 +343,13 @@ button:active {
   top:1px;
 }
 
+img:hover .imgPlay {
+  display: block;
+}
+
+img:hover .like {
+  display: block;
+}
 .imgPlay {
   /*display: none;*/
   position: absolute;

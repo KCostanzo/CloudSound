@@ -26,9 +26,9 @@ var removeSong = function(like) {
 	_likedSongs.splice(idx, 1);
 };	
 
-LikeStore.fetchUserSongs = function(userId) {
-	
-};
+// LikeStore.fetchUserSongs = function(userId) {
+
+// };
 
 LikeStore.all = function() {
 	var songIds = [];
@@ -37,6 +37,10 @@ LikeStore.all = function() {
 	});
 
 	return songIds;
+};
+
+LikeStore.empty = function() {
+	_likedSongs = [];
 };
 
 LikeStore.songLiked = function(songId) {

@@ -34436,6 +34436,7 @@
 
 	// var ClientActions = require('../actions/client_actions.js');
 	var ServerActions = __webpack_require__(273);
+	var LikeActions = __webpack_require__(289);
 	
 	module.exports = {
 	  fetchCurrentUser: function () {
@@ -34464,6 +34465,7 @@
 	      data: loginData,
 	      success: function (user) {
 	        ServerActions.login(user);
+	        LikeActions.getLiked();
 	      },
 	      error: function (error) {
 	        ServerActions.receiveError(error);
@@ -34602,6 +34604,7 @@
 	var ClientActions = __webpack_require__(271);
 	var LikeActions = __webpack_require__(289);
 	var SessionStore = __webpack_require__(245);
+	var LikeStore = __webpack_require__(293);
 	var hashHistory = __webpack_require__(186).hashHistory;
 	var Search = __webpack_require__(278);
 	
@@ -34633,6 +34636,7 @@
 			event.preventDefault();
 			ClientActions.logoutUser(this.state.currentUser);
 			this.enableButtons();
+			LikeStore.empty();
 			console.log('logged out');
 		},
 	
@@ -35177,7 +35181,8 @@
 		},
 	
 		// userChange: function() {
-		// 	this.setState({ likes: LikeActions.getLiked() });
+		// 	LikeActions.getLiked()
+		// 	// this.setState({ likes: LikeActions.getLiked() });
 		// },
 	
 		render: function () {
@@ -35525,12 +35530,15 @@
 				this.props.song.title,
 				', ',
 				this.props.song.artist,
+				React.createElement(
+					'button',
+					{ className: 'queueSongRemove', onClick: this.removeSongFromQueue },
+					'X'
+				),
 				React.createElement('br', null)
 			);
 		}
 	});
-	
-	// <button className='queueSongRemove' onClick={this.removeSongFromQueue}>X</button>
 
 /***/ },
 /* 287 */
@@ -35554,6 +35562,7 @@
 		componentDidMount: function () {
 			this.songListener = SongStore.addListener(this.songChange);
 			SongActions.fetchArtistSongs(this.props.params.artist);
+			// LikeActions.getLiked();
 		},
 	
 		componentWillUnmount: function () {
@@ -35793,7 +35802,9 @@
 		_likedSongs.splice(idx, 1);
 	};
 	
-	LikeStore.fetchUserSongs = function (userId) {};
+	// LikeStore.fetchUserSongs = function(userId) {
+	
+	// };
 	
 	LikeStore.all = function () {
 		var songIds = [];
@@ -35802,6 +35813,10 @@
 		});
 	
 		return songIds;
+	};
+	
+	LikeStore.empty = function () {
+		_likedSongs = [];
 	};
 	
 	LikeStore.songLiked = function (songId) {

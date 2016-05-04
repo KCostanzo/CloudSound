@@ -32,7 +32,8 @@ module.exports = React.createClass({
 	},
 
 	// userChange: function() {
-	// 	this.setState({ likes: LikeActions.getLiked() });
+	// 	LikeActions.getLiked()
+	// 	// this.setState({ likes: LikeActions.getLiked() });
 	// },
 
 	render: function() {

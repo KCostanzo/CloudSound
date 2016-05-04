@@ -1,5 +1,6 @@
 // var ClientActions = require('../actions/client_actions.js');
 var ServerActions = require('../actions/user_server_actions.js');
+var LikeActions = require('../actions/like_actions.js');
 
 module.exports = {
   fetchCurrentUser: function() {
@@ -26,6 +27,7 @@ module.exports = {
       data: loginData,
       success: function(user) {
         ServerActions.login(user);
+        LikeActions.getLiked();
       },
       error: function(error) {
         ServerActions.receiveError(error);

@@ -4,6 +4,7 @@ var SignUp = require('./sign_up.jsx');
 var ClientActions = require('../actions/client_actions.js');
 var LikeActions = require('../actions/like_actions.js');
 var SessionStore = require('../stores/session_store.js');
+var LikeStore = require('../stores/likes_store.js');
 var hashHistory = require('react-router').hashHistory;
 var Search = require('./song_search.jsx');
 
@@ -33,6 +34,7 @@ module.exports = React.createClass({
 		event.preventDefault();
 		ClientActions.logoutUser(this.state.currentUser);
 		this.enableButtons();
+		LikeStore.empty();
 		console.log('logged out');
 	},
 
