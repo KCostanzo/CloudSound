@@ -11,10 +11,10 @@ module.exports = React.createClass({
 		return (
 			<li className='queueItem'>
 				{this.props.song.title}, {this.props.song.artist}
-				<button className='queueSongRemove' onClick={this.removeSongFromQueue}>X</button>
 				<br/>
 			</li>
 		);
 	}
 })
 		
+				// <button className='queueSongRemove' onClick={this.removeSongFromQueue}>X</button>

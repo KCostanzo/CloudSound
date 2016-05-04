@@ -171,6 +171,7 @@ img:hover {
 }
 
 .queueDisplay li {
+  position: relative;
   list-style-type: none;
   border: solid black;
   margin: 10px;
@@ -183,7 +184,15 @@ img:hover {
   cursor: pointer;
 }
 
-.queueSongRemove {}
+.queueSongRemove {
+  /*display: block;*/
+  position: absolute;
+}
+
+.queueSongRemove:active {
+  position:absolute;
+  right: 60px;
+}
 
 nav img {
   width:45px;

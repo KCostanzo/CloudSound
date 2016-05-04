@@ -35494,15 +35494,12 @@
 				this.props.song.title,
 				', ',
 				this.props.song.artist,
-				React.createElement(
-					'button',
-					{ className: 'queueSongRemove', onClick: this.removeSongFromQueue },
-					'X'
-				),
 				React.createElement('br', null)
 			);
 		}
 	});
+	
+	// <button className='queueSongRemove' onClick={this.removeSongFromQueue}>X</button>
 
 /***/ },
 /* 287 */
