@@ -35824,6 +35824,7 @@
 	var LikeActions = __webpack_require__(271);
 	var SongStore = __webpack_require__(283);
 	var LikeStore = __webpack_require__(245);
+	var SessionStore = __webpack_require__(277);
 	var IndexItem = __webpack_require__(285);
 	
 	module.exports = React.createClass({
@@ -35866,7 +35867,7 @@
 					'ul',
 					null,
 					this.state.songs.map(function (song) {
-						return React.createElement(IndexItem, { song: song, key: song.id + 1000 });
+						return React.createElement(IndexItem, { song: song, key: song.id + 1000 + SessionStore.currentUser().id * 100 });
 					})
 				),
 				React.createElement(

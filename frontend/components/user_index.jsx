@@ -4,6 +4,7 @@ var SongActions = require('../actions/song_client_actions.js');
 var LikeActions = require('../actions/like_actions.js');
 var SongStore = require('../stores/song_store.js');
 var LikeStore = require('../stores/likes_store.js');
+var SessionStore = require('../stores/session_store.js');
 var IndexItem = require('./index_item.jsx');
 
 module.exports = React.createClass({
@@ -42,7 +43,7 @@ module.exports = React.createClass({
 					<ul>
 						{
 							this.state.songs.map(function(song) {
-								return <IndexItem song={song} key={song.id + 1000} />
+								return <IndexItem song={song} key={song.id + 1000 + (SessionStore.currentUser().id * 100)} />
 							})
 						}
 					</ul>
