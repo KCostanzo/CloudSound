@@ -25,10 +25,11 @@ id              | integer   | not null, primary key
 name            | string    | not null, indexed, unique
 description     | string    | not null
 
-## playlists
+## likes
 column name | data type | details
 ------------|-----------|-----------------------
 id          | integer   | not null, primary key
 user_id     | integer   | not null, foreign key (references users), indexed
+song_id		| integer	| not null, foreign key (songs)
 title       | string    | not null
 description | string    |
