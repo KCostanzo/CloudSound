@@ -1,122 +1,96 @@
 # CloudSound
 
-[Heroku link][heroku]
+[CloudSound live][heroku]
 
-[heroku]: https://cloudsoundapp.herokuapp.com
+[heroku]: http://www.cloudsound.site
 
-## Minimum Viable Product
+CloudSound is a full-stack web application inspired by Soundcloud.  It utilizes Ruby on Rails on the backend, a PostgreSQL database, and React.js with a Flux architectural framework on the frontend.  
 
-CloudSound is a web application inspired by Soundcloud built using Ruby on Rails and React.js. By the end of week 9 this app will have, at minimum, the following features:
+## Features & Implementation
 
-- [ ] Search bar navigation to find songs/artists
-- [ ] Index (and Artist) pages to view songs and albums
-- [ ] Persistent now playing bar for songs and playlists
-- [ ] Toggle Playback
-- [ ] Visually appealing CSS design
+- [ ] Song Player (persistent) plays listed songs
+- [ ] Current Queue (persistent) allows user to put songs in a queue, songs auto play after the now playing song is finished or skipped
+- [ ] Search box dynamically searches through all songs and brings you to the song's artist page
+- [ ] User Authentication allows users to save their account to DB, allows users to track liked songs between uses
+- [ ] Likes allow a user to save songs they like which will appear on their user page
+
+### Single-Page App
+
+CloudSound is truly a single-page; all content is delivered on one static page.  The app component renders the persistent navbar, now playing bar, and queue display, and its children components listen to a `SongStore` to render content based on a call to `SongStore.all()` or `SongStore.likedSongs()`.  Sensitive user information is kept out of the frontend of the app by making an API call to `SessionsController#fetchCurrentUser`.
+
+```ruby
+class Api::SessionsController < ApplicationController
+  def show
+    if current_user 
+      @user = current_user
+      render "api/sessions/loggedin"
+    else
+      @errors = nil
+      render "api/shared/errors", status: 299
+    end
+  end
+ end
+  ```
+
+### Songs
+
+  On the database side, the songs are stored in one table in the database, which contains columns for `id`, `title`, `artist`, `audio_url`, and `img_url`.  Songs are fetched when the main cover page renders and are stored in a `SongStore` where they are availible to the index page and used to populate index items (with expansion of availible songs in the db I will use a Song.first(30) instead of Song.all to fetch the inital songs). Upon login, an API call is made to the database which joins the user table and the likes table on `user_id` and filters by the current user's `id`. These liked songs are used by the user page to select songs via `song_id` and populate the user page with song index items, and by the song index items to check their `songLiked` state.
 
 
-## Product Goals and Priorities
+![image of index page](http://res.cloudinary.com/mr-costanzo/image/upload/v1462480457/Screen_Shot_2016-05-05_at_1.33.14_PM_c3wn3l.png)
 
-CloudSound will allow users to do the following:
+`CoverIndex` render method:
 
-<!-- This is a Markdown checklist. Use it to keep track of your
-progress. Put an x between the brackets for a checkmark: [x] -->
+```javascript
+render: function() {
+    return (
+      <div className='cover-index'>
+          <ul>
+            {
+              this.state.songs.map(function(song) {
+                return <IndexItem song={song} key={song.id} />
+              })
+            }
+          </ul>
+        </div>
+      );
+  }
+```
 
-- [ ] Play Songs by Click interactions with Song Item Components (MVP)
-- [ ] Now Playing Bar persists between pages (MVP)
-- [ ] Search Songs in Search Bar (MVP)
-- [ ] Create an account (expected feature, but not MVP)
-- [ ] Log in / Log out, including as a Guest/Demo User (expected feature, but not MVP)
-- [ ] Navigate to Artist Pages with Artist Song Items (expected feature, but not MVP)
-- [ ] Select and Display Song Items on User Page (expected feature, but not MVP)
-- [ ] Playlist Functionality (expected feature, but not MVP)
+### Now Playing Bar and Queue (Persistent)
 
-## Design Docs
-* [View Wireframes][views]
-* [React Components][components]
-* [Flux Cycles][flux-cycles]
-* [API endpoints][api-endpoints]
-* [DB schema][schema]
+A key feature of this site is the persistent now playing bar which will not be interrupted via navigation to other pages in the app. Accomplishing this was simple with react, I rendered the components for the Navbar, Now Playing Bar, and Current Queue in the App component instead of as children, and the main page displays of cover, artist, and user indexes all exist as child routes of the App component. 
 
-[views]: ./docs/views.md
-[components]: ./docs/components.md
-[flux-cycles]: ./docs/flux-cycles.md
-[api-endpoints]: ./docs/api-endpoints.md
-[schema]: ./docs/schema.md
+The Now Playing Bar and Queue components heavily rely on the `PlayStore`. This is the Store that is responsible both for the now playing song and the current queue of songs. This store fetches songs one at a time from the song DB table by the `SongActions.playSong(this.props.song.id)` and `SongActions.addSong(songId)` methods, and puts them in the Store either as the playing song or by inserting them into the queue.
 
-## Implementation Timeline
+### Likes
 
-### Phase 1: Backend setup, Heroku Upload (1 day)
+Likes are stored in the database through a `likes` join table.  The `likes` table contains the columns `id`,`user_id` and `song_id`.
 
-**Objective:** Functioning rails project with Authentication
+Likes are maintained on the frontend in the `LikesStore`.  Both the index items themselves and the user index page have listeners on the like store. The user index uses the likes to set its own state with all the user's liked songs which it then uses to fetch specific songs out of the song store via the `SongStore.likedSongs(this.state.songIds)` method. The index items listen to the like store in order to change their button display and function when a song has been liked, this has the effect of rendering the unlike button on the index item when a user has liked a song.
 
-- [ ] create new project
-- [ ] Upload to Heroku
-- [ ] Auth
+```javascript
+  buttonToggle: function() {
+    if (this.state.userLoggedIn) {
+      if (this.state.songLiked) {
+        return <button className="like" onClick={this.unlike}>Unlike</button>
+      } else{
+        return <button className="like" onClick={this.createLike}>Like</button>
+      }
+    } else {
+      return <div/>
+    }
+  },
+```
 
-### Phase 2: Flux Architecture and Router, Basic Components (1 day)
+## Future Directions for the Project
 
-**Summary:** Songs seeded to store will be accessed through index items on user interface.
+In addition to the features already implemented, I plan to continue work on this project.  The next steps for CloudSound are outlined below.
 
-- [ ] setup Webpack & Flux scaffold
-- [ ] setup the flux loop with skeleton files
-- [ ] setup React Router
-- [ ] Cover Index View
-- implement each component, building out the flux loop as needed.
-  - [ ] `CoverIndex`
-  - [ ] `IndexItem`
-- [ ] Song Item click functions
-- [ ] Song Store holds music
+### Playlists
 
-### Phase 3: Songs Model, Index Page, API, and basic APIUtil (1 days)
+Savable Playlists are a major user feature in SoundCloud, when I have suffiecient time i plan to introduce playlists CRUD functinoality to the user page. This would require backend to estabish join table interaction between users, their playlists, and the playlists' songs.
 
-**Objective:** Songs can be accessed through Index Items
+### Song Tags
 
-- [ ] create `Song` model
-- [ ] API routes provide song urls
-- [ ] setup `APIUtil` to interact with the API
-- [ ] test out API interaction in the console.
-- [ ] Begin search bar
-- [ ] Start Seeding Songs
-
-### Phase 4: Search and Now Playing Bar (Audio Stream) (2 days)
-
-**Objective:** Stream Bar persists at bottom of page
-
-- [ ] Complete Search Bar
-- [ ] Persistent Audio Streaming feature (via HTML5 audio or other)
-- [ ] Persistent Stream bar in UI
-- [ ] Sample Seeds to test audio
-
-### Phase 5: Layout (.5 days)
-
-- [ ] Clean Up UI, original colors, backgrounds
-
-### Phase 6: Playlists OR Artist Page, extra features (2 days)
-
-**Objective:** Playlist Feature and/or possible Artist Page (according to time)
-
-- [ ] Stream Bar playlists
-- [ ] Artist pages feature owned songs
-- [ ] User Page w/ playlists(B)
-- [ ] Animated box on Intro page (scroll down to cover?)(B)
-
-### Phase 7: Cleanup and Seeding (1 day)
-
-**objective:** Make the site feel more cohesive and awesome.
-
-- [ ] Get feedback on my UI from others
-- [ ] Refactor HTML classes & CSS rules
-- [ ] Add modals, transitions, and other styling flourishes.
-
-### Bonus Features (TBD)
-- [ ] User Page displaying songs/playlists
-- [ ] Animated searchbox on root page
-- [ ] User/Artist Add Track Feature (needs destroy track as well)
-- [ ] Infinite scroll for Cover Index
-
-[phase-one]: ./docs/phases/phase1.md
-[phase-two]: ./docs/phases/phase2.md
-[phase-three]: ./docs/phases/phase3.md
-[phase-four]: ./docs/phases/phase4.md
-[phase-five]: ./docs/phases/phase5.md
+Another feature that would be useful for my site  would be tagging functionality which allowed users to search for songs by categories such as genre. This would allow users to find songs without having to know specific artists and enable them to find new music more easily. I believe this tagging would best be done on upload with edit and destroy privledges given only to the uploader.
