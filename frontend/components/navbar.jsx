@@ -27,7 +27,6 @@ module.exports = React.createClass({
 
 	storeChange: function() {
 		this.setState({userPresent: SessionStore.userPresent(), currentUser: SessionStore.currentUser()});
-		// LikeActions.getLiked();
 	},
 
 	logoutUser: function(event) {
@@ -35,7 +34,7 @@ module.exports = React.createClass({
 		ClientActions.logoutUser(this.state.currentUser);
 		this.enableButtons();
 		LikeStore.empty();
-		console.log('logged out');
+		// console.log('logged out');
 	},
 
 	linkToHome: function() {
@@ -55,7 +54,6 @@ module.exports = React.createClass({
 		hashHistory.push("users/" + this.state.currentUser.id);
 	},
 
-//TODO: put search bar in nav
 	render: function() {
 		if (this.state.userPresent) {
 			return (

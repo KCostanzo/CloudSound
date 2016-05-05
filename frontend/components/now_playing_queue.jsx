@@ -17,13 +17,11 @@ module.exports = React.createClass({
 	},
 
 	playChange: function() {
-		if (PlayStore.nowPlaying()) {
 		this.setState({nowPlaying: PlayStore.nowPlaying(), queue: PlayStore.queue() });
-		}
 	},
 
 	render: function() {
-		if (this.state.nowPlaying) {
+		if (PlayStore.queue().length > 0) {
 			return (
 				<div className="queueDisplay">
 				<h3>Current Queue</h3>

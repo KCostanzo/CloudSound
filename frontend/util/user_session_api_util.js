@@ -15,10 +15,11 @@ module.exports = {
         }
       },
       statusCode: {
-        299: function(response) {console.log('no user logged in')}
+        299: function(response) {}
       }
     })
   },
+  //console.log('no user logged in')
 
   loginUser: function(loginData) {
     $.ajax({

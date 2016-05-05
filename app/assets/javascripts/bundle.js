@@ -56,13 +56,13 @@
 	// var SongStor = require('./stores/song_store.js');
 	// var PlayStore = require('./stores/play_store.js');
 	// var UStore = require('./stores/user_store.js');
-	var Likes = __webpack_require__(293);
-	var ClientActions = __webpack_require__(271);
+	var Likes = __webpack_require__(245);
+	var ClientActions = __webpack_require__(268);
 	
 	var App = __webpack_require__(274);
-	var CoverPage = __webpack_require__(282);
-	var ArtistIndex = __webpack_require__(287);
-	var UserIndex = __webpack_require__(288);
+	var CoverPage = __webpack_require__(284);
+	var ArtistIndex = __webpack_require__(290);
+	var UserIndex = __webpack_require__(291);
 	
 	ClientActions.fetchCurrentUser();
 	
@@ -27403,65 +27403,75 @@
 
 	var Store = __webpack_require__(246).Store;
 	var AppDispatcher = __webpack_require__(264);
-	var SessionConstants = __webpack_require__(267);
+	var Constants = __webpack_require__(267);
 	
-	var SessionStore = new Store(AppDispatcher);
+	var LikeStore = new Store(AppDispatcher);
 	
-	var _currentUser = null;
-	var _errors = [];
-	var _userPresent = false;
+	var _likedSongs = [];
 	
-	var loginUser = function (user) {
-	  _currentUser = user;
-	  _userPresent = true;
+	var addSong = function (like) {
+		_likedSongs.push(like.song_id);
 	};
 	
-	var logout = function (user) {
-	  _currentUser = null;
-	  _userPresent = false;
+	var resetSongs = function (songs) {
+		if (!songs.songs) {
+			return;
+		}
+		_likedSongs = [];
+	
+		songs.songs.forEach(function (song) {
+			_likedSongs.push(song.id);
+		});
 	};
 	
-	var addErrors = function (errors) {
-	  var temp = errors.responseText;
-	  if (temp) {
-	    _errors.push(temp);
-	  }
+	var removeSong = function (like) {
+		var idx = _likedSongs.indexOf(parseInt(like.song_id));
+		_likedSongs.splice(idx, 1);
 	};
 	
-	SessionStore.errors = function () {
-	  return _errors;
+	// LikeStore.fetchUserSongs = function(userId) {
+	
+	// };
+	
+	LikeStore.all = function () {
+		var songIds = [];
+		_likedSongs.forEach(function (songId) {
+			songIds.push(songId);
+		});
+	
+		return songIds;
 	};
 	
-	SessionStore.emptyErrors = function () {
-	  _errors = [];
+	LikeStore.empty = function () {
+		_likedSongs = [];
 	};
 	
-	SessionStore.currentUser = function () {
-	  return _currentUser;
+	LikeStore.songLiked = function (songId) {
+		for (var i = 0; i < _likedSongs.length; i++) {
+			if (_likedSongs[i] === songId) {
+				return true;
+			}
+		};
+		return false;
 	};
 	
-	SessionStore.userPresent = function () {
-	  return _userPresent;
+	LikeStore.__onDispatch = function (payload) {
+		switch (payload.actionType) {
+			case Constants.LIKED_SONGS:
+				resetSongs(payload.songs);
+				break;
+			case Constants.LIKE_MADE:
+				addSong(payload.like);
+				break;
+			case Constants.UNLIKED:
+				removeSong(payload.like);
+				break;
+		}
+		this.__emitChange();
 	};
 	
-	SessionStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case SessionConstants.LOGIN_USER:
-	      loginUser(payload.user);
-	      break;
-	    case SessionConstants.LOGOUT_USER:
-	      logout(payload.user);
-	      break;
-	    case SessionConstants.ERROR_RECEIVED:
-	      addErrors(payload.errors);
-	      break;
-	  }
-	  this.__emitChange();
-	};
-	
-	window.Store = SessionStore;
-	
-	module.exports = SessionStore;
+	window.Likes = LikeStore;
+	module.exports = LikeStore;
 
 /***/ },
 /* 246 */
@@ -34244,11 +34254,936 @@
 	
 	  LIKED_SONGS: 'LIKED_SONGS',
 	  LIKE_MADE: 'LIKE_MADE',
-	  UNLIKED: 'UNLIKED'
+	  UNLIKED: 'UNLIKED',
+	
+	  ADD_SONG: 'ADD_SONG'
 	};
 
 /***/ },
 /* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Util = __webpack_require__(269);
+	
+	module.exports = {
+	  fetchCurrentUser: function () {
+	    Util.fetchCurrentUser();
+	  },
+	
+	  loginUser: function (user) {
+	    Util.loginUser(user);
+	  },
+	
+	  createUser: function (user) {
+	    Util.createUser(user);
+	  },
+	
+	  logoutUser: function (user) {
+	    Util.logoutUser(user);
+	  },
+	
+	  updateUser: function (user) {
+	    Util.updateUser(user);
+	  }
+	};
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// var ClientActions = require('../actions/client_actions.js');
+	var ServerActions = __webpack_require__(270);
+	var LikeActions = __webpack_require__(271);
+	
+	module.exports = {
+	  fetchCurrentUser: function () {
+	    $.ajax({
+	      method: 'GET',
+	      url: 'api/session',
+	      success: function (object) {
+	        if (object.username) {
+	          ServerActions.fetchCurrentUser(object);
+	        } else {
+	          ServerActions.receiveError(object);
+	        }
+	      },
+	      statusCode: {
+	        299: function (response) {}
+	      }
+	    });
+	  },
+	  //console.log('no user logged in')
+	
+	  loginUser: function (loginData) {
+	    $.ajax({
+	      method: 'POST',
+	      url: 'api/session',
+	      data: loginData,
+	      success: function (user) {
+	        ServerActions.login(user);
+	        LikeActions.getLiked();
+	      },
+	      error: function (error) {
+	        ServerActions.receiveError(error);
+	      }
+	    });
+	  },
+	
+	  createUser: function (userData) {
+	    $.ajax({
+	      method: 'POST',
+	      url: 'api/users',
+	      data: userData,
+	      success: function (user) {
+	        if (user.username) {
+	          ServerActions.login(user);
+	        } else {
+	          ServerActions.receiveError(user);
+	        }
+	      },
+	      error: function (error) {
+	        ServerActions.receiveError(error);
+	      }
+	    });
+	  },
+	
+	  logoutUser: function (user) {
+	    $.ajax({
+	      method: 'DELETE',
+	      url: 'api/session',
+	      success: function (user) {
+	        ServerActions.logout(user);
+	      }
+	    });
+	  },
+	
+	  updateUser: function (userData) {
+	    $.ajax({
+	      method: 'PATCH',
+	      url: 'api/users/' + userData.id,
+	      data: userData,
+	      success: function (user) {
+	        ServerActions.update(user);
+	      }
+	    });
+	  }
+	};
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(264);
+	var Constants = __webpack_require__(267);
+	
+	module.exports = {
+	  fetchCurrentUser: function (user) {
+	    Dispatcher.dispatch({
+	      actionType: Constants.LOGIN_USER,
+	      user: user
+	    });
+	  },
+	
+	  login: function (user) {
+	    Dispatcher.dispatch({
+	      actionType: Constants.LOGIN_USER,
+	      user: user
+	    });
+	  },
+	
+	  create: function (user) {
+	    Dispatcher.dispatch({
+	      actionType: Constants.USER_RECEIVED,
+	      user: user
+	    });
+	  },
+	
+	  receiveError: function (errors) {
+	    Dispatcher.dispatch({
+	      actionType: Constants.ERROR_RECEIVED,
+	      errors: errors
+	    });
+	  },
+	
+	  logout: function (user) {
+	    Dispatcher.dispatch({
+	      actionType: Constants.LOGOUT_USER,
+	      user: user
+	    });
+	  },
+	
+	  update: function (user) {
+	    Dispatcher.dispatch({
+	      actionType: Constants.USER_UPDATED,
+	      user: user
+	    });
+	  }
+	};
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Util = __webpack_require__(272);
+	var Dispatcher = __webpack_require__(264);
+	var Constants = __webpack_require__(267);
+	
+	module.exports = {
+		createLike: function (songId) {
+			Util.createLike(songId);
+		},
+	
+		getLiked: function () {
+			Util.getLikedSongs();
+		},
+	
+		unlike: function (songId) {
+			Util.unlikeSong(songId);
+		}
+	};
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var LikeActions = __webpack_require__(273);
+	
+	module.exports = {
+		createLike: function (song_id) {
+			$.ajax({
+				method: 'POST',
+				url: 'api/likes',
+				data: { song_id: song_id },
+				success: function (like) {
+					LikeActions.likeCreated(like);
+				},
+				error: function (error) {
+					LikeActions.likeError(error);
+				}
+			});
+		},
+	
+		getLikedSongs: function () {
+			$.ajax({
+				method: 'GET',
+				url: 'api/likes',
+				success: function (songs) {
+					LikeActions.getLikedSongs(songs);
+				},
+				error: function (error) {
+					LikeActions.likeError(error);
+				}
+			});
+		},
+	
+		unlikeSong: function (songId) {
+			$.ajax({
+				method: 'DELETE',
+				url: 'api/likes/' + songId,
+				data: { song_id: songId },
+				success: function (like) {
+					LikeActions.unlike(like);
+				},
+				error: function (error) {
+					LikeActions.likeError(error);
+				}
+			});
+		}
+	};
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(264);
+	var Constants = __webpack_require__(267);
+	
+	module.exports = {
+		getLikedSongs: function (songs) {
+			Dispatcher.dispatch({
+				actionType: Constants.LIKED_SONGS,
+				songs: songs
+			});
+		},
+	
+		likeCreated: function (like) {
+			Dispatcher.dispatch({
+				actionType: Constants.LIKE_MADE,
+				like: like
+			});
+		},
+	
+		unlike: function (like) {
+			Dispatcher.dispatch({
+				actionType: Constants.UNLIKED,
+				like: like
+			});
+		},
+	
+		likeError: function (error) {}
+	};
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Navbar = __webpack_require__(275);
+	var CoverPage = __webpack_require__(284);
+	var NowPlayingBar = __webpack_require__(287);
+	var PlayQueue = __webpack_require__(288);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'main' },
+	      React.createElement(Navbar, null),
+	      this.props.children,
+	      React.createElement(PlayQueue, null),
+	      React.createElement(NowPlayingBar, null)
+	    );
+	  }
+	});
+	// <video autoPlay loop>
+	//   <source
+	//     src="http://res.cloudinary.com/mr-costanzo/video/upload/v1461954942/videoplayback_rg6kkg.mp4"
+	//     type="video/mp4"/>
+	// </video>
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Login = __webpack_require__(276);
+	var SignUp = __webpack_require__(278);
+	var ClientActions = __webpack_require__(268);
+	var LikeActions = __webpack_require__(271);
+	var SessionStore = __webpack_require__(277);
+	var LikeStore = __webpack_require__(245);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	var Search = __webpack_require__(279);
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		getInitialState: function () {
+			return {
+				userPresent: SessionStore.userPresent(),
+				currentUser: SessionStore.currentUser(),
+				currentlyClicked: false
+			};
+		},
+	
+		componentDidMount: function () {
+			this.SSListener = SessionStore.addListener(this.storeChange);
+		},
+	
+		componentWillUnmount: function () {
+			this.SSListener.remove();
+		},
+	
+		storeChange: function () {
+			this.setState({ userPresent: SessionStore.userPresent(), currentUser: SessionStore.currentUser() });
+		},
+	
+		logoutUser: function (event) {
+			event.preventDefault();
+			ClientActions.logoutUser(this.state.currentUser);
+			this.enableButtons();
+			LikeStore.empty();
+			// console.log('logged out');
+		},
+	
+		linkToHome: function () {
+			hashHistory.push('/');
+		},
+	
+		clickedLogin: function () {
+			this.setState({ currentlyClicked: true });
+		},
+	
+		enableButtons: function () {
+			this.setState({ currentlyClicked: false });
+			// LikeActions.getLiked();
+		},
+	
+		sendUser: function () {
+			hashHistory.push("users/" + this.state.currentUser.id);
+		},
+	
+		render: function () {
+			if (this.state.userPresent) {
+				return React.createElement(
+					'nav',
+					{ className: 'logged' },
+					' ',
+					React.createElement(
+						'h2',
+						{ onClick: this.linkToHome },
+						'Cloud Sound'
+					),
+					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
+					React.createElement(Search, null),
+					React.createElement(
+						'button',
+						{ className: 'userPage', onClick: this.sendUser },
+						'User Page'
+					),
+					React.createElement(
+						'button',
+						{ className: 'logOut', onClick: this.logoutUser },
+						'Logout'
+					)
+				);
+			} else {
+				return React.createElement(
+					'nav',
+					null,
+					' ',
+					React.createElement(
+						'h2',
+						{ onClick: this.linkToHome },
+						'Cloud Sound'
+					),
+					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
+					React.createElement(Search, null),
+					React.createElement(SignUp, { clickedLogin: this.clickedLogin, currentlyClicked: this.state.currentlyClicked, enableButtons: this.enableButtons }),
+					React.createElement(Login, { clickedLogin: this.clickedLogin, currentlyClicked: this.state.currentlyClicked, enableButtons: this.enableButtons })
+				);
+			}
+		}
+	});
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(268);
+	var Modal = __webpack_require__(166);
+	var Store = __webpack_require__(277);
+	var LikeActions = __webpack_require__(271);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  getInitialState: function () {
+	    return { modalOpen: false, username: '', password: '', errors: [] };
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalOpen: false });
+	    this.props.enableButtons();
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalOpen: true });
+	    this.props.clickedLogin();
+	  },
+	
+	  loginUser: function (event) {
+	    event.preventDefault();
+	    Store.emptyErrors();
+	    var user = { user: {
+	        username: this.state.username,
+	        password: this.state.password
+	      } };
+	    ClientActions.loginUser(user);
+	    if (Store.userPresent()) {
+	      this.setState({ username: '', password: '' });
+	      this.closeModal();
+	    } else {
+	      this.setState({ errors: Store.errors(), password: '' });
+	    }
+	  },
+	
+	  guestLogin: function (event) {
+	    var user = { user: {
+	        username: 'guest',
+	        password: 'password369'
+	      } };
+	    ClientActions.loginUser(user);
+	  },
+	
+	  nameChange: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  passChange: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
+	  errors: function () {
+	    if (this.state.errors.length === 0) {
+	      return;
+	    } else {
+	      return React.createElement(
+	        'ul',
+	        null,
+	        this.state.errors.map(function (error, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            error
+	          );
+	        })
+	      );
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'button',
+	        { className: 'unlogged', onClick: this.openModal, disabled: this.props.currentlyClicked },
+	        'Log In'
+	      ),
+	      React.createElement(
+	        'button',
+	        { className: 'unlogged', onClick: this.guestLogin, disabled: this.props.currentlyClicked },
+	        'Guest Account'
+	      ),
+	      React.createElement(
+	        Modal,
+	        { className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.loginUser },
+	          this.errors(),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'h3',
+	            null,
+	            'Sign In!'
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'label',
+	            null,
+	            'Username:',
+	            React.createElement('input', { type: 'text', value: this.state.username, onChange: this.nameChange })
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'label',
+	            null,
+	            'Password:',
+	            React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
+	          ),
+	          React.createElement('br', null),
+	          React.createElement('input', { type: 'submit', value: 'Login!' })
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(246).Store;
+	var AppDispatcher = __webpack_require__(264);
+	var SessionConstants = __webpack_require__(267);
+	
+	var SessionStore = new Store(AppDispatcher);
+	
+	var _currentUser = null;
+	var _errors = [];
+	var _userPresent = false;
+	
+	var loginUser = function (user) {
+	  _currentUser = user;
+	  _userPresent = true;
+	};
+	
+	var logout = function (user) {
+	  _currentUser = null;
+	  _userPresent = false;
+	};
+	
+	var addErrors = function (errors) {
+	  var temp = errors.responseText;
+	  if (temp) {
+	    _errors.push(temp);
+	  }
+	};
+	
+	SessionStore.errors = function () {
+	  return _errors;
+	};
+	
+	SessionStore.emptyErrors = function () {
+	  _errors = [];
+	};
+	
+	SessionStore.currentUser = function () {
+	  return _currentUser;
+	};
+	
+	SessionStore.userPresent = function () {
+	  return _userPresent;
+	};
+	
+	SessionStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SessionConstants.LOGIN_USER:
+	      loginUser(payload.user);
+	      break;
+	    case SessionConstants.LOGOUT_USER:
+	      logout(payload.user);
+	      break;
+	    case SessionConstants.ERROR_RECEIVED:
+	      addErrors(payload.errors);
+	      break;
+	  }
+	  this.__emitChange();
+	};
+	
+	window.Store = SessionStore;
+	
+	module.exports = SessionStore;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ClientActions = __webpack_require__(268);
+	var Modal = __webpack_require__(166);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  getInitialState: function () {
+	    return { modalOpen: false, username: '', password: '', errors: [] };
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalOpen: false });
+	    this.props.enableButtons();
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalOpen: true });
+	    this.props.clickedLogin();
+	  },
+	
+	  signupUser: function (event) {
+	    event.preventDefault();
+	    Store.emptyErrors();
+	    var user = { user: {
+	        username: this.state.username,
+	        password: this.state.password
+	      } };
+	    ClientActions.createUser(user);
+	    ClientActions.loginUser(user);
+	    if (Store.userPresent()) {
+	      this.setState({ username: '', password: '' });
+	      this.closeModal();
+	    } else {
+	      this.setState({ errors: Store.errors(), password: '' });
+	    }
+	    // LikeActions.getLiked();
+	  },
+	
+	  nameChange: function (event) {
+	    this.setState({ username: event.target.value });
+	  },
+	
+	  passChange: function (event) {
+	    this.setState({ password: event.target.value });
+	  },
+	
+	  errors: function () {
+	    if (this.state.errors.length === 0) {
+	      return;
+	    } else {
+	      return React.createElement(
+	        'ul',
+	        null,
+	        this.state.errors.map(function (error, idx) {
+	          return React.createElement(
+	            'li',
+	            { key: idx },
+	            error
+	          );
+	        })
+	      );
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'button',
+	        { className: 'unlogged', onClick: this.openModal, disabled: this.props.currentlyClicked },
+	        'Sign Up'
+	      ),
+	      React.createElement(
+	        Modal,
+	        { className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.signupUser },
+	          this.errors(),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'h3',
+	            null,
+	            'Sign Up!'
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'label',
+	            null,
+	            'Username:',
+	            React.createElement('input', { type: 'text', value: this.state.username, onChange: this.nameChange })
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'label',
+	            null,
+	            'Password:',
+	            React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
+	          ),
+	          React.createElement('br', null),
+	          React.createElement('input', { type: 'submit', value: 'Sign Up!' })
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(186).hashHistory;
+	var SongActions = __webpack_require__(280);
+	var SongStore = __webpack_require__(283);
+	
+	module.exports = React.createClass({
+	  displayName: 'exports',
+	
+	  getInitialState: function () {
+	    return { songName: "" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.songListener = SongStore.addListener(this.getSongs);
+	    SongActions.fetchSongs();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.songListener.remove();
+	  },
+	
+	  fillSongName: function (e) {
+	    var song = SongStore.find(e.target.value);
+	    this.setState({ songName: "" });
+	    hashHistory.push({ pathname: 'artists/' + song.artist });
+	  },
+	
+	  getSongs: function () {
+	    return SongStore.findSongs(this.state.songName);
+	  },
+	
+	  updateSong: function (e) {
+	    this.setState({ songName: e.target.value });
+	  },
+	
+	  render: function () {
+	    var songs = this.getSongs();
+	    var songList = [];
+	    if (songs.length > 0) {
+	      songs.forEach(function (song) {
+	        if (songList.length < 9) {
+	          songList.push(React.createElement(
+	            'li',
+	            { className: 'songListItem', key: song.id, song: song, value: song.id },
+	            song.title,
+	            ', ',
+	            song.artist
+	          ));
+	        }
+	      });
+	    } else {
+	      songList = "";
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'searchBox' },
+	      React.createElement('input', { className: 'songSearch', type: 'text',
+	        placeholder: 'Song or Artist Name Here',
+	        onChange: this.updateSong, value: this.state.songName }),
+	      React.createElement(
+	        'ul',
+	        { className: 'songSearchList', onClick: this.fillSongName
+	        },
+	        songList
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Util = __webpack_require__(281);
+	var Dispatcher = __webpack_require__(264);
+	var Constants = __webpack_require__(267);
+	
+	module.exports = {
+		fetchSongs: function () {
+			Util.fetchSongs();
+		},
+	
+		fetchArtistSongs: function (artist) {
+			Util.fetchArtistSongs(artist);
+		},
+	
+		playSong: function (song) {
+			Util.getSong(song);
+		},
+	
+		addSong: function (song) {
+			Util.addSong(song);
+		},
+	
+		nextSong: function () {
+			Dispatcher.dispatch({
+				actionType: Constants.NEXT_SONG
+			});
+		},
+	
+		removeFromQueue: function (qIdx) {
+			Dispatcher.dispatch({
+				actionType: Constants.QUEUE_REMOVE,
+				idx: qIdx
+			});
+		}
+	};
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ServerActions = __webpack_require__(282);
+	var LikeActions = __webpack_require__(271);
+	
+	module.exports = {
+		fetchSongs: function () {
+			$.ajax({
+				method: 'GET',
+				url: 'api/songs',
+				success: function (songs) {
+					ServerActions.getSongs(songs);
+				},
+				error: function (error) {
+					ServerActions.songError(error);
+				}
+			});
+		},
+	
+		fetchArtistSongs: function (artist) {
+			artist.split(" ").join("%20");
+			$.ajax({
+				method: 'GET',
+				url: 'api/artist/' + artist,
+				success: function (songs) {
+					ServerActions.getArtistSongs(songs);
+				},
+				error: function (error) {
+					ServerActions.songError(error);
+				}
+			});
+		},
+	
+		getSong: function (songId) {
+			$.ajax({
+				method: 'GET',
+				url: 'api/songs/' + songId,
+				success: function (song) {
+					ServerActions.getSong(song);
+				},
+				error: function (error) {
+					ServerActions.songError(error);
+				}
+			});
+		},
+	
+		addSong: function (songId) {
+			$.ajax({
+				method: 'GET',
+				url: 'api/songs/' + songId,
+				success: function (song) {
+					ServerActions.addSong(song);
+				},
+				error: function (error) {
+					ServerActions.songError(error);
+				}
+			});
+		}
+	};
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(264);
+	var Constants = __webpack_require__(267);
+	
+	module.exports = {
+		getSongs: function (songs) {
+			Dispatcher.dispatch({
+				actionType: Constants.SONGS_RECEIVED,
+				songs: songs
+			});
+		},
+	
+		getArtistSongs: function (songs) {
+			Dispatcher.dispatch({
+				actionType: Constants.ARTIST_SONGS,
+				songs: songs
+			});
+		},
+	
+		getSong: function (song) {
+			Dispatcher.dispatch({
+				actionType: Constants.SONG_RECEIVED,
+				song: song
+			});
+		},
+	
+		addSong: function (song) {
+			Dispatcher.dispatch({
+				actionType: Constants.ADD_SONG,
+				song: song
+			});
+		},
+	
+		songError: function (errors) {
+			Dispatcher.dispatch({
+				actionType: Constants.SONGS_ERROR,
+				errors: errors
+			});
+		}
+	};
+
+/***/ },
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(246).Store;
@@ -34334,825 +35269,17 @@
 	module.exports = SongStore;
 
 /***/ },
-/* 269 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(246).Store;
-	var AppDispatcher = __webpack_require__(264);
-	var SongConstants = __webpack_require__(267);
-	
-	var PlayStore = new Store(AppDispatcher);
-	
-	var _queue = [];
-	var _errors = [];
-	var _nowPlaying = null;
-	
-	var setErrors = function (error) {
-		_errors.push(error);
-	};
-	
-	var addSong = function (song) {
-		if (!_nowPlaying) {
-			_nowPlaying = song;
-		} else {
-			_queue.push(song);
-		}
-	};
-	
-	var removeFromQueue = function (queueIdx) {
-		_queue.splice(queueIdx, 1);
-	};
-	
-	PlayStore.queue = function () {
-		var queue = [];
-		_queue.forEach(function (song) {
-			queue.push(song);
-		});
-		return queue;
-	};
-	
-	var nextSong = function () {
-		_nowPlaying = _queue[0];
-		_queue = _queue.slice(1);
-	};
-	
-	PlayStore.nowPlaying = function () {
-		return _nowPlaying;
-	};
-	
-	PlayStore.__onDispatch = function (payload) {
-		switch (payload.actionType) {
-			case SongConstants.SONG_RECEIVED:
-				addSong(payload.song);
-				break;
-			case SongConstants.SONGS_ERROR:
-				setErrors(payload.errors);
-				break;
-			case SongConstants.NEXT_SONG:
-				nextSong();
-				break;
-			case SongConstants.QUEUE_REMOVE:
-				removeFromQueue(payload.idx);
-				break;
-		}
-		this.__emitChange();
-	};
-	
-	window.Play = PlayStore;
-	module.exports = PlayStore;
-
-/***/ },
-/* 270 */,
-/* 271 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Util = __webpack_require__(272);
-	
-	module.exports = {
-	  fetchCurrentUser: function () {
-	    Util.fetchCurrentUser();
-	  },
-	
-	  loginUser: function (user) {
-	    Util.loginUser(user);
-	  },
-	
-	  createUser: function (user) {
-	    Util.createUser(user);
-	  },
-	
-	  logoutUser: function (user) {
-	    Util.logoutUser(user);
-	  },
-	
-	  updateUser: function (user) {
-	    Util.updateUser(user);
-	  }
-	};
-
-/***/ },
-/* 272 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// var ClientActions = require('../actions/client_actions.js');
-	var ServerActions = __webpack_require__(273);
-	var LikeActions = __webpack_require__(289);
-	
-	module.exports = {
-	  fetchCurrentUser: function () {
-	    $.ajax({
-	      method: 'GET',
-	      url: 'api/session',
-	      success: function (object) {
-	        if (object.username) {
-	          ServerActions.fetchCurrentUser(object);
-	        } else {
-	          ServerActions.receiveError(object);
-	        }
-	      },
-	      statusCode: {
-	        299: function (response) {
-	          console.log('no user logged in');
-	        }
-	      }
-	    });
-	  },
-	
-	  loginUser: function (loginData) {
-	    $.ajax({
-	      method: 'POST',
-	      url: 'api/session',
-	      data: loginData,
-	      success: function (user) {
-	        ServerActions.login(user);
-	        LikeActions.getLiked();
-	      },
-	      error: function (error) {
-	        ServerActions.receiveError(error);
-	      }
-	    });
-	  },
-	
-	  createUser: function (userData) {
-	    $.ajax({
-	      method: 'POST',
-	      url: 'api/users',
-	      data: userData,
-	      success: function (user) {
-	        if (user.username) {
-	          ServerActions.login(user);
-	        } else {
-	          ServerActions.receiveError(user);
-	        }
-	      },
-	      error: function (error) {
-	        ServerActions.receiveError(error);
-	      }
-	    });
-	  },
-	
-	  logoutUser: function (user) {
-	    $.ajax({
-	      method: 'DELETE',
-	      url: 'api/session',
-	      success: function (user) {
-	        ServerActions.logout(user);
-	      }
-	    });
-	  },
-	
-	  updateUser: function (userData) {
-	    $.ajax({
-	      method: 'PATCH',
-	      url: 'api/users/' + userData.id,
-	      data: userData,
-	      success: function (user) {
-	        ServerActions.update(user);
-	      }
-	    });
-	  }
-	};
-
-/***/ },
-/* 273 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(264);
-	var Constants = __webpack_require__(267);
-	
-	module.exports = {
-	  fetchCurrentUser: function (user) {
-	    Dispatcher.dispatch({
-	      actionType: Constants.LOGIN_USER,
-	      user: user
-	    });
-	  },
-	
-	  login: function (user) {
-	    Dispatcher.dispatch({
-	      actionType: Constants.LOGIN_USER,
-	      user: user
-	    });
-	  },
-	
-	  create: function (user) {
-	    Dispatcher.dispatch({
-	      actionType: Constants.USER_RECEIVED,
-	      user: user
-	    });
-	  },
-	
-	  receiveError: function (errors) {
-	    Dispatcher.dispatch({
-	      actionType: Constants.ERROR_RECEIVED,
-	      errors: errors
-	    });
-	  },
-	
-	  logout: function (user) {
-	    Dispatcher.dispatch({
-	      actionType: Constants.LOGOUT_USER,
-	      user: user
-	    });
-	  },
-	
-	  update: function (user) {
-	    Dispatcher.dispatch({
-	      actionType: Constants.USER_UPDATED,
-	      user: user
-	    });
-	  }
-	};
-
-/***/ },
-/* 274 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var Navbar = __webpack_require__(275);
-	var CoverPage = __webpack_require__(282);
-	var NowPlayingBar = __webpack_require__(284);
-	var PlayQueue = __webpack_require__(285);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { id: 'main' },
-	      React.createElement(Navbar, null),
-	      this.props.children,
-	      React.createElement(PlayQueue, null),
-	      React.createElement(NowPlayingBar, null)
-	    );
-	  }
-	});
-	// <video autoPlay loop>
-	//   <source
-	//     src="http://res.cloudinary.com/mr-costanzo/video/upload/v1461954942/videoplayback_rg6kkg.mp4"
-	//     type="video/mp4"/>
-	// </video>
-
-/***/ },
-/* 275 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var Login = __webpack_require__(276);
-	var SignUp = __webpack_require__(277);
-	var ClientActions = __webpack_require__(271);
-	var LikeActions = __webpack_require__(289);
-	var SessionStore = __webpack_require__(245);
-	var LikeStore = __webpack_require__(293);
-	var hashHistory = __webpack_require__(186).hashHistory;
-	var Search = __webpack_require__(278);
-	
-	module.exports = React.createClass({
-		displayName: 'exports',
-	
-		getInitialState: function () {
-			return {
-				userPresent: SessionStore.userPresent(),
-				currentUser: SessionStore.currentUser(),
-				currentlyClicked: false
-			};
-		},
-	
-		componentDidMount: function () {
-			this.SSListener = SessionStore.addListener(this.storeChange);
-		},
-	
-		componentWillUnmount: function () {
-			this.SSListener.remove();
-		},
-	
-		storeChange: function () {
-			this.setState({ userPresent: SessionStore.userPresent(), currentUser: SessionStore.currentUser() });
-			// LikeActions.getLiked();
-		},
-	
-		logoutUser: function (event) {
-			event.preventDefault();
-			ClientActions.logoutUser(this.state.currentUser);
-			this.enableButtons();
-			LikeStore.empty();
-			console.log('logged out');
-		},
-	
-		linkToHome: function () {
-			hashHistory.push('/');
-		},
-	
-		clickedLogin: function () {
-			this.setState({ currentlyClicked: true });
-		},
-	
-		enableButtons: function () {
-			this.setState({ currentlyClicked: false });
-			// LikeActions.getLiked();
-		},
-	
-		sendUser: function () {
-			hashHistory.push("users/" + this.state.currentUser.id);
-		},
-	
-		//TODO: put search bar in nav
-		render: function () {
-			if (this.state.userPresent) {
-				return React.createElement(
-					'nav',
-					{ className: 'logged' },
-					' ',
-					React.createElement(
-						'h2',
-						{ onClick: this.linkToHome },
-						'Cloud Sound'
-					),
-					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
-					React.createElement(Search, null),
-					React.createElement(
-						'button',
-						{ className: 'userPage', onClick: this.sendUser },
-						'User Page'
-					),
-					React.createElement(
-						'button',
-						{ className: 'logOut', onClick: this.logoutUser },
-						'Logout'
-					)
-				);
-			} else {
-				return React.createElement(
-					'nav',
-					null,
-					' ',
-					React.createElement(
-						'h2',
-						{ onClick: this.linkToHome },
-						'Cloud Sound'
-					),
-					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
-					React.createElement(Search, null),
-					React.createElement(SignUp, { clickedLogin: this.clickedLogin, currentlyClicked: this.state.currentlyClicked, enableButtons: this.enableButtons }),
-					React.createElement(Login, { clickedLogin: this.clickedLogin, currentlyClicked: this.state.currentlyClicked, enableButtons: this.enableButtons })
-				);
-			}
-		}
-	});
-
-/***/ },
-/* 276 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ClientActions = __webpack_require__(271);
-	var Modal = __webpack_require__(166);
-	var Store = __webpack_require__(245);
-	var LikeActions = __webpack_require__(289);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  getInitialState: function () {
-	    return { modalOpen: false, username: '', password: '', errors: [] };
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalOpen: false });
-	    this.props.enableButtons();
-	  },
-	
-	  openModal: function () {
-	    this.setState({ modalOpen: true });
-	    this.props.clickedLogin();
-	  },
-	
-	  loginUser: function (event) {
-	    event.preventDefault();
-	    Store.emptyErrors();
-	    var user = { user: {
-	        username: this.state.username,
-	        password: this.state.password
-	      } };
-	    ClientActions.loginUser(user);
-	    // LikeActions.getLiked();
-	    if (Store.userPresent()) {
-	      this.setState({ username: '', password: '' });
-	      this.closeModal();
-	      console.log('succcesful login!');
-	    } else {
-	      this.setState({ errors: Store.errors(), password: '' });
-	    }
-	  },
-	
-	  guestLogin: function (event) {
-	    var user = { user: {
-	        username: 'guest',
-	        password: 'password369'
-	      } };
-	    ClientActions.loginUser(user);
-	    // LikeActions.getLiked();
-	    console.log('guest login success');
-	  },
-	
-	  nameChange: function (event) {
-	    this.setState({ username: event.target.value });
-	  },
-	
-	  passChange: function (event) {
-	    this.setState({ password: event.target.value });
-	  },
-	
-	  errors: function () {
-	    if (this.state.errors.length === 0) {
-	      return;
-	    } else {
-	      return React.createElement(
-	        'ul',
-	        null,
-	        this.state.errors.map(function (error, idx) {
-	          return React.createElement(
-	            'li',
-	            { key: idx },
-	            error
-	          );
-	        })
-	      );
-	    }
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'button',
-	        { className: 'unlogged', onClick: this.openModal, disabled: this.props.currentlyClicked },
-	        'Log In'
-	      ),
-	      React.createElement(
-	        'button',
-	        { className: 'unlogged', onClick: this.guestLogin, disabled: this.props.currentlyClicked },
-	        'Guest Account'
-	      ),
-	      React.createElement(
-	        Modal,
-	        { className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
-	        React.createElement(
-	          'form',
-	          { onSubmit: this.loginUser },
-	          this.errors(),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'h3',
-	            null,
-	            'Sign In!'
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'label',
-	            null,
-	            'Username:',
-	            React.createElement('input', { type: 'text', value: this.state.username, onChange: this.nameChange })
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'label',
-	            null,
-	            'Password:',
-	            React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
-	          ),
-	          React.createElement('br', null),
-	          React.createElement('input', { type: 'submit', value: 'Login!' })
-	        )
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 277 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var ClientActions = __webpack_require__(271);
-	var Modal = __webpack_require__(166);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  getInitialState: function () {
-	    return { modalOpen: false, username: '', password: '', errors: [] };
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalOpen: false });
-	    this.props.enableButtons();
-	  },
-	
-	  openModal: function () {
-	    this.setState({ modalOpen: true });
-	    this.props.clickedLogin();
-	  },
-	
-	  signupUser: function (event) {
-	    event.preventDefault();
-	    Store.emptyErrors();
-	    var user = { user: {
-	        username: this.state.username,
-	        password: this.state.password
-	      } };
-	    ClientActions.createUser(user);
-	    ClientActions.loginUser(user);
-	    if (Store.userPresent()) {
-	      this.setState({ username: '', password: '' });
-	      this.closeModal();
-	      console.log('succcesful sign up!');
-	    } else {
-	      this.setState({ errors: Store.errors(), password: '' });
-	    }
-	    // LikeActions.getLiked();
-	  },
-	
-	  nameChange: function (event) {
-	    this.setState({ username: event.target.value });
-	  },
-	
-	  passChange: function (event) {
-	    this.setState({ password: event.target.value });
-	  },
-	
-	  errors: function () {
-	    if (this.state.errors.length === 0) {
-	      return;
-	    } else {
-	      return React.createElement(
-	        'ul',
-	        null,
-	        this.state.errors.map(function (error, idx) {
-	          return React.createElement(
-	            'li',
-	            { key: idx },
-	            error
-	          );
-	        })
-	      );
-	    }
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'button',
-	        { className: 'unlogged', onClick: this.openModal, disabled: this.props.currentlyClicked },
-	        'Sign Up'
-	      ),
-	      React.createElement(
-	        Modal,
-	        { className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
-	        React.createElement(
-	          'form',
-	          { onSubmit: this.signupUser },
-	          this.errors(),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'h3',
-	            null,
-	            'Sign Up!'
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'label',
-	            null,
-	            'Username:',
-	            React.createElement('input', { type: 'text', value: this.state.username, onChange: this.nameChange })
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'label',
-	            null,
-	            'Password:',
-	            React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
-	          ),
-	          React.createElement('br', null),
-	          React.createElement('input', { type: 'submit', value: 'Sign Up!' })
-	        )
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 278 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(186).hashHistory;
-	var SongActions = __webpack_require__(279);
-	var SongStore = __webpack_require__(268);
-	
-	module.exports = React.createClass({
-	  displayName: 'exports',
-	
-	  getInitialState: function () {
-	    return { songName: "" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.songListener = SongStore.addListener(this.getSongs);
-	    SongActions.fetchSongs();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.songListener.remove();
-	  },
-	
-	  fillSongName: function (e) {
-	    var song = SongStore.find(e.target.value);
-	    this.setState({ songName: "" });
-	    hashHistory.push({ pathname: 'artists/' + song.artist });
-	  },
-	
-	  getSongs: function () {
-	    return SongStore.findSongs(this.state.songName);
-	  },
-	
-	  updateSong: function (e) {
-	    this.setState({ songName: e.target.value });
-	  },
-	
-	  render: function () {
-	    var songs = this.getSongs();
-	    var songList = [];
-	    if (songs.length > 0) {
-	      songs.forEach(function (song) {
-	        if (songList.length < 9) {
-	          songList.push(React.createElement(
-	            'li',
-	            { className: 'songListItem', key: song.id, song: song, value: song.id },
-	            song.title,
-	            ', ',
-	            song.artist
-	          ));
-	        }
-	      });
-	    } else {
-	      songList = "";
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'searchBox' },
-	      React.createElement('input', { className: 'songSearch', type: 'text',
-	        placeholder: 'Song or Artist Name Here',
-	        onChange: this.updateSong, value: this.state.songName }),
-	      React.createElement(
-	        'ul',
-	        { className: 'songSearchList', onClick: this.fillSongName
-	        },
-	        songList
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Util = __webpack_require__(280);
-	var Dispatcher = __webpack_require__(264);
-	var Constants = __webpack_require__(267);
-	
-	module.exports = {
-		fetchSongs: function () {
-			Util.fetchSongs();
-		},
-	
-		fetchArtistSongs: function (artist) {
-			Util.fetchArtistSongs(artist);
-		},
-	
-		playSong: function (song) {
-			Util.getSong(song);
-		},
-	
-		nextSong: function () {
-			Dispatcher.dispatch({
-				actionType: Constants.NEXT_SONG
-			});
-		},
-	
-		removeFromQueue: function (qIdx) {
-			Dispatcher.dispatch({
-				actionType: Constants.QUEUE_REMOVE,
-				idx: qIdx
-			});
-		}
-	};
-
-/***/ },
-/* 280 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ServerActions = __webpack_require__(281);
-	var LikeActions = __webpack_require__(289);
-	
-	module.exports = {
-		fetchSongs: function () {
-			$.ajax({
-				method: 'GET',
-				url: 'api/songs',
-				success: function (songs) {
-					ServerActions.getSongs(songs);
-				},
-				error: function (error) {
-					ServerActions.songError(error);
-				}
-			});
-		},
-	
-		fetchArtistSongs: function (artist) {
-			artist.split(" ").join("%20");
-			$.ajax({
-				method: 'GET',
-				url: 'api/artist/' + artist,
-				success: function (songs) {
-					ServerActions.getArtistSongs(songs);
-				},
-				error: function (error) {
-					ServerActions.songError(error);
-				}
-			});
-		},
-	
-		getSong: function (songId) {
-			$.ajax({
-				method: 'GET',
-				url: 'api/songs/' + songId,
-				success: function (song) {
-					ServerActions.getSong(song);
-				},
-				error: function (error) {
-					ServerActions.songError(error);
-				}
-			});
-		}
-	
-	};
-
-/***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(264);
-	var Constants = __webpack_require__(267);
-	
-	module.exports = {
-		getSongs: function (songs) {
-			Dispatcher.dispatch({
-				actionType: Constants.SONGS_RECEIVED,
-				songs: songs
-			});
-		},
-	
-		getArtistSongs: function (songs) {
-			Dispatcher.dispatch({
-				actionType: Constants.ARTIST_SONGS,
-				songs: songs
-			});
-		},
-	
-		getSong: function (song) {
-			Dispatcher.dispatch({
-				actionType: Constants.SONG_RECEIVED,
-				song: song
-			});
-		},
-	
-		songError: function (errors) {
-			Dispatcher.dispatch({
-				actionType: Constants.SONGS_ERROR,
-				errors: errors
-			});
-		}
-	};
-
-/***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var hashHistory = __webpack_require__(186).hashHistory;
-	var SongActions = __webpack_require__(279);
-	var SongStore = __webpack_require__(268);
-	var SessionStore = __webpack_require__(245);
-	var LikeStore = __webpack_require__(293);
-	var IndexItem = __webpack_require__(283);
-	var LikeActions = __webpack_require__(289);
+	var SongActions = __webpack_require__(280);
+	var SongStore = __webpack_require__(283);
+	var SessionStore = __webpack_require__(277);
+	var LikeStore = __webpack_require__(245);
+	var IndexItem = __webpack_require__(285);
+	var LikeActions = __webpack_require__(271);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35168,7 +35295,6 @@
 			// this.userListen = SessionStore.addListener(this.userChange);
 			SongActions.fetchSongs();
 			LikeActions.getLiked();
-			// debugger;
 		},
 	
 		componentWillUnmount: function () {
@@ -35189,8 +35315,6 @@
 			return React.createElement(
 				'div',
 				{ className: 'cover-index' },
-				React.createElement('br', null),
-				'Click Play to Play Song or Add to Queue',
 				React.createElement(
 					'ul',
 					null,
@@ -35203,32 +35327,34 @@
 	});
 
 /***/ },
-/* 283 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SongActions = __webpack_require__(279);
+	var SongActions = __webpack_require__(280);
 	var hashHistory = __webpack_require__(186).hashHistory;
-	var LikeActions = __webpack_require__(289);
-	var SessionStore = __webpack_require__(245);
-	var LikeStore = __webpack_require__(293);
-	var PlayStore = __webpack_require__(269);
+	var LikeActions = __webpack_require__(271);
+	var SessionStore = __webpack_require__(277);
+	var LikeStore = __webpack_require__(245);
+	var PlayStore = __webpack_require__(286);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
 		getInitialState: function () {
-			return { userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id) };
+			return { userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id), songPlaying: false };
 		},
 	
 		componentDidMount: function () {
 			this.userListener = SessionStore.addListener(this.userPresence);
 			this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
+			this.playListen = PlayStore.addListener(this.playChange);
 		},
 	
 		componentWillUnmount: function () {
 			this.userListener.remove();
 			this.likeStoreListen.remove();
+			this.playListen.remove();
 		},
 	
 		userPresence: function () {
@@ -35239,10 +35365,18 @@
 			this.setState({ songLiked: LikeStore.songLiked(this.props.song.id) });
 		},
 	
+		playChange: function () {
+			this.setState({ songPlaying: PlayStore.songPlaying() });
+		},
+	
 		playSong: function (event) {
 			event.preventDefault();
 			SongActions.playSong(this.props.song.id);
-			// this.setState({ songPlaying: true });
+		},
+	
+		addSong: function (event) {
+			event.preventDefault();
+			SongActions.addSong(this.props.song.id);
 		},
 	
 		artistRoute: function (event) {
@@ -35283,15 +35417,11 @@
 	
 		// playButton: function() {
 		// 	if (this.state.songPlaying) {
-		// 		return <button className="imgPlay" onClick={this.playSong}>+</button>
+		// 		return <button className="imgPlay" onClick={this.addSong}>&#43;</button>
 		// 	} else {
 		// 		return <button className="imgPlay" onClick={this.playSong}>▶</button>
 		// 	}
 		// },
-	
-		buttonShow: function () {
-			document.getElementsByClassName('imgPlay').style.display = "block";
-		},
 	
 		render: function () {
 			return React.createElement(
@@ -35300,7 +35430,12 @@
 				React.createElement('img', { src: this.props.song.img_url, onHover: this.buttonShow }),
 				React.createElement(
 					'button',
-					{ className: 'imgPlay', onClick: this.playSong },
+					{ className: 'imgPlay', id: 'play', onClick: this.addSong },
+					'+'
+				),
+				React.createElement(
+					'button',
+					{ className: 'imgPlay', id: 'add', onClick: this.playSong },
 					'▶'
 				),
 				this.buttonToggle(),
@@ -35322,12 +35457,96 @@
 	// <img src={this.props.song.imgUrl} onClick={this.playSong} />
 
 /***/ },
-/* 284 */
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(246).Store;
+	var AppDispatcher = __webpack_require__(264);
+	var SongConstants = __webpack_require__(267);
+	
+	var PlayStore = new Store(AppDispatcher);
+	
+	var _queue = [];
+	var _errors = [];
+	var _nowPlaying = null;
+	
+	var setErrors = function (error) {
+		_errors.push(error);
+	};
+	
+	var addSong = function (song) {
+		_queue.push(song);
+	};
+	
+	var playSong = function (song) {
+		_nowPlaying = song;
+	};
+	
+	var removeFromQueue = function (queueIdx) {
+		_queue.splice(queueIdx, 1);
+	};
+	
+	PlayStore.queue = function () {
+		var queue = [];
+		_queue.forEach(function (song) {
+			queue.push(song);
+		});
+		return queue;
+	};
+	
+	// var clearPlaying = function() {
+	// 	_nowPlaying = null;
+	// 	PlayStore.__emitChange();
+	// };
+	
+	var nextSong = function () {
+		_nowPlaying = _queue[0];
+		_queue = _queue.slice(1);
+	};
+	
+	PlayStore.nowPlaying = function () {
+		return _nowPlaying;
+	};
+	
+	PlayStore.songPlaying = function () {
+		if (_nowPlaying) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+	
+	PlayStore.__onDispatch = function (payload) {
+		switch (payload.actionType) {
+			case SongConstants.SONG_RECEIVED:
+				playSong(payload.song);
+				break;
+			case SongConstants.ADD_SONG:
+				addSong(payload.song);
+				break;
+			case SongConstants.SONGS_ERROR:
+				setErrors(payload.errors);
+				break;
+			case SongConstants.NEXT_SONG:
+				nextSong();
+				break;
+			case SongConstants.QUEUE_REMOVE:
+				removeFromQueue(payload.idx);
+				break;
+		}
+		this.__emitChange();
+	};
+	
+	window.Play = PlayStore;
+	module.exports = PlayStore;
+
+/***/ },
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var PlayStore = __webpack_require__(269);
-	var ClientActions = __webpack_require__(279);
+	var PlayStore = __webpack_require__(286);
+	var ClientActions = __webpack_require__(280);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35350,7 +35569,7 @@
 				return;
 			}
 			if (song.volume) {
-				song.volume = 0.75;
+				song.volume = 0.89;
 			}
 		},
 	
@@ -35455,13 +35674,13 @@
 	});
 
 /***/ },
-/* 285 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var PlayStore = __webpack_require__(269);
-	var ClientActions = __webpack_require__(279);
-	var QueueItem = __webpack_require__(286);
+	var PlayStore = __webpack_require__(286);
+	var ClientActions = __webpack_require__(280);
+	var QueueItem = __webpack_require__(289);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35479,13 +35698,11 @@
 		},
 	
 		playChange: function () {
-			if (PlayStore.nowPlaying()) {
-				this.setState({ nowPlaying: PlayStore.nowPlaying(), queue: PlayStore.queue() });
-			}
+			this.setState({ nowPlaying: PlayStore.nowPlaying(), queue: PlayStore.queue() });
 		},
 	
 		render: function () {
-			if (this.state.nowPlaying) {
+			if (PlayStore.queue().length > 0) {
 				return React.createElement(
 					'div',
 					{ className: 'queueDisplay' },
@@ -35509,11 +35726,11 @@
 	});
 
 /***/ },
-/* 286 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SongActions = __webpack_require__(279);
+	var SongActions = __webpack_require__(280);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35541,13 +35758,13 @@
 	});
 
 /***/ },
-/* 287 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SongActions = __webpack_require__(279);
-	var SongStore = __webpack_require__(268);
-	var IndexItem = __webpack_require__(283);
+	var SongActions = __webpack_require__(280);
+	var SongStore = __webpack_require__(283);
+	var IndexItem = __webpack_require__(285);
 	var hashHistory = __webpack_require__(186).hashHistory;
 	
 	module.exports = React.createClass({
@@ -35598,16 +35815,16 @@
 	});
 
 /***/ },
-/* 288 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(186).hashHistory;
-	var SongActions = __webpack_require__(279);
-	var LikeActions = __webpack_require__(289);
-	var SongStore = __webpack_require__(268);
-	var LikeStore = __webpack_require__(293);
-	var IndexItem = __webpack_require__(283);
+	var SongActions = __webpack_require__(280);
+	var LikeActions = __webpack_require__(271);
+	var SongStore = __webpack_require__(283);
+	var LikeStore = __webpack_require__(245);
+	var IndexItem = __webpack_require__(285);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -35665,186 +35882,6 @@
 			);
 		}
 	});
-
-/***/ },
-/* 289 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Util = __webpack_require__(291);
-	var Dispatcher = __webpack_require__(264);
-	var Constants = __webpack_require__(267);
-	
-	module.exports = {
-		createLike: function (songId) {
-			Util.createLike(songId);
-		},
-	
-		getLiked: function () {
-			Util.getLikedSongs();
-		},
-	
-		unlike: function (songId) {
-			Util.unlikeSong(songId);
-		}
-	};
-
-/***/ },
-/* 290 */,
-/* 291 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var LikeActions = __webpack_require__(292);
-	
-	module.exports = {
-		createLike: function (song_id) {
-			$.ajax({
-				method: 'POST',
-				url: 'api/likes',
-				data: { song_id: song_id },
-				success: function (like) {
-					LikeActions.likeCreated(like);
-				},
-				error: function (error) {
-					LikeActions.likeError(error);
-				}
-			});
-		},
-	
-		getLikedSongs: function () {
-			$.ajax({
-				method: 'GET',
-				url: 'api/likes',
-				success: function (songs) {
-					LikeActions.getLikedSongs(songs);
-				},
-				error: function (error) {
-					LikeActions.likeError(error);
-				}
-			});
-		},
-	
-		unlikeSong: function (songId) {
-			$.ajax({
-				method: 'DELETE',
-				url: 'api/likes/' + songId,
-				data: { song_id: songId },
-				success: function (like) {
-					LikeActions.unlike(like);
-				},
-				error: function (error) {
-					LikeActions.likeError(error);
-				}
-			});
-		}
-	};
-
-/***/ },
-/* 292 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(264);
-	var Constants = __webpack_require__(267);
-	
-	module.exports = {
-		getLikedSongs: function (songs) {
-			Dispatcher.dispatch({
-				actionType: Constants.LIKED_SONGS,
-				songs: songs
-			});
-		},
-	
-		likeCreated: function (like) {
-			Dispatcher.dispatch({
-				actionType: Constants.LIKE_MADE,
-				like: like
-			});
-		},
-	
-		unlike: function (like) {
-			Dispatcher.dispatch({
-				actionType: Constants.UNLIKED,
-				like: like
-			});
-		},
-	
-		likeError: function (error) {}
-	};
-
-/***/ },
-/* 293 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(246).Store;
-	var AppDispatcher = __webpack_require__(264);
-	var Constants = __webpack_require__(267);
-	
-	var LikeStore = new Store(AppDispatcher);
-	
-	var _likedSongs = [];
-	
-	var addSong = function (like) {
-		_likedSongs.push(like.song_id);
-	};
-	
-	var resetSongs = function (songs) {
-		if (!songs.songs) {
-			return;
-		}
-		_likedSongs = [];
-	
-		songs.songs.forEach(function (song) {
-			_likedSongs.push(song.id);
-		});
-	};
-	
-	var removeSong = function (like) {
-		var idx = _likedSongs.indexOf(parseInt(like.song_id));
-		_likedSongs.splice(idx, 1);
-	};
-	
-	// LikeStore.fetchUserSongs = function(userId) {
-	
-	// };
-	
-	LikeStore.all = function () {
-		var songIds = [];
-		_likedSongs.forEach(function (songId) {
-			songIds.push(songId);
-		});
-	
-		return songIds;
-	};
-	
-	LikeStore.empty = function () {
-		_likedSongs = [];
-	};
-	
-	LikeStore.songLiked = function (songId) {
-		for (var i = 0; i < _likedSongs.length; i++) {
-			if (_likedSongs[i] === songId) {
-				return true;
-			}
-		};
-		return false;
-	};
-	
-	LikeStore.__onDispatch = function (payload) {
-		switch (payload.actionType) {
-			case Constants.LIKED_SONGS:
-				resetSongs(payload.songs);
-				break;
-			case Constants.LIKE_MADE:
-				addSong(payload.like);
-				break;
-			case Constants.UNLIKED:
-				removeSong(payload.like);
-				break;
-		}
-		this.__emitChange();
-	};
-	
-	window.Likes = LikeStore;
-	module.exports = LikeStore;
 
 /***/ }
 /******/ ]);

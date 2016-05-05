@@ -23,6 +23,13 @@ module.exports = {
 		})
 	},
 
+	addSong: function(song) {
+		Dispatcher.dispatch({
+			actionType: Constants.ADD_SONG,
+			song: song
+		})
+	},
+
 	songError: function(errors) {
     	Dispatcher.dispatch({
       		actionType: Constants.SONGS_ERROR,

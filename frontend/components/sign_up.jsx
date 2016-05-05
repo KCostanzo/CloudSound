@@ -30,7 +30,6 @@ module.exports = React.createClass ({
     if (Store.userPresent()) {
       this.setState({username: '', password: ''})
       this.closeModal();
-      console.log('succcesful sign up!');
     } else {
       this.setState({errors: Store.errors(), password: ''});
     }

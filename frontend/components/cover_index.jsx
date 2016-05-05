@@ -19,7 +19,6 @@ module.exports = React.createClass({
 		// this.userListen = SessionStore.addListener(this.userChange);
 		SongActions.fetchSongs();
 		LikeActions.getLiked();
-		// debugger;
 	},
 
 	componentWillUnmount: function() {
@@ -38,7 +37,7 @@ module.exports = React.createClass({
 
 	render: function() {
 		return (
-			<div className='cover-index'><br/>Click Play to Play Song or Add to Queue
+			<div className='cover-index'>
 					<ul>
 						{
 							this.state.songs.map(function(song) {

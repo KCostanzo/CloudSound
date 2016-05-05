@@ -16,6 +16,10 @@ module.exports = {
 		Util.getSong(song);
 	},
 
+	addSong: function(song) {
+		Util.addSong(song);
+	},
+
 	nextSong: function() {
 		Dispatcher.dispatch({
 			actionType: Constants.NEXT_SONG

@@ -42,30 +42,16 @@ module.exports = {
 		})
 	},
 
-	// createLike: function(songId) {
-	// 	// debugger;
-	// 	$.ajax({
-	// 		method: 'POST',
-	// 		url: 'api/likes',
-	// 		success: function(like) {
-	// 			LikeActions.likeCreated(like);
-	// 		},
-	// 		error: function(error) {
-	// 			LikeActions.likeError(error);
-	// 		}
-	// 	})
-	// },
-
-	// getLikedSongs: function() {
-	// 	$.ajax({
-	// 		method: 'GET',
-	// 		url: 'api/likes',
-	// 		success: function(songs) {
-	// 			LikeActions.getLikedSongs(songs);
-	// 		},
-	// 		error: function(error) {
-	// 			LikeActions.likeError(error);
-	// 		}
-	// 	})
-	// }
+	addSong: function(songId) {
+		$.ajax({
+			method: 'GET',
+			url: 'api/songs/' + songId,
+			success: function(song) {
+				ServerActions.addSong(song);
+			},
+			error: function(error) {
+				ServerActions.songError(error);
+			}
+		})
+	}
 };

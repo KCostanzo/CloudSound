@@ -9,17 +9,19 @@ var PlayStore = require('../stores/play_store.js');
 
 module.exports = React.createClass({
 	getInitialState: function() {
-		return {userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id)}
+		return {userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id), songPlaying: false}
 	},
 
 	componentDidMount: function() {
 		this.userListener = SessionStore.addListener(this.userPresence);
 		this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
+		this.playListen = PlayStore.addListener(this.playChange);
 	},
 
 	componentWillUnmount: function() {
 		this.userListener.remove();
 		this.likeStoreListen.remove();
+		this.playListen.remove();
 	},
 
 	userPresence: function() {
@@ -30,10 +32,18 @@ module.exports = React.createClass({
 		this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
 	},
 
+	playChange: function() {
+		this.setState({ songPlaying: PlayStore.songPlaying() })
+	},
+
 	playSong: function(event) {
 		event.preventDefault();
 		SongActions.playSong(this.props.song.id);
-		// this.setState({ songPlaying: true });
+	},
+
+	addSong: function(event) {
+		event.preventDefault();
+		SongActions.addSong(this.props.song.id);
 	},
 
 	artistRoute: function(event) {
@@ -66,21 +76,18 @@ module.exports = React.createClass({
 
 	// playButton: function() {
 	// 	if (this.state.songPlaying) {
-	// 		return <button className="imgPlay" onClick={this.playSong}>+</button>
+	// 		return <button className="imgPlay" onClick={this.addSong}>&#43;</button>
 	// 	} else {
 	// 		return <button className="imgPlay" onClick={this.playSong}>▶</button>
 	// 	}
 	// },
 
-	buttonShow: function() {
-		document.getElementsByClassName('imgPlay').style.display = "block";
-	},
-
 	render: function() {
 		return (
 			<li className='songItem'>
 				<img src={this.props.song.img_url} onHover={this.buttonShow}/>
-				<button className="imgPlay" onClick={this.playSong}>▶</button>
+				<button className="imgPlay" id='play' onClick={this.addSong}>&#43;</button>
+				<button className="imgPlay" id='add' onClick={this.playSong}>▶</button>
 				{this.buttonToggle()}
 				<br/>
 				<label className="indexTitle">

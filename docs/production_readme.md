@@ -12,17 +12,19 @@ CloudSound is a full-stack web application inspired by Evernote.  It utilizes Ru
 
 ### Single-Page App
 
-CloudSound is truly a single-page; all content is delivered on one static page.  The root page listens to a `SessionStore` and renders content based on a call to `SessionStore.currentUser()`.  Sensitive information is kept out of the frontend of the app by making an API call to `SessionsController#get_user`.
+CloudSound is truly a single-page; all content is delivered on one static page.  The app component renders the persistent navbar, now playing bar, and queue display, and its children components listen to a `SongStore` to render content based on a call to `SongStore.all()` or `SongStore.likedSongs()`.  Sensitive user information is kept out of the frontend of the app by making an API call to `SessionsController#fetchCurrentUser`.
 
 ```ruby
 class Api::SessionsController < ApplicationController
-    def get_user
-      if current_user
-        render :current_user
-      else
-        render json: errors.full_messages
-      end
+  def show
+    if current_user 
+      @user = current_user
+      render "api/sessions/loggedin"
+    else
+      @errors = nil
+      render "api/shared/errors", status: 299
     end
+  end
  end
   ```
 
@@ -65,10 +67,10 @@ Tags are maintained on the frontend in the `TagStore`.  Because creating, editin
 
 In addition to the features already implemented, I plan to continue work on this project.  The next steps for CloudSound are outlined below.
 
-### Search
+### Playlists
 
-Searching notes is a standard feature of Evernote.  I plan to utilize the Fuse.js library to create a fuzzy search of notes and notebooks.  This search will look go through tags, note titles, notebook titles, and note content.  
+Savable Playlists are a major user feature in SoundCloud, when I have suffiecient time i plan to introduce playlists CRUD functinoality to the user page. This would require backend to estabish join table interaction between users, their playlists, and the playlists' songs.
 
-### Direct Messaging
+### Song Tags
 
-Although this is less essential functionality, I also plan to implement messaging between CloudSound users.  To do this, I will use WebRTC so that notifications of messages happens seamlessly.  
+Another feature that would be useful for my site  would be tagging functionality which allowed users to search for songs by categories such as genre. This would allow users to find songs without having to know specific artists and enable them to find new music more easily. I believe this tagging would best be done on upload with edit and destroy privledges given only to the uploader.

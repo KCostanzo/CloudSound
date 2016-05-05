@@ -1,6 +1,6 @@
 # CloudSound
 
-[Heroku link][heroku] **NB:** This will be a link to my production site
+[Heroku link][heroku]
 
 [heroku]: https://cloudsoundapp.herokuapp.com
 

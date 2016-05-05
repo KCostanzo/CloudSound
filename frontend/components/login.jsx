@@ -28,11 +28,9 @@ module.exports = React.createClass ({
       password: this.state.password
     }};
     ClientActions.loginUser(user);
-    // LikeActions.getLiked();
     if (Store.userPresent()) {
       this.setState({username: '', password: ''})
       this.closeModal();
-      console.log('succcesful login!');
     } else {
       this.setState({errors: Store.errors(), password: ''});
     }
@@ -44,8 +42,6 @@ module.exports = React.createClass ({
       password: 'password369'
     }};
     ClientActions.loginUser(user);
-    // LikeActions.getLiked();
-    console.log('guest login success');
   },
 
   nameChange: function(event) {

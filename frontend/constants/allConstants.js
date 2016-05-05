@@ -16,5 +16,7 @@ module.exports = {
 
   LIKED_SONGS: 'LIKED_SONGS',
   LIKE_MADE: 'LIKE_MADE',
-  UNLIKED: 'UNLIKED'
+  UNLIKED: 'UNLIKED',
+
+  ADD_SONG: 'ADD_SONG'
 }

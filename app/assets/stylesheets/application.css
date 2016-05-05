@@ -72,11 +72,6 @@ img {
   margin: 0px;
 }
 
-img:hover {
-  cursor: hand;
-  cursor: pointer;
-}
-
 .songItem{
   top: 45px;
   position: relative;
@@ -239,7 +234,9 @@ nav h2 {
   margin-left: 57px;
   letter-spacing: 4px;
 }
-
+nav img:hover {
+  cursor: pointer;
+}
 nav h2:hover {
   cursor: hand;
   cursor: pointer;
@@ -298,7 +295,7 @@ nav button.unlogged {
 }
 
 nav button.userPage {
-  top: -4px;
+  top: -2px;
   right: 90px;
   position: absolute;
 }
@@ -343,33 +340,38 @@ button:active {
   top:1px;
 }
 
-/*img:hover {
-  display: block;
-}
-
-img:hover .like {
-  display: block;
-}*/
-
 li:hover .imgPlay {
   display: block;
   position: absolute;
-  left: 120px;
-  top: 40px;
+  left: 115px;
+  top: 50px;
   padding: 10px;
+  padding-left: 18px;
+  padding-right: 18px;
 }
 
 .imgPlay {
   display: none;
   position: absolute;
-  left: 120px;
-  top: 40px;
-  padding: 10px;
+  left: 115px;
+  top: 50px;
+  /*padding: 20px;*/
   margin: 0px;
 /*  margin-top: 40px;
   margin-left: -110px;*/
 /*  z-index: 5;
 */}
+
+li:hover .imgPlay#add {
+  left: 75px;
+}
+
+li:hover .imgPlay#play {
+  left: 150px;
+  padding: 11px;
+  padding-left: 21px;
+  padding-right: 21px;
+}
 
 li:hover .like {
   display: block;
