@@ -34,7 +34,7 @@ class Api::SessionsController < ApplicationController
 
 ### Songs
 
-  On the database side, the songs are stored in one table in the database, which contains columns for `id`, `title`, `artist`, `audio_url`, and `img_url`.  Songs are fetched when the main cover page renders and are stored in a song store where they are availible to the index page and used to populate index items (with expansion of availible songs in the db I will use a Song.first(30) instead of Song.all to fetch the inital songs). Upon login, an API call is made to the database which joins the user table and the likes table on `user_id` and filters by the current user's `id`. These liked songs are used by the user page to select songs via `song_id` and populate the user page with song index items.
+  On the database side, the songs are stored in one table in the database, which contains columns for `id`, `title`, `artist`, `audio_url`, and `img_url`.  Songs are fetched when the main cover page renders and are stored in a `SongStore` where they are availible to the index page and used to populate index items (with expansion of availible songs in the db I will use a Song.first(30) instead of Song.all to fetch the inital songs). Upon login, an API call is made to the database which joins the user table and the likes table on `user_id` and filters by the current user's `id`. These liked songs are used by the user page to select songs via `song_id` and populate the user page with song index items, and by the song index items to check their `songLiked` state.
 
 
 ![image of index page](http://res.cloudinary.com/mr-costanzo/image/upload/v1462480457/Screen_Shot_2016-05-05_at_1.33.14_PM_c3wn3l.png)
@@ -65,7 +65,7 @@ The Now Playing Bar and Queue components heavily rely on the `PlayStore`. This i
 
 ### Likes
 
-Likes are stored in the database through a `likes` join table.  The `like` table contains the columns `id`,`user_id` and `song_id`.
+Likes are stored in the database through a `likes` join table.  The `likes` table contains the columns `id`,`user_id` and `song_id`.
 
 Likes are maintained on the frontend in the `LikesStore`.  Both the index items themselves and the user index page have listeners on the like store. The user index uses the likes to set its own state with all the user's liked songs which it then uses to fetch specific songs out of the song store via the `SongStore.likedSongs(this.state.songIds)` method. The index items listen to the like store in order to change their button display and function when a song has been liked, this has the effect of rendering the unlike button on the index item when a user has liked a song.
 
