@@ -35427,7 +35427,7 @@
 			return React.createElement(
 				'li',
 				{ className: 'songItem' },
-				React.createElement('img', { src: this.props.song.img_url, onHover: this.buttonShow }),
+				React.createElement('img', { src: this.props.song.img_url }),
 				React.createElement(
 					'button',
 					{ className: 'imgPlay', id: 'play', onClick: this.addSong },

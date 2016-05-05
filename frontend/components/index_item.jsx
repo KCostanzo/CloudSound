@@ -85,7 +85,7 @@ module.exports = React.createClass({
 	render: function() {
 		return (
 			<li className='songItem'>
-				<img src={this.props.song.img_url} onHover={this.buttonShow}/>
+				<img src={this.props.song.img_url}/>
 				<button className="imgPlay" id='play' onClick={this.addSong}>&#43;</button>
 				<button className="imgPlay" id='add' onClick={this.playSong}>▶</button>
 				{this.buttonToggle()}

@@ -1,18 +1,18 @@
 # CloudSound
 
-[CloudSound live][heroku] **NB:** This should be a link to your production site
+[CloudSound live][heroku]
 
-[heroku]: http://www.cloudsoundapp.herokuapp.com
+[heroku]: http://www.cloudsound.site
 
 CloudSound is a full-stack web application inspired by Soundcloud.  It utilizes Ruby on Rails on the backend, a PostgreSQL database, and React.js with a Flux architectural framework on the frontend.  
 
 ## Features & Implementation
 
-[] Song Player (persistent) plays listed songs
-[] Current Queue (persistent) allows user to put songs in a queue, songs auto play after the now playing song is finished or skipped
-[] Search box dynamically searches through all songs and brings you to the song's artist page
-[] User Authentication allows users to save their account to DB, allows users to track liked songs between uses
-[] Likes allow a user to save songs they like which will appear on their user page
+- [ ] Song Player (persistent) plays listed songs
+- [ ] Current Queue (persistent) allows user to put songs in a queue, songs auto play after the now playing song is finished or skipped
+- [ ] Search box dynamically searches through all songs and brings you to the song's artist page
+- [ ] User Authentication allows users to save their account to DB, allows users to track liked songs between uses
+- [ ] Likes allow a user to save songs they like which will appear on their user page
 
 ### Single-Page App
 
@@ -36,6 +36,7 @@ class Api::SessionsController < ApplicationController
 
   On the database side, the songs are stored in one table in the database, which contains columns for `id`, `title`, `artist`, `audio_url`, and `img_url`.  Songs are fetched when the main cover page renders and are stored in a song store where they are availible to the index page and used to populate index items (with expansion of availible songs in the db I will use a Song.first(30) instead of Song.all to fetch the inital songs). Upon login, an API call is made to the database which joins the user table and the likes table on `user_id` and filters by the current user's `id`. These liked songs are used by the user page to select songs via `song_id` and populate the user page with song index items.
 
+
 ![image of index page](http://res.cloudinary.com/mr-costanzo/image/upload/v1462480457/Screen_Shot_2016-05-05_at_1.33.14_PM_c3wn3l.png)
 
 `CoverIndex` render method:
@@ -58,17 +59,29 @@ render: function() {
 
 ### Now Playing Bar and Queue (Persistent)
 
-Implementing Notebooks started with a notebook table in the database.  The `Notebook` table contains two columns: `title` and `id`.  Additionally, a `notebook_id` column was added to the `Note` table.  
+A key feature of this site is the persistent now playing bar which will not be interrupted via navigation to other pages in the app. Accomplishing this was simple with react, I rendered the components for the Navbar, Now Playing Bar, and Current Queue in the App component instead of as children, and the main page displays of cover, artist, and user indexes all exist as child routes of the App component. 
 
-The React component structure for notebooks mirrored that of notes: the `NotebookIndex` component renders a list of `CondensedNotebook`s as subcomponents, along with one `ExpandedNotebook`, kept track of by `NotebookStore.selectedNotebook()`.  
+The Now Playing Bar and Queue components heavily rely on the `PlayStore`. This is the Store that is responsible both for the now playing song and the current queue of songs. This store fetches songs one at a time from the song DB table by the `SongActions.playSong(this.props.song.id)` and `SongActions.addSong(songId)` methods, and puts them in the Store either as the playing song or by inserting them into the queue.
 
 ### Likes
 
-As with notebooks, tags are stored in the database through a `tag` table and a join table.  The `tag` table contains the columns `id` and `tag_name`.  The `tagged_notes` table is the associated join table, which contains three columns: `id`, `tag_id`, and `note_id`.  
+Likes are stored in the database through a `likes` join table.  The `like` table contains the columns `id`,`user_id` and `song_id`.
 
-Tags are maintained on the frontend in the `TagStore`.  Because creating, editing, and destroying notes can potentially affect `Tag` objects, the `NoteIndex` and the `NotebookIndex` both listen to the `TagStore`.  It was not necessary to create a `Tag` component, as tags are simply rendered as part of the individual `Note` components.  
+Likes are maintained on the frontend in the `LikesStore`.  Both the index items themselves and the user index page have listeners on the like store. The user index uses the likes to set its own state with all the user's liked songs which it then uses to fetch specific songs out of the song store via the `SongStore.likedSongs(this.state.songIds)` method. The index items listen to the like store in order to change their button display and function when a song has been liked, this has the effect of rendering the unlike button on the index item when a user has liked a song.
 
-![tag screenshot](http://res.cloudinary.com/mr-costanzo/image/upload/v1462480457/Screen_Shot_2016-05-05_at_1.33.14_PM_c3wn3l.png)
+```javascript
+  buttonToggle: function() {
+    if (this.state.userLoggedIn) {
+      if (this.state.songLiked) {
+        return <button className="like" onClick={this.unlike}>Unlike</button>
+      } else{
+        return <button className="like" onClick={this.createLike}>Like</button>
+      }
+    } else {
+      return <div/>
+    }
+  },
+```
 
 ## Future Directions for the Project
 
