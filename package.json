@@ -20,7 +20,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "heroku-postbuild": "webpack --config webpack.config.prod.js"
   },
   "repository": {
     "type": "git",
@@ -37,9 +37,5 @@
   "engines": {
   "node": "4.1.1", 
   "npm": "2.1.x"
-},
-
-"scripts": {
-  "heroku-postbuild": "webpack --config webpack.config.prod.js"
 }
 }
