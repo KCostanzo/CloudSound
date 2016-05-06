@@ -1,7 +1,7 @@
 {
   "name": "capstone-project",
   "version": "1.0.0",
-  "description": "[Heroku link][heroku] **NB:** This will be a link to my production site",
+  "description": "[Heroku link][www.CloudSound.site]",
   "main": "webpack.config.js",
   "directories": {
     "doc": "docs",
@@ -37,5 +37,5 @@
   "engines": {
   "node": "4.1.1", 
   "npm": "2.1.x"
-}
+  }
 }
