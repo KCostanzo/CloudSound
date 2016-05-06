@@ -34,7 +34,7 @@ class Api::SessionsController < ApplicationController
 
 ### Songs
 
-  On the database side, the songs are stored in one table in the database, which contains columns for `id`, `title`, `artist`, `audio_url`, and `img_url`.  Songs are fetched when the main cover page renders and are stored in a `SongStore` where they are availible to the index page and used to populate index items (with expansion of availible songs in the db I will use a Song.first(30) instead of Song.all to fetch the inital songs). Upon login, an API call is made to the database which joins the user table and the likes table on `user_id` and filters by the current user's `id`. These liked songs are used by the user page to select songs via `song_id` and populate the user page with song index items, and by the song index items to check their `songLiked` state.
+  On the database side, the songs are stored in one table in the database, which contains columns for `id`, `title`, `artist`, `audio_url`, and `img_url`.  Songs are fetched when the main cover page component mounts and are stored in a `SongStore` where they are availible to the index page and used to populate index items (with expansion of availible songs in the db I will use a Song.first(30) instead of Song.all to fetch the inital songs). Upon login, an API call is made to the database which joins the user table and the likes table on `user_id` and filters by the current user's `id`. These liked songs are used by the user page to select songs via `song_id` and populate the user page with song index items, and by the song index items to check their `songLiked` state.
 
 
 ![image of index page](http://res.cloudinary.com/mr-costanzo/image/upload/v1462480457/Screen_Shot_2016-05-05_at_1.33.14_PM_c3wn3l.png)
