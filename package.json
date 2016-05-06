@@ -18,7 +18,6 @@
     "react-router": "^2.3.0",
     "webpack": "^1.13.0"
   },
-  "devDependencies": {},
   "scripts": {
     "heroku-postbuild": "webpack --config webpack.config.prod.js"
   },
