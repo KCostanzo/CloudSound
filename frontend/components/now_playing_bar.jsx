@@ -88,7 +88,7 @@ module.exports = React.createClass({
 		var progress = (<div id='progress' ref="progressBar" onClick={this.updateProgress} ><div id='bar'></div></div>)
 
 		if (this.state.currentSong) {
-			player = (<div className='playBar'>{song}{playToggle}{next} {this.state.currentSong.title}, {this.state.currentSong.artist} {progress}</div>)
+			player = (<div className='playBar'>{song}{playToggle}{next} {this.state.currentSong.title}, &nbsp; {this.state.currentSong.artist} {progress}</div>)
 		} else {
 			player= <div/>
 		}

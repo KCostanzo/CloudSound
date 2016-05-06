@@ -35660,7 +35660,7 @@
 					next,
 					' ',
 					this.state.currentSong.title,
-					', ',
+					',   ',
 					this.state.currentSong.artist,
 					' ',
 					progress
