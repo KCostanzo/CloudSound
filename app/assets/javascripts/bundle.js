@@ -35348,13 +35348,13 @@
 		componentDidMount: function () {
 			this.userListener = SessionStore.addListener(this.userPresence);
 			this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
-			this.playListen = PlayStore.addListener(this.playChange);
+			// this.playListen = PlayStore.addListener(this.playChange);
 		},
 	
 		componentWillUnmount: function () {
 			this.userListener.remove();
 			this.likeStoreListen.remove();
-			this.playListen.remove();
+			// this.playListen.remove();
 		},
 	
 		userPresence: function () {
@@ -35365,9 +35365,9 @@
 			this.setState({ songLiked: LikeStore.songLiked(this.props.song.id) });
 		},
 	
-		playChange: function () {
-			this.setState({ songPlaying: PlayStore.songPlaying() });
-		},
+		// playChange: function() {
+		// 	this.setState({ songPlaying: PlayStore.songPlaying() })
+		// },
 	
 		playSong: function (event) {
 			event.preventDefault();
