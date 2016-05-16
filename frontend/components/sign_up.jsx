@@ -33,7 +33,6 @@ module.exports = React.createClass ({
     } else {
       this.setState({errors: Store.errors(), password: ''});
     }
-    // LikeActions.getLiked();
   },
 
   nameChange: function(event) {

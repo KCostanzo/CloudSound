@@ -10,6 +10,9 @@ var addSong = function(like) {
 	_likedSongs.push(like.song_id);
 };
 
+
+//TODO: I have the songs...for a render user page may be more effecient to use songs dirctly here and have the use index base its items on these songs here
+
 var resetSongs = function(songs) {
 	if(!songs.songs) {
 		return;
