@@ -9,10 +9,10 @@ module.exports = {
 		});
 	},
 
-	likeCreated: function(like) {
+	likeCreated: function(songs) {
 		Dispatcher.dispatch({
 			actionType: Constants.LIKE_MADE,
-			like: like
+			songs: songs
 		});
 	},
 

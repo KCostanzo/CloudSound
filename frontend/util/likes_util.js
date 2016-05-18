@@ -7,8 +7,8 @@ module.exports = {
 			method: 'POST',
 			url: 'api/likes',
 			data: {song_id: song_id},
-			success: function(like) {
-				LikeActions.likeCreated(like);
+			success: function(songs) {
+				LikeActions.likeCreated(songs);
 			},
 			error: function(error) {
 				LikeActions.likeError(error);

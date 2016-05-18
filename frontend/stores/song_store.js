@@ -55,6 +55,7 @@ SongStore.all = function() {
 };
 
 SongStore.likedSongs = function(songIds) {
+	debugger;
 	userSongs = [];
 	songIds.forEach(function(songId) {
 		userSongs.push(_songs[songId]);

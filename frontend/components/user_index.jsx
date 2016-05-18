@@ -14,27 +14,33 @@ module.exports = React.createClass({
 	},
 
 	componentDidMount: function() {
+		// this.songListen = SongStore.addListener(this.songChange);
+		// SongActions.fetchSongs();
 		this.likeListen = LikeStore.addListener(this.likeChange);
 		LikeActions.getLiked();
-		LikeStore.all();
 	},
 
 	componentWillUnmount: function() {
 		this.likeListen.remove();
+		// this.songListen.remove();
 	},
 
 	likeChange: function() {
-		this.setState({songIds: LikeStore.all()});
-		this.setSongs(this.state.songIds);
+		this.setState({songs: LikeStore.all()});
+		// this.setSongs(this.state.songIds);
 	},
 
 	linkToHome: function() {
 		hashHistory.push('/');
 	},
 
-	setSongs: function() {
-		this.setState({songs: SongStore.likedSongs(this.state.songIds)});
-	},
+	// songChange: function() {
+	// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
+	// },
+
+	// setSongs: function() {
+	// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
+	// },
 
 	render: function() {
 		return (

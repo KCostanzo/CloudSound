@@ -13,7 +13,9 @@ class Api::LikesController < ApplicationController
 	def create
 		@like = Like.new(user_id: current_user.id,song_id: params[:song_id])
 		if @like.save
-			render :show
+			# render :show
+			@user = current_user
+			render :index
 		else
 			@errors = @like.errors.full_messages
 			render 'api/shared/errors', status: 422

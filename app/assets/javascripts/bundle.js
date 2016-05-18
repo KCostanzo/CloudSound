@@ -27409,9 +27409,9 @@
 	
 	var _likedSongs = [];
 	
-	var addSong = function (like) {
-		_likedSongs.push(like.song_id);
-	};
+	// var addSong = function(like) {
+	// 	_likedSongs.push(like);
+	// };
 	
 	//TODO: I have the songs...for a render user page may be more effecient to use songs dirctly here and have the use index base its items on these songs here
 	
@@ -27422,26 +27422,26 @@
 		_likedSongs = [];
 	
 		songs.songs.forEach(function (song) {
-			_likedSongs.push(song.id);
+			_likedSongs.push(song);
 		});
 	};
 	
 	var removeSong = function (like) {
-		var idx = _likedSongs.indexOf(parseInt(like.song_id));
+		var songIds = [];
+		_likedSongs.forEach(function (song) {
+			songIds.push(song.id);
+		});
+		var idx = songIds.indexOf(parseInt(like.song_id));
 		_likedSongs.splice(idx, 1);
 	};
 	
-	// LikeStore.fetchUserSongs = function(userId) {
-	
-	// };
-	
 	LikeStore.all = function () {
-		var songIds = [];
-		_likedSongs.forEach(function (songId) {
-			songIds.push(songId);
+		var songs = [];
+		_likedSongs.forEach(function (song) {
+			songs.push(song);
 		});
 	
-		return songIds;
+		return songs;
 	};
 	
 	LikeStore.empty = function () {
@@ -27450,7 +27450,7 @@
 	
 	LikeStore.songLiked = function (songId) {
 		for (var i = 0; i < _likedSongs.length; i++) {
-			if (_likedSongs[i] === songId) {
+			if (_likedSongs[i].id === songId) {
 				return true;
 			}
 		};
@@ -27463,7 +27463,7 @@
 				resetSongs(payload.songs);
 				break;
 			case Constants.LIKE_MADE:
-				addSong(payload.like);
+				resetSongs(payload.songs);
 				break;
 			case Constants.UNLIKED:
 				removeSong(payload.like);
@@ -34456,8 +34456,8 @@
 				method: 'POST',
 				url: 'api/likes',
 				data: { song_id: song_id },
-				success: function (like) {
-					LikeActions.likeCreated(like);
+				success: function (songs) {
+					LikeActions.likeCreated(songs);
 				},
 				error: function (error) {
 					LikeActions.likeError(error);
@@ -34508,10 +34508,10 @@
 			});
 		},
 	
-		likeCreated: function (like) {
+		likeCreated: function (songs) {
 			Dispatcher.dispatch({
 				actionType: Constants.LIKE_MADE,
-				like: like
+				songs: songs
 			});
 		},
 	
@@ -35254,6 +35254,7 @@
 	};
 	
 	SongStore.likedSongs = function (songIds) {
+		debugger;
 		userSongs = [];
 		songIds.forEach(function (songId) {
 			userSongs.push(_songs[songId]);
@@ -35848,27 +35849,33 @@
 		},
 	
 		componentDidMount: function () {
+			// this.songListen = SongStore.addListener(this.songChange);
+			// SongActions.fetchSongs();
 			this.likeListen = LikeStore.addListener(this.likeChange);
 			LikeActions.getLiked();
-			LikeStore.all();
 		},
 	
 		componentWillUnmount: function () {
 			this.likeListen.remove();
+			// this.songListen.remove();
 		},
 	
 		likeChange: function () {
-			this.setState({ songIds: LikeStore.all() });
-			this.setSongs(this.state.songIds);
+			this.setState({ songs: LikeStore.all() });
+			// this.setSongs(this.state.songIds);
 		},
 	
 		linkToHome: function () {
 			hashHistory.push('/');
 		},
 	
-		setSongs: function () {
-			this.setState({ songs: SongStore.likedSongs(this.state.songIds) });
-		},
+		// songChange: function() {
+		// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
+		// },
+	
+		// setSongs: function() {
+		// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
+		// },
 	
 		render: function () {
 			return React.createElement(
