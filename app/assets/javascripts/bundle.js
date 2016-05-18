@@ -34756,6 +34756,11 @@
 	        Modal,
 	        { className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
 	        React.createElement(
+	          'div',
+	          { className: 'exit', onClick: this.closeModal },
+	          'X'
+	        ),
+	        React.createElement(
 	          'form',
 	          { onSubmit: this.loginUser },
 	          this.errors(),
@@ -34780,7 +34785,7 @@
 	            React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
 	          ),
 	          React.createElement('br', null),
-	          React.createElement('input', { type: 'submit', value: 'Login!' })
+	          React.createElement('input', { className: 'submit', type: 'submit', value: 'Login!' })
 	        )
 	      )
 	    );
@@ -34934,6 +34939,11 @@
 	        Modal,
 	        { className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
 	        React.createElement(
+	          'div',
+	          { className: 'exit', onClick: this.closeModal },
+	          'X'
+	        ),
+	        React.createElement(
 	          'form',
 	          { onSubmit: this.signupUser },
 	          this.errors(),
@@ -34958,7 +34968,7 @@
 	            React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
 	          ),
 	          React.createElement('br', null),
-	          React.createElement('input', { type: 'submit', value: 'Sign Up!' })
+	          React.createElement('input', { className: 'submit', type: 'submit', value: 'Sign Up!' })
 	        )
 	      )
 	    );

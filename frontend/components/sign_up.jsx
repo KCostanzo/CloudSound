@@ -65,6 +65,7 @@ module.exports = React.createClass ({
       <button className="unlogged" onClick={this.openModal} disabled={this.props.currentlyClicked}>Sign Up</button>
 
       <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
+       <div className='exit' onClick={this.closeModal}>X</div>
         <form onSubmit={this.signupUser}>
 
           {this.errors()}
@@ -83,7 +84,7 @@ module.exports = React.createClass ({
           </label>
           <br/>
 
-          <input type='submit' value='Sign Up!'/>
+          <input className='submit' type='submit' value='Sign Up!'/>
         </form>
       </Modal>
       </div>
