@@ -34,6 +34,7 @@ module.exports = React.createClass({
 		ClientActions.logoutUser(this.state.currentUser);
 		this.enableButtons();
 		LikeStore.empty();
+		hashHistory.push('/');
 		// console.log('logged out');
 	},
 

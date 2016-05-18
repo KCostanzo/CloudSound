@@ -27413,6 +27413,8 @@
 		_likedSongs.push(like.song_id);
 	};
 	
+	//TODO: I have the songs...for a render user page may be more effecient to use songs dirctly here and have the use index base its items on these songs here
+	
 	var resetSongs = function (songs) {
 		if (!songs.songs) {
 			return;
@@ -34595,6 +34597,7 @@
 			ClientActions.logoutUser(this.state.currentUser);
 			this.enableButtons();
 			LikeStore.empty();
+			hashHistory.push('/');
 			// console.log('logged out');
 		},
 	
@@ -34890,7 +34893,6 @@
 	    } else {
 	      this.setState({ errors: Store.errors(), password: '' });
 	    }
-	    // LikeActions.getLiked();
 	  },
 	
 	  nameChange: function (event) {
@@ -35427,7 +35429,7 @@
 			return React.createElement(
 				'li',
 				{ className: 'songItem' },
-				React.createElement('img', { src: this.props.song.img_url }),
+				React.createElement('img', { src: this.props.song.img_url, onClick: this.artistRoute }),
 				React.createElement(
 					'button',
 					{ className: 'imgPlay', id: 'play', onClick: this.addSong },

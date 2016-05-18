@@ -1,4 +1,4 @@
-
+var webpack = require("webpack");
 
 module.exports = {
   context: __dirname,
@@ -6,6 +6,7 @@ module.exports = {
   output: {
     path: "./app/assets/javascripts",
     filename: "bundle.js"
+  },
   module: {
     loaders: [
       {
