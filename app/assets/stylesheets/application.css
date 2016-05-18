@@ -95,6 +95,7 @@ form input{
   position: absolute;
   top: 45px;
   margin-right: 100px;
+  margin-bottom: 80px;
 }
 
 .artist-index {
@@ -110,8 +111,8 @@ form input{
 }
 
 img {
-  width:69%;
-  height: 69%;
+  width:78%;
+  height: 78%;
   margin: 0px;
 }
 
