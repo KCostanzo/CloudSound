@@ -414,11 +414,13 @@ li:hover .imgPlay {
 */}
 
 li:hover .imgPlay#add {
-  left: 75px;
+  top: 75px;
+  left: 68px;
 }
 
 li:hover .imgPlay#play {
-  left: 150px;
+  left: 151px;
+  top: 75px;
   padding: 11px;
   padding-left: 21px;
   padding-right: 21px;
@@ -429,8 +431,8 @@ li:hover .like {
   padding: 10px;
   position: absolute;
   margin: 0px;
-  top: 120px;
-  left: 110px;
+  top: 140px;
+  left: 109px;
 }
 
 .like {
