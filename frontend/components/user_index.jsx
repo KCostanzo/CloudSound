@@ -52,7 +52,6 @@ module.exports = React.createClass({
 							})
 						}
 					</ul>
-					<p className="linkArtistHome" onClick={this.linkToHome}>Back to Home</p>
 					<p className="alertUserLikes">(Liked Songs go Here)</p>
 				</div>
 			);

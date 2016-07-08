@@ -39,7 +39,6 @@ module.exports = React.createClass({
 							})
 						}
 					</ul>
-					<p className="linkArtistHome" onClick={this.linkToHome}>Back to Home</p>
 				</div>
 			);
 	}

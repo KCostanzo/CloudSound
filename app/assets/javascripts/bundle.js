@@ -34627,17 +34627,17 @@
 					React.createElement(
 						'h2',
 						{ onClick: this.linkToHome },
-						'Cloud Sound'
+						'CloudSound'
 					),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
 					React.createElement(Search, null),
 					React.createElement(
-						'button',
+						'a',
 						{ className: 'userPage', onClick: this.sendUser },
 						'User Page'
 					),
 					React.createElement(
-						'button',
+						'a',
 						{ className: 'logOut', onClick: this.logoutUser },
 						'Logout'
 					)
@@ -34650,7 +34650,7 @@
 					React.createElement(
 						'h2',
 						{ onClick: this.linkToHome },
-						'Cloud Sound'
+						'CloudSound'
 					),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
 					React.createElement(Search, null),
@@ -34743,12 +34743,12 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        'button',
+	        'a',
 	        { className: 'unlogged', onClick: this.openModal, disabled: this.props.currentlyClicked },
 	        'Log In'
 	      ),
 	      React.createElement(
-	        'button',
+	        'a',
 	        { className: 'unlogged', onClick: this.guestLogin, disabled: this.props.currentlyClicked },
 	        'Guest Account'
 	      ),
@@ -34931,7 +34931,7 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        'button',
+	        'a',
 	        { className: 'unlogged', onClick: this.openModal, disabled: this.props.currentlyClicked },
 	        'Sign Up'
 	      ),
@@ -35817,11 +35817,6 @@
 					this.state.songs.map(function (song) {
 						return React.createElement(IndexItem, { song: song, key: song.id });
 					})
-				),
-				React.createElement(
-					'p',
-					{ className: 'linkArtistHome', onClick: this.linkToHome },
-					'Back to Home'
 				)
 			);
 		}
@@ -35887,11 +35882,6 @@
 					this.state.songs.map(function (song) {
 						return React.createElement(IndexItem, { song: song, key: song.id + 1000 });
 					})
-				),
-				React.createElement(
-					'p',
-					{ className: 'linkArtistHome', onClick: this.linkToHome },
-					'Back to Home'
 				),
 				React.createElement(
 					'p',

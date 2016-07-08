@@ -58,16 +58,16 @@ module.exports = React.createClass({
 	render: function() {
 		if (this.state.userPresent) {
 			return (
-				<nav className="logged"> <h2 onClick={this.linkToHome}>Cloud Sound</h2>
+				<nav className="logged"> <h2 onClick={this.linkToHome}>CloudSound</h2>
 					<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png' onClick={this.linkToHome}/>
 					<Search />
-					<button className="userPage" onClick={this.sendUser}>User Page</button>
-					<button className="logOut" onClick={this.logoutUser}>Logout</button>
+					<a className="userPage" onClick={this.sendUser}>User Page</a>
+					<a className="logOut" onClick={this.logoutUser}>Logout</a>
 				</nav>
 				)
 		} else {
 			return(
-				 <nav> <h2 onClick={this.linkToHome}>Cloud Sound</h2>
+				 <nav> <h2 onClick={this.linkToHome}>CloudSound</h2>
 				 	<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png' onClick={this.linkToHome} />
 				 	<Search />
 		  			<SignUp clickedLogin={this.clickedLogin} currentlyClicked={this.state.currentlyClicked} enableButtons={this.enableButtons} />

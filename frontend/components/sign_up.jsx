@@ -62,7 +62,7 @@ module.exports = React.createClass ({
   render: function() {
     return (
       <div>
-      <button className="unlogged" onClick={this.openModal} disabled={this.props.currentlyClicked}>Sign Up</button>
+      <a className="unlogged" onClick={this.openModal} disabled={this.props.currentlyClicked}>Sign Up</a>
 
       <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
        <div className='exit' onClick={this.closeModal}>X</div>
