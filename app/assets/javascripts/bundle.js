@@ -35864,6 +35864,11 @@
 			hashHistory.push('/');
 		},
 	
+		addSongForm: function (event) {
+			event.preventDefault();
+			// SongActions.addSong(event);
+		},
+	
 		// songChange: function() {
 		// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
 		// },
@@ -35887,6 +35892,11 @@
 					'p',
 					{ className: 'alertUserLikes' },
 					'(Liked Songs go Here)'
+				),
+				React.createElement(
+					'button',
+					{ className: 'addNewSong', onClick: this.addSongForm },
+					'Add Song'
 				)
 			);
 		}

@@ -44,19 +44,19 @@ module.exports = React.createClass ({
   },
 
   errors: function() {
-  if (this.state.errors.length === 0) {
-    return;
-  } else {
-    return (
-        <ul>
-          {
-            this.state.errors.map(function(error,idx) {
-              return <li key={idx}>{error}</li>
-            })
-          }
-        </ul>
-      )
-    }
+    if (this.state.errors.length === 0) {
+      return;
+    } else {
+      return (
+          <ul>
+            {
+              this.state.errors.map(function(error,idx) {
+                return <li key={idx}>{error}</li>
+              })
+            }
+          </ul>
+        )
+      }
   },
 
   render: function() {
