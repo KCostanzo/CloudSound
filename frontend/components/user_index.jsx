@@ -1,5 +1,6 @@
 var React = require('react');
 var hashHistory = require('react-router').hashHistory;
+var Modal = require('react-modal');
 var SongActions = require('../actions/song_client_actions.js');
 var LikeActions = require('../actions/like_actions.js');
 var SongStore = require('../stores/song_store.js');
@@ -9,7 +10,7 @@ var IndexItem = require('./index_item.jsx');
 module.exports = React.createClass({
 	getInitialState: function() {
 		return {
-			songIds: [], songs: []
+			songIds: [], songs: [], modalOpen: false, errors: [],
 		}
 	},
 
@@ -25,6 +26,32 @@ module.exports = React.createClass({
 		// this.songListen.remove();
 	},
 
+	openModal: function() {
+		this.setState({ modalOpen: true });
+		console.log('working');
+		debugger;
+	},
+
+	closeModal: function() {
+		this.setState({ modalOpen: false});
+	},
+
+	errors: function() {
+	    if (this.state.errors.length === 0) {
+	      return;
+	    } else {
+	      return (
+	          <ul>
+	            {
+	              this.state.errors.map(function(error,idx) {
+	                return <li key={idx}>{error}</li>
+	              })
+	            }
+	          </ul>
+	      )
+	    }
+	  },
+
 	likeChange: function() {
 		this.setState({songs: LikeStore.all()});
 		// this.setSongs(this.state.songIds);
@@ -34,9 +61,13 @@ module.exports = React.createClass({
 		hashHistory.push('/');
 	},
 
-	addSongForm: function(event) {
-		event.preventDefault();
-		// SongActions.addSong(event);
+	// addSongForm: function(event) {
+	// 	event.preventDefault();
+	// 	// SongActions.addSong(event);
+	// },
+
+	addSong: function() {
+
 	},
 
 	// songChange: function() {
@@ -58,7 +89,31 @@ module.exports = React.createClass({
 						}
 					</ul>
 					<p className="alertUserLikes">(Liked Songs go Here)</p>
-					<button className="addNewSong" onClick={this.addSongForm}>Add Song</button>
+					<p className="addNewSong" onClick={this.openModal}>Add Song</p>
+
+						 <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
+					       <div className='exit' onClick={this.closeModal}>X</div>
+					        <form onSubmit={this.addSong}>
+					          {this.errors()}
+					          <br/>
+
+					          <h3>Add New Song!</h3>
+					          <br/>
+
+					          <label>Username:
+					            <input type='text' value={this.state.username} onChange={this.nameChange}/>
+					          </label>
+					          <br/>
+
+					          <label>Password:
+					            <input type="password" value={this.state.password} onChange={this.passChange}/>
+					          </label>
+					          <br/>
+
+					          <input className='submit' type='submit' value='Add Song!'/>
+
+					        </form>
+					      </Modal>
 				</div>
 			);
 	}

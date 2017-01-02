@@ -472,3 +472,15 @@ li:hover .like {
 li label {
   margin: 0px;
 }
+
+.addNewSong {
+  display: flex;
+/*  margin: 20px;*/
+  cursor: pointer;
+  padding: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid #79bbff;
+  color: #79bbff;
+  font-weight: bold;
+}

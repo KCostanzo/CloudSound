@@ -35828,6 +35828,7 @@
 
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(186).hashHistory;
+	var Modal = __webpack_require__(166);
 	var SongActions = __webpack_require__(280);
 	var LikeActions = __webpack_require__(271);
 	var SongStore = __webpack_require__(283);
@@ -35839,7 +35840,7 @@
 	
 		getInitialState: function () {
 			return {
-				songIds: [], songs: []
+				songIds: [], songs: [], modalOpen: false, errors: []
 			};
 		},
 	
@@ -35855,6 +35856,34 @@
 			// this.songListen.remove();
 		},
 	
+		openModal: function () {
+			this.setState({ modalOpen: true });
+			console.log('working');
+			debugger;
+		},
+	
+		closeModal: function () {
+			this.setState({ modalOpen: false });
+		},
+	
+		errors: function () {
+			if (this.state.errors.length === 0) {
+				return;
+			} else {
+				return React.createElement(
+					'ul',
+					null,
+					this.state.errors.map(function (error, idx) {
+						return React.createElement(
+							'li',
+							{ key: idx },
+							error
+						);
+					})
+				);
+			}
+		},
+	
 		likeChange: function () {
 			this.setState({ songs: LikeStore.all() });
 			// this.setSongs(this.state.songIds);
@@ -35864,10 +35893,12 @@
 			hashHistory.push('/');
 		},
 	
-		addSongForm: function (event) {
-			event.preventDefault();
-			// SongActions.addSong(event);
-		},
+		// addSongForm: function(event) {
+		// 	event.preventDefault();
+		// 	// SongActions.addSong(event);
+		// },
+	
+		addSong: function () {},
 	
 		// songChange: function() {
 		// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
@@ -35894,9 +35925,45 @@
 					'(Liked Songs go Here)'
 				),
 				React.createElement(
-					'button',
-					{ className: 'addNewSong', onClick: this.addSongForm },
+					'p',
+					{ className: 'addNewSong', onClick: this.openModal },
 					'Add Song'
+				),
+				React.createElement(
+					Modal,
+					{ className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
+					React.createElement(
+						'div',
+						{ className: 'exit', onClick: this.closeModal },
+						'X'
+					),
+					React.createElement(
+						'form',
+						{ onSubmit: this.addSong },
+						this.errors(),
+						React.createElement('br', null),
+						React.createElement(
+							'h3',
+							null,
+							'Add New Song!'
+						),
+						React.createElement('br', null),
+						React.createElement(
+							'label',
+							null,
+							'Username:',
+							React.createElement('input', { type: 'text', value: this.state.username, onChange: this.nameChange })
+						),
+						React.createElement('br', null),
+						React.createElement(
+							'label',
+							null,
+							'Password:',
+							React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
+						),
+						React.createElement('br', null),
+						React.createElement('input', { className: 'submit', type: 'submit', value: 'Add Song!' })
+					)
 				)
 			);
 		}
