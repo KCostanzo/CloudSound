@@ -34650,7 +34650,7 @@
 					React.createElement(
 						'h2',
 						{ onClick: this.linkToHome },
-						'CloudSound'
+						'Cloud Sound'
 					),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
 					React.createElement(Search, null),
@@ -35858,8 +35858,8 @@
 	
 		openModal: function () {
 			this.setState({ modalOpen: true });
-			console.log('working');
-			debugger;
+			// console.log('working');
+			// debugger;
 		},
 	
 		closeModal: function () {
@@ -35951,17 +35951,22 @@
 						React.createElement(
 							'label',
 							null,
-							'Username:',
-							React.createElement('input', { type: 'text', value: this.state.username, onChange: this.nameChange })
+							'Title:',
+							React.createElement('input', { type: 'text', value: this.state.songTitle, onChange: this.nameChange })
 						),
 						React.createElement('br', null),
 						React.createElement(
 							'label',
 							null,
-							'Password:',
-							React.createElement('input', { type: 'password', value: this.state.password, onChange: this.passChange })
+							'Artist:',
+							React.createElement('input', { type: 'text', value: this.state.songArtist, onChange: this.artistChange })
 						),
 						React.createElement('br', null),
+						React.createElement(
+							'a',
+							{ className: 'upload' },
+							'Upload Song!'
+						),
 						React.createElement('input', { className: 'submit', type: 'submit', value: 'Add Song!' })
 					)
 				)

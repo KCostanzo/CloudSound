@@ -28,8 +28,8 @@ module.exports = React.createClass({
 
 	openModal: function() {
 		this.setState({ modalOpen: true });
-		console.log('working');
-		debugger;
+		// console.log('working');
+		// debugger;
 	},
 
 	closeModal: function() {
@@ -100,15 +100,17 @@ module.exports = React.createClass({
 					          <h3>Add New Song!</h3>
 					          <br/>
 
-					          <label>Username:
-					            <input type='text' value={this.state.username} onChange={this.nameChange}/>
+					          <label>Title:
+					            <input type='text' value={this.state.songTitle} onChange={this.nameChange}/>
 					          </label>
 					          <br/>
 
-					          <label>Password:
-					            <input type="password" value={this.state.password} onChange={this.passChange}/>
+					          <label>Artist:
+					            <input type="text" value={this.state.songArtist} onChange={this.artistChange}/>
 					          </label>
 					          <br/>
+
+					          <a className="upload">Upload Song!</a>
 
 					          <input className='submit' type='submit' value='Add Song!'/>
 

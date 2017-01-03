@@ -67,7 +67,7 @@ module.exports = React.createClass({
 				)
 		} else {
 			return(
-				 <nav> <h2 onClick={this.linkToHome}>CloudSound</h2>
+				 <nav> <h2 onClick={this.linkToHome}>Cloud Sound</h2>
 				 	<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png' onClick={this.linkToHome} />
 				 	<Search />
 		  			<SignUp clickedLogin={this.clickedLogin} currentlyClicked={this.state.currentlyClicked} enableButtons={this.enableButtons} />
