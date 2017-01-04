@@ -35928,7 +35928,9 @@
 		// 	// SongActions.addSong(event);
 		// },
 	
-		addSong: function () {},
+		addSong: function () {
+			console.log('outerSubmitFn');
+		},
 	
 		postSong: function (accepted, rejected) {
 			// SongActions.postSongAWS(songData);
@@ -35968,7 +35970,7 @@
 				),
 				React.createElement(
 					Modal,
-					{ className: 'modal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
+					{ className: 'uploadModal', isOpen: this.state.modalOpen, onRequestClose: this.closeModal },
 					React.createElement(
 						'div',
 						{ className: 'exit', onClick: this.closeModal },
@@ -36008,7 +36010,7 @@
 								'Upload Song!'
 							)
 						),
-						React.createElement('input', { className: 'submit', type: 'submit', value: 'Add Song!' })
+						React.createElement('input', { className: 'submit', disabled: 'True', type: 'submit', value: 'Add Song!' })
 					)
 				)
 			);

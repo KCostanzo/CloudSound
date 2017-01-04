@@ -33,6 +33,27 @@ form input{
   margin: 30px;
 }
 
+.uploadModal {
+  position: relative;
+  top: 60px;
+  cursor: pointer;
+  background: #79bbff;
+  max-width: 60%;
+}
+
+.uploadModal h3 {
+  margin-top: -60px;
+  text-align: center;
+}
+
+.uploadModal .exit {
+  margin-left: 530px; /*16em*/
+  margin-bottom: 0px;
+  /*margin-top: -45px;*/
+  font-size: 200%;
+  z-index: 40;
+}
+
 .modal {
   position: relative;
   top: 60px;
@@ -90,6 +111,8 @@ form input{
 .modal .exit:hover {
   cursor: pointer;
 }
+
+
 
 .cover-index {
   position: absolute;
@@ -472,6 +495,13 @@ li:hover .like {
 li label {
   margin: 0px;
 }
+
+/*.dropZone {
+  display: flex;
+  cursor: pointer;
+  padding: 30px;
+  border: 1px solid black;
+}*/
 
 .addNewSong {
   display: flex;

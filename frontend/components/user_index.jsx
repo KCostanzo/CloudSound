@@ -68,7 +68,7 @@ module.exports = React.createClass({
 	// },
 
 	addSong: function() {
-
+		console.log('outerSubmitFn');
 	},
 
 	postSong: function(accepted, rejected) {
@@ -99,7 +99,7 @@ module.exports = React.createClass({
 					<p className="alertUserLikes">(Liked Songs go Here)</p>
 					<p className="addNewSong" onClick={this.openModal}>Add Song</p>
 
-						 <Modal className='modal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
+						 <Modal className='uploadModal' isOpen={this.state.modalOpen} onRequestClose={this.closeModal}>
 					       <div className='exit' onClick={this.closeModal}>X</div>
 					        <form onSubmit={this.addSong}>
 					          {this.errors()}
@@ -107,12 +107,10 @@ module.exports = React.createClass({
 
 					          <h3>Add New Song!</h3>
 					          <br/>
-
 					          <label>Title:
 					            <input type='text' value={this.state.songTitle} onChange={this.nameChange}/>
 					          </label>
 					          <br/>
-
 					          <label>Artist:
 					            <input type="text" value={this.state.songArtist} onChange={this.artistChange}/>
 					          </label>
@@ -124,7 +122,7 @@ module.exports = React.createClass({
 
 					          </DropZone>
 
-					          <input className='submit' type='submit' value='Add Song!'/>
+					          <input className='submit' disabled='True' type='submit' value='Add Song!'/>
 
 					        </form>
 					      </Modal>
