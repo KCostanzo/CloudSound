@@ -35147,6 +35147,20 @@
 					ServerActions.songError(error);
 				}
 			});
+		},
+	
+		postSongAWS: function (songData) {
+			$.ajax({
+				method: 'POST',
+				url: '',
+				data: songData,
+				success: function (postedSong) {
+					ServerActions.songPosted(songData);
+				},
+				error: function (error) {
+					ServerActions.postSongError(error);
+				}
+			});
 		}
 	};
 
