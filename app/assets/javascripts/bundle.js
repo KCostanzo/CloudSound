@@ -35076,6 +35076,7 @@
 		},
 	
 		postSongAWS: function (songData) {
+			// console.log(songData);
 			Util.postSongAWS(songData);
 		},
 	
@@ -35155,6 +35156,7 @@
 		},
 	
 		postSongAWS: function (songData) {
+			console.log(songData);
 			$.ajax({
 				method: 'POST',
 				url: 'https://musicstoreforapp.s3.amazonaws.com/',
@@ -35933,10 +35935,10 @@
 		},
 	
 		postSong: function (accepted, rejected) {
-			// SongActions.postSongAWS(songData);
+			SongActions.postSongAWS(accepted[0]);
 			console.log('accepted: ', accepted);
-			console.log('rejected: ', rejected);
-			console.log('song upload');
+			// console.log('rejected: ', rejected);
+			// console.log('song upload');
 		},
 	
 		// songChange: function() {

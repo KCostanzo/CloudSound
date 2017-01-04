@@ -56,6 +56,7 @@ module.exports = {
 	},
 
 	postSongAWS: function(songData) {
+		console.log(songData);
 		$.ajax({
 			method: 'POST',
 			url: 'https://musicstoreforapp.s3.amazonaws.com/',

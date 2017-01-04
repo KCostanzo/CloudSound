@@ -21,6 +21,7 @@ module.exports = {
 	},
 
 	postSongAWS: function(songData) {
+		// console.log(songData);
 		Util.postSongAWS(songData);
 	},
 
