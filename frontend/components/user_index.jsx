@@ -6,6 +6,7 @@ var LikeActions = require('../actions/like_actions.js');
 var SongStore = require('../stores/song_store.js');
 var LikeStore = require('../stores/likes_store.js');
 var IndexItem = require('./index_item.jsx');
+var DropZone = require('react-dropzone');
 
 module.exports = React.createClass({
 	getInitialState: function() {
@@ -70,6 +71,13 @@ module.exports = React.createClass({
 
 	},
 
+	postSong: function(accepted, rejected) {
+		// SongActions.postSongAWS(songData);
+		console.log('accepted: ', accepted);
+		console.log('rejected: ', rejected);
+		console.log('song upload');
+	},
+
 	// songChange: function() {
 	// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
 	// },
@@ -110,7 +118,11 @@ module.exports = React.createClass({
 					          </label>
 					          <br/>
 
-					          <a className="upload">Upload Song!</a>
+					          <DropZone onDrop={this.postSong}>
+
+					          	<a className="upload">Upload Song!</a>
+
+					          </DropZone>
 
 					          <input className='submit' type='submit' value='Add Song!'/>
 

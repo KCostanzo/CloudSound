@@ -20,6 +20,10 @@ module.exports = {
 		Util.addSong(song);
 	},
 
+	postSongAWS: function(songData) {
+		Util.postSongAWS(songData);
+	},
+
 	nextSong: function() {
 		Dispatcher.dispatch({
 			actionType: Constants.NEXT_SONG

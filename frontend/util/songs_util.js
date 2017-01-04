@@ -58,12 +58,15 @@ module.exports = {
 	postSongAWS: function(songData) {
 		$.ajax({
 			method: 'POST',
-			url: '',
+			url: 'https://musicstoreforapp.s3.amazonaws.com/',
 			data: songData,
 			success: function(postedSong) {
-				ServerActions.songPosted(songData);
+				console.log(postedSong);
+				console.log('success');
+				ServerActions.songPosted(postedSong);
 			},
 			error: function(error) {
+				console.log(error);
 				ServerActions.postSongError(error);
 			}
 		})

@@ -18,5 +18,6 @@ module.exports = {
   LIKE_MADE: 'LIKE_MADE',
   UNLIKED: 'UNLIKED',
 
-  ADD_SONG: 'ADD_SONG'
+  ADD_SONG: 'ADD_SONG',
+  POST_SONG: 'POST_SONG'
 }

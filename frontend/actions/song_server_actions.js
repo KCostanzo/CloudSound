@@ -30,6 +30,13 @@ module.exports = {
 		})
 	},
 
+	songPosted: function(song) {
+		Dispatcher.dispatch({
+			actionType: Constants.POST_SONG,
+			song: song
+		})
+	},
+
 	songError: function(errors) {
     	Dispatcher.dispatch({
       		actionType: Constants.SONGS_ERROR,
