@@ -110,7 +110,6 @@ module.exports = React.createClass({
 					          <label>Title:
 					            <input type='text' value={this.state.songTitle} onChange={this.nameChange}/>
 					          </label>
-					          <br/>
 					          <label>Artist:
 					            <input type="text" value={this.state.songArtist} onChange={this.artistChange}/>
 					          </label>

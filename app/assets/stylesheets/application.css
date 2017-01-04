@@ -39,6 +39,7 @@ form input{
   cursor: pointer;
   background: #79bbff;
   max-width: 60%;
+  margin: 0 auto;
 }
 
 .uploadModal h3 {
@@ -51,7 +52,7 @@ form input{
   margin-bottom: 0px;
   /*margin-top: -45px;*/
   font-size: 200%;
-  z-index: 40;
+  z-index: 4;
 }
 
 .modal {

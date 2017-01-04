@@ -35993,7 +35993,6 @@
 							'Title:',
 							React.createElement('input', { type: 'text', value: this.state.songTitle, onChange: this.nameChange })
 						),
-						React.createElement('br', null),
 						React.createElement(
 							'label',
 							null,
