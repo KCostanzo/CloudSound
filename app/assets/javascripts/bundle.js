@@ -35155,8 +35155,8 @@
 			});
 		},
 	
+		// console.log(songData);
 		postSongAWS: function (songData) {
-			console.log(songData);
 			$.ajax({
 				method: 'POST',
 				url: 'https://musicstoreforapp.s3.amazonaws.com/',
@@ -35167,7 +35167,7 @@
 					ServerActions.songPosted(postedSong);
 				},
 				error: function (error) {
-					console.log(error);
+					console.log('error');
 					ServerActions.postSongError(error);
 				}
 			});
@@ -35935,10 +35935,36 @@
 		},
 	
 		postSong: function (accepted, rejected) {
-			SongActions.postSongAWS(accepted[0]);
-			console.log('accepted: ', accepted);
+			// SongActions.postSongAWS(accepted[0]);
 			// console.log('rejected: ', rejected);
 			// console.log('song upload');
+	
+			var file = accepted[0];
+			var fd = new FormData();
+			console.log('accepted: ', file);
+	
+			var key = "events/" + new Date().getTime() + '-' + file.name;
+	
+			// console.log(key);
+			fd.append('key', key);
+			fd.append('acl', 'public-read');
+			fd.append('Content-Type', file.type);
+			fd.append('AWSAccessKeyId', 'YOUR ACCESS KEY');
+			fd.append('policy', 'YOUR POLICY');
+			fd.append('signature', 'YOUR SIGNATURE');
+	
+			fd.append("file", file);
+	
+			var xhr = new XMLHttpRequest();
+	
+			xhr.upload.addEventListener("progress", uploadProgress, false);
+			xhr.addEventListener("load", uploadComplete, false);
+			xhr.addEventListener("error", uploadFailed, false);
+			xhr.addEventListener("abort", uploadCanceled, false);
+	
+			xhr.open('POST', 'https://musicstoreforapp.s3.amazonaws.com/', true); //MUST BE LAST LINE BEFORE YOU SEND
+	
+			xhr.send(fd);
 		},
 	
 		// songChange: function() {
