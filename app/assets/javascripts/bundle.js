@@ -35991,6 +35991,7 @@
 	
 			fd.append('policy', policyBase64);
 			fd.append('signature', s3Signature);
+			// fd.append('x-amz-signature', s3Signature);
 	
 			fd.append("file", file);
 	

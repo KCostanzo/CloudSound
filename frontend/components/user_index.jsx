@@ -139,8 +139,9 @@ module.exports = React.createClass({
         // this.set({POLICY: policyBase64 });
         // this.set({SIGNATURE: signature });
 
-	    fd.append('policy', policyBase64)
+	    fd.append('policy', policyBase64);
 	    fd.append('signature', s3Signature);
+	    // fd.append('x-amz-signature', s3Signature);
 
 	    fd.append("file",file);
 
