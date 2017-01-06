@@ -77,54 +77,109 @@ module.exports = React.createClass({
 	postSong: function(accepted, rejected) {
 		// SongActions.postSongAWS(accepted[0]);
 		// console.log('rejected: ', rejected);
-		// console.log('song upload');
 
 	    var file = accepted[0];
 	    var fd = new FormData();
 		console.log('accepted: ', file);
 
 	    var key = "events/" + (new Date).getTime() + '-' + file.name;
-	    // this.set({key: key});
 
-        var POLICY_JSON = { "expiration": "2012-12-01T12:00:00.000Z",
+		var accessKeyID = AWSInfo.AccessKey;
+		var secretAccessKey = AWSInfo.SKey;
+
+		var bucket = "musicstoreforapp";
+		var region = "us-west-1"; // overwrite with your region
+		// var folder = "users/"; // overwrite with your folder
+		var expiration = "2020-12-28T12:00:00.000Z"; // overwrite date
+		var dateObj = new Date; // overwrite date
+		var mm = dateObj.getMonth() + 1;
+		var dd = dateObj.getDate();
+		var date = [dateObj.getFullYear(), mm<10 ? '0'+ mm: mm, dd<10 ? '0'+ dd : dd].join('')
+		// console.log(date);
+		var serviceName = "s3";
+
+
+		function getSignatureKey(key, dateStamp, regionName, serviceName) {
+		   var kDate = CryptoJS.HmacSHA256(dateStamp, "AWS4" + key);
+		   var kRegion = CryptoJS.HmacSHA256(regionName, kDate);
+		   var kService = CryptoJS.HmacSHA256(serviceName, kRegion);
+		   var kSigning = CryptoJS.HmacSHA256("aws4_request", kService);
+
+		   return kSigning;
+		}
+
+
+
+        var POLICY_JSON = { "expiration": expiration,
                 "conditions": [
-                ["eq", "$bucket", "musicstoreforapp"],
-                ["starts-with", "$key", ""],
-                {"acl": "private"},
+                ["eq", "$bucket", bucket],
+                ["starts-with", "$key", key],
+                {"acl": "public-read"},
                 ["starts-with", "$Content-Type", ""],
-                ["content-length-range", 0, 524288000]
+                ["content-length-range", 0, 524288000],
+                ["starts-with", "$x-amz-meta-tag", ""],
+				{"x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request"},
+				{"x-amz-algorithm": "AWS4-HMAC-SHA256"},
+				{"x-amz-date": date + "T000000Z" }
                 ]
               };
 
                 // {"success_action_redirect": this.successAction},
                 // {"x-amz-meta-filename": this.get('filename')},
 	    fd.append('key', key);
-        var secret = AWSInfo.SKey;
+	    fd.append('AWSAccessKeyID', accessKeyID);
+	    fd.append('Content-Type', file.type);      
         var policyBase64 = Base64.encode(JSON.stringify(POLICY_JSON));
-        var signature = CryptoJS.HmacSHA1(secret, policyBase64);
+	    console.log(policyBase64);
+
+	    var signatureKey = getSignatureKey(secretAccessKey, date, region, serviceName);
+		var s3Signature = CryptoJS.HmacSHA256(policyBase64, signatureKey).toString(CryptoJS.enc.Hex);
+		console.log('s3Signature:', s3Signature);
 
         // this.set({POLICY: policyBase64 });
         // this.set({SIGNATURE: signature });
 
-	    // console.log(key);
-	    // fd.append('acl', 'public-read'); 
-	    fd.append('Content-Type', file.type);      
-	    fd.append('AWSAccessKeyId', AWSInfo.AccessKey);
 	    fd.append('policy', policyBase64)
-	    fd.append('signature', signature);
+	    fd.append('signature', s3Signature);
 
 	    fd.append("file",file);
 
 	    var xhr = new XMLHttpRequest();
 
-	    xhr.upload.addEventListener("progress", uploadProgress, false); //current breaking point
-	    xhr.addEventListener("load", uploadComplete, false);
-	    xhr.addEventListener("error", uploadFailed, false);
-	    xhr.addEventListener("abort", uploadCanceled, false);
+	    xhr.upload.addEventListener("progress", this.uploadProgress, false); //current breaking point
+	    xhr.addEventListener("load", this.uploadComplete, false);
+	    xhr.addEventListener("error", this.uploadFailed, false);
+	    xhr.addEventListener("abort", this.uploadCanceled, false);
 
 	    xhr.open('POST', 'https://musicstoreforapp.s3.amazonaws.com/', true); //MUST BE LAST LINE BEFORE YOU SEND 
 
 	    xhr.send(fd);
+	},
+
+// Helper functions
+
+	uploadProgress: function(evt) {
+    	// if (evt.lengthComputable) {
+     // 	 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+     //  	document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
+   		//  }
+    	// else {
+     //  		document.getElementById('progressNumber').innerHTML = 'unable to compute';
+    	// }
+    	console.log('working');
+  	},
+
+  	uploadComplete:	function(evt) {
+    /* This event is raised when the server send back a response */
+   		 alert("Done - " + evt.target.responseText );
+  	},
+
+	uploadFailed: function(evt) {
+	    alert("There was an error attempting to upload the file." + evt);
+	},
+
+	uploadCanceled: function(evt) {
+	    alert("The upload has been canceled by the user or the browser dropped the connection.");
 	},
 
 	successAction: function() {
