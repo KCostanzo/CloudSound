@@ -7,6 +7,9 @@ var SongStore = require('../stores/song_store.js');
 var LikeStore = require('../stores/likes_store.js');
 var IndexItem = require('./index_item.jsx');
 var DropZone = require('react-dropzone');
+var AWSInfo = require('../../docs/info/s3info.js');
+var Base64 = require('base-64');
+var CryptoJS = require('crypto-js');
 
 module.exports = React.createClass({
 	getInitialState: function() {
@@ -81,20 +84,40 @@ module.exports = React.createClass({
 		console.log('accepted: ', file);
 
 	    var key = "events/" + (new Date).getTime() + '-' + file.name;
+	    // this.set({key: key});
+
+        var POLICY_JSON = { "expiration": "2012-12-01T12:00:00.000Z",
+                "conditions": [
+                ["eq", "$bucket", "musicstoreforapp"],
+                ["starts-with", "$key", ""],
+                {"acl": "private"},
+                ["starts-with", "$Content-Type", ""],
+                ["content-length-range", 0, 524288000]
+                ]
+              };
+
+                // {"success_action_redirect": this.successAction},
+                // {"x-amz-meta-filename": this.get('filename')},
+	    fd.append('key', key);
+        var secret = AWSInfo.SKey;
+        var policyBase64 = Base64.encode(JSON.stringify(POLICY_JSON));
+        var signature = CryptoJS.HmacSHA1(secret, policyBase64);
+
+        // this.set({POLICY: policyBase64 });
+        // this.set({SIGNATURE: signature });
 
 	    // console.log(key);
-	    fd.append('key', key);
-	    fd.append('acl', 'public-read'); 
+	    // fd.append('acl', 'public-read'); 
 	    fd.append('Content-Type', file.type);      
-	    fd.append('AWSAccessKeyId', 'YOUR ACCESS KEY');
-	    fd.append('policy', 'YOUR POLICY')
-	    fd.append('signature','YOUR SIGNATURE');
+	    fd.append('AWSAccessKeyId', AWSInfo.AccessKey);
+	    fd.append('policy', policyBase64)
+	    fd.append('signature', signature);
 
 	    fd.append("file",file);
 
 	    var xhr = new XMLHttpRequest();
 
-	    xhr.upload.addEventListener("progress", uploadProgress, false);
+	    xhr.upload.addEventListener("progress", uploadProgress, false); //current breaking point
 	    xhr.addEventListener("load", uploadComplete, false);
 	    xhr.addEventListener("error", uploadFailed, false);
 	    xhr.addEventListener("abort", uploadCanceled, false);
@@ -102,11 +125,11 @@ module.exports = React.createClass({
 	    xhr.open('POST', 'https://musicstoreforapp.s3.amazonaws.com/', true); //MUST BE LAST LINE BEFORE YOU SEND 
 
 	    xhr.send(fd);
-
-
-
 	},
 
+	successAction: function() {
+		console.log('successActionRedirect');
+	},
 	// songChange: function() {
 	// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
 	// },
