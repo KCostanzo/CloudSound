@@ -35958,6 +35958,7 @@
 			var mm = dateObj.getMonth() + 1;
 			var dd = dateObj.getDate();
 			var date = [dateObj.getFullYear(), mm < 10 ? '0' + mm : mm, dd < 10 ? '0' + dd : dd].join('');
+			// var date = "20170106";
 			// console.log(date);
 			var serviceName = "s3";
 	
@@ -35968,10 +35969,10 @@
 				var kSigning = CryptoJS.HmacSHA256("aws4_request", kService);
 	
 				return kSigning;
-			}
+			};
 	
 			var POLICY_JSON = { "expiration": expiration,
-				"conditions": [["eq", "$bucket", bucket], ["starts-with", "$key", key], { "acl": "public-read" }, ["starts-with", "$Content-Type", ""], ["content-length-range", 0, 524288000], ["starts-with", "$x-amz-meta-tag", ""], { "x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName + "/aws4_request" }, { "x-amz-algorithm": "AWS4-HMAC-SHA256" }, { "x-amz-date": date + "T000000Z" }]
+				"conditions": [["eq", "$bucket", bucket], ["starts-with", "$key", key], { "acl": "public-read" }, ["starts-with", "$Content-Type", ""], ["content-length-range", 0, 524288000], ["starts-with", "$x-amz-meta-tag", ""], { "x-amz-algorithm": "AWS4-HMAC-SHA256" }, { "x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName + "/aws4_request" }, { "x-amz-date": date + "T000000Z" }]
 			};
 	
 			// {"success_action_redirect": this.successAction},
@@ -35997,12 +35998,12 @@
 	
 			var xhr = new XMLHttpRequest();
 	
-			xhr.upload.addEventListener("progress", this.uploadProgress, false); //current breaking point
+			xhr.upload.addEventListener("progress", this.uploadProgress, false);
 			xhr.addEventListener("load", this.uploadComplete, false);
 			xhr.addEventListener("error", this.uploadFailed, false);
 			xhr.addEventListener("abort", this.uploadCanceled, false);
 	
-			xhr.open('POST', 'https://musicstoreforapp.s3.amazonaws.com/', true); //MUST BE LAST LINE BEFORE YOU SEND
+			xhr.open('POST', 'https://musicstoreforapp.s3.amazonaws.com/', true); //MUST BE LAST LINE BEFORE SEND
 	
 			xhr.send(fd);
 		},

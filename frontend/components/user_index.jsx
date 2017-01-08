@@ -95,6 +95,7 @@ module.exports = React.createClass({
 		var mm = dateObj.getMonth() + 1;
 		var dd = dateObj.getDate();
 		var date = [dateObj.getFullYear(), mm<10 ? '0'+ mm: mm, dd<10 ? '0'+ dd : dd].join('')
+		// var date = "20170106";
 		// console.log(date);
 		var serviceName = "s3";
 
@@ -106,7 +107,7 @@ module.exports = React.createClass({
 		   var kSigning = CryptoJS.HmacSHA256("aws4_request", kService);
 
 		   return kSigning;
-		}
+		};
 
 
 
@@ -118,8 +119,8 @@ module.exports = React.createClass({
                 ["starts-with", "$Content-Type", ""],
                 ["content-length-range", 0, 524288000],
                 ["starts-with", "$x-amz-meta-tag", ""],
-				{"x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request"},
 				{"x-amz-algorithm": "AWS4-HMAC-SHA256"},
+				{"x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request"},
 				{"x-amz-date": date + "T000000Z" }
                 ]
               };
@@ -147,12 +148,12 @@ module.exports = React.createClass({
 
 	    var xhr = new XMLHttpRequest();
 
-	    xhr.upload.addEventListener("progress", this.uploadProgress, false); //current breaking point
+	    xhr.upload.addEventListener("progress", this.uploadProgress, false); 
 	    xhr.addEventListener("load", this.uploadComplete, false);
 	    xhr.addEventListener("error", this.uploadFailed, false);
 	    xhr.addEventListener("abort", this.uploadCanceled, false);
 
-	    xhr.open('POST', 'https://musicstoreforapp.s3.amazonaws.com/', true); //MUST BE LAST LINE BEFORE YOU SEND 
+	    xhr.open('POST', 'https://musicstoreforapp.s3.amazonaws.com/', true); //MUST BE LAST LINE BEFORE SEND 
 
 	    xhr.send(fd);
 	},
