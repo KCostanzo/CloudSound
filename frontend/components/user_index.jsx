@@ -82,15 +82,14 @@ module.exports = React.createClass({
 	    var fd = new FormData();
 		console.log('accepted: ', file);
 
-	    var key = "events/" + (new Date).getTime() + '-' + file.name;
+	    var key = (new Date).getTime() + '-' + file.name;    //.split(" ").join("");
+		// console.log('key: ' + key);
 
 		var accessKeyID = AWSInfo.AccessKey;
 		var secretAccessKey = AWSInfo.SKey;
 
 		var bucket = "musicstoreforapp";
-		var region = "us-west-1"; // overwrite with your region
-		// var folder = "users/"; // overwrite with your folder
-		var expiration = "2020-12-28T12:00:00.000Z"; // overwrite date
+		var region = "us-west-1"; // overwrite region
 		var dateObj = new Date; // overwrite date
 		var mm = dateObj.getMonth() + 1;
 		var dd = dateObj.getDate();
@@ -99,52 +98,61 @@ module.exports = React.createClass({
 		// console.log(date);
 		var serviceName = "s3";
 
-
-		function getSignatureKey(key, dateStamp, regionName, serviceName) {
-		   var kDate = CryptoJS.HmacSHA256(dateStamp, "AWS4" + key);
+		function getSignatureKey(kkey, dateStamp, regionName, serviceName) {
+		   var kDate = CryptoJS.HmacSHA256(dateStamp, "AWS4" + kkey);
+		   		// console.log(kDate.toString(CryptoJS.enc.Hex));
 		   var kRegion = CryptoJS.HmacSHA256(regionName, kDate);
+		   		// console.log(kRegion);
 		   var kService = CryptoJS.HmacSHA256(serviceName, kRegion);
+		   		// console.log(kService);
 		   var kSigning = CryptoJS.HmacSHA256("aws4_request", kService);
-
+		   		//HmacSHA256 for signature v4, use SHA1 to test
+		  		// console.log(kSigning);
 		   return kSigning;
 		};
 
-
-
-        var POLICY_JSON = { "expiration": expiration,
+        var POLICY_JSON = { "expiration": "2020-12-28T00:00:00Z",
                 "conditions": [
-                ["eq", "$bucket", bucket],
-                ["starts-with", "$key", key],
+                ["bucket", "musicstoreforapp"],
+                ["starts-with", "$key", ""],
                 {"acl": "public-read"},
                 ["starts-with", "$Content-Type", ""],
                 ["content-length-range", 0, 524288000],
-                ["starts-with", "$x-amz-meta-tag", ""],
-				{"x-amz-algorithm": "AWS4-HMAC-SHA256"},
+                {"x-amz-server-side-encryption": "AES256"},
+
 				{"x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request"},
+				{"x-amz-algorithm": "AWS4-HMAC-SHA256"},
 				{"x-amz-date": date + "T000000Z" }
                 ]
               };
 
+                // ["starts-with", "$x-amz-meta-tag", ""],
                 // {"success_action_redirect": this.successAction},
                 // {"x-amz-meta-filename": this.get('filename')},
-	    fd.append('key', key);
-	    fd.append('AWSAccessKeyID', accessKeyID);
-	    fd.append('Content-Type', file.type);      
+
         var policyBase64 = Base64.encode(JSON.stringify(POLICY_JSON));
 	    console.log(policyBase64);
 
-	    var signatureKey = getSignatureKey(secretAccessKey, date, region, serviceName);
-		var s3Signature = CryptoJS.HmacSHA256(policyBase64, signatureKey).toString(CryptoJS.enc.Hex);
+	    fd.append('key', key);
+	    fd.append('acl', 'public-read');
+	    fd.append('Content-Type', file.type);  
+	    fd.append('AWSAccessKeyID', accessKeyID);
+	    fd.append('policy', policyBase64);
+	    fd.append('x-amz-credential', accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request");
+	    fd.append('x-amz-algorithm', 'AWS4-HMAC-SHA256');
+	    fd.append('x-amz-date', date + "T000000Z");
+
+	    var signatureKey = getSignatureKey(secretAccessKey, date, region, serviceName);  //for version 4
+	    // var signatureKey = secretAccessKey; //for original signature version
+
+		var s3Signature = Base64.encode(CryptoJS.HmacSHA256(policyBase64, signatureKey));
+		// .toString(CryptoJS.enc.Hex)
 		console.log('s3Signature:', s3Signature);
 
-        // this.set({POLICY: policyBase64 });
-        // this.set({SIGNATURE: signature });
-
-	    fd.append('policy', policyBase64);
 	    fd.append('signature', s3Signature);
-	    // fd.append('x-amz-signature', s3Signature);
+	    fd.append('x-amz-signature', s3Signature);
 
-	    fd.append("file",file);
+	    fd.append('file', file);
 
 	    var xhr = new XMLHttpRequest();
 
@@ -154,7 +162,6 @@ module.exports = React.createClass({
 	    xhr.addEventListener("abort", this.uploadCanceled, false);
 
 	    xhr.open('POST', 'https://musicstoreforapp.s3.amazonaws.com/', true); //MUST BE LAST LINE BEFORE SEND 
-
 	    xhr.send(fd);
 	},
 
