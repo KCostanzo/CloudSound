@@ -35975,10 +35975,9 @@
 			};
 	
 			var POLICY_JSON = { "expiration": "2020-12-28T00:00:00Z",
-				"conditions": [["bucket", "musicstoreforapp"], ["starts-with", "$key", ""], { "acl": "public-read" }, ["starts-with", "$Content-Type", ""], ["content-length-range", 0, 524288000], { "x-amz-server-side-encryption": "AES256" }, { "x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName + "/aws4_request" }, { "x-amz-algorithm": "AWS4-HMAC-SHA256" }, { "x-amz-date": date + "T000000Z" }]
+				"conditions": [["bucket", "musicstoreforapp"], ["starts-with", "$key", ""], { "acl": "public-read" }, ["starts-with", "$Content-Type", ""], ["content-length-range", 0, 524288000], { "x-amz-server-side-encryption": "AES256" }, ["starts-with", "$x-amz-meta-tag", ""], { "x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName + "/aws4_request" }, { "x-amz-algorithm": "AWS4-HMAC-SHA256" }, { "x-amz-date": date + "T000000Z" }]
 			};
 	
-			// ["starts-with", "$x-amz-meta-tag", ""],
 			// {"success_action_redirect": this.successAction},
 			// {"x-amz-meta-filename": this.get('filename')},
 	
@@ -35986,6 +35985,7 @@
 			console.log(policyBase64);
 	
 			fd.append('key', key);
+			fd.append('bucket', bucket);
 			fd.append('acl', 'public-read');
 			fd.append('Content-Type', file.type);
 			fd.append('AWSAccessKeyID', accessKeyID);
@@ -36001,8 +36001,8 @@
 			// .toString(CryptoJS.enc.Hex)
 			console.log('s3Signature:', s3Signature);
 	
-			fd.append('signature', s3Signature);
 			fd.append('x-amz-signature', s3Signature);
+			fd.append('signature', s3Signature);
 	
 			fd.append('file', file);
 	
@@ -36652,8 +36652,8 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		AccessKey: 'AKIAI7Z6MPDQQ2C2XMBQ',
-		SKey: '90+UPYsYid2RQU1q3Ma/p7eQsL4JuxUAEp/3tORP'
+		AccessKey: 'AKIAIHJE3D2ZOEIR4RBA',
+		SKey: 'np53Hjbh9bhIZPEkpZ0BLo6pIAgcpsPX0SXC85eb'
 	};
 
 /***/ },

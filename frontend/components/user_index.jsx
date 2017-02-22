@@ -119,6 +119,7 @@ module.exports = React.createClass({
                 ["starts-with", "$Content-Type", ""],
                 ["content-length-range", 0, 524288000],
                 {"x-amz-server-side-encryption": "AES256"},
+                ["starts-with", "$x-amz-meta-tag", ""],
 
 				{"x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request"},
 				{"x-amz-algorithm": "AWS4-HMAC-SHA256"},
@@ -126,7 +127,6 @@ module.exports = React.createClass({
                 ]
               };
 
-                // ["starts-with", "$x-amz-meta-tag", ""],
                 // {"success_action_redirect": this.successAction},
                 // {"x-amz-meta-filename": this.get('filename')},
 
@@ -134,6 +134,7 @@ module.exports = React.createClass({
 	    console.log(policyBase64);
 
 	    fd.append('key', key);
+	    fd.append('bucket', bucket);
 	    fd.append('acl', 'public-read');
 	    fd.append('Content-Type', file.type);  
 	    fd.append('AWSAccessKeyID', accessKeyID);
@@ -149,8 +150,8 @@ module.exports = React.createClass({
 		// .toString(CryptoJS.enc.Hex)
 		console.log('s3Signature:', s3Signature);
 
-	    fd.append('signature', s3Signature);
 	    fd.append('x-amz-signature', s3Signature);
+	    fd.append('signature', s3Signature);
 
 	    fd.append('file', file);
 
