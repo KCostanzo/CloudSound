@@ -35155,6 +35155,7 @@
 			});
 		},
 	
+		//put data here, form data in jquerey?
 		// console.log(songData);
 		postSongAWS: function (songData) {
 			$.ajax({
@@ -35865,10 +35866,10 @@
 	var SongStore = __webpack_require__(283);
 	var LikeStore = __webpack_require__(245);
 	var IndexItem = __webpack_require__(285);
-	var DropZone = __webpack_require__(316);
-	var AWSInfo = __webpack_require__(317);
-	var Base64 = __webpack_require__(318);
-	var CryptoJS = __webpack_require__(320);
+	var DropZone = __webpack_require__(292);
+	var AWSInfo = __webpack_require__(293);
+	var Base64 = __webpack_require__(294);
+	var CryptoJS = __webpack_require__(296);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -36124,31 +36125,7 @@
 	});
 
 /***/ },
-/* 292 */,
-/* 293 */,
-/* 294 */,
-/* 295 */,
-/* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */,
-/* 314 */,
-/* 315 */,
-/* 316 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -36648,7 +36625,7 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 317 */
+/* 293 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -36657,7 +36634,7 @@
 	};
 
 /***/ },
-/* 318 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! http://mths.be/base64 v0.1.0 by @mathias | MIT license */
@@ -36824,10 +36801,10 @@
 	
 	}(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(319)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(295)(module), (function() { return this; }())))
 
 /***/ },
-/* 319 */
+/* 295 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -36843,13 +36820,13 @@
 
 
 /***/ },
-/* 320 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(322), __webpack_require__(323), __webpack_require__(324), __webpack_require__(325), __webpack_require__(326), __webpack_require__(327), __webpack_require__(328), __webpack_require__(329), __webpack_require__(330), __webpack_require__(331), __webpack_require__(332), __webpack_require__(333), __webpack_require__(334), __webpack_require__(335), __webpack_require__(336), __webpack_require__(337), __webpack_require__(338), __webpack_require__(339), __webpack_require__(340), __webpack_require__(341), __webpack_require__(342), __webpack_require__(343), __webpack_require__(344), __webpack_require__(345), __webpack_require__(346), __webpack_require__(347), __webpack_require__(348), __webpack_require__(349), __webpack_require__(350), __webpack_require__(351), __webpack_require__(352), __webpack_require__(353));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(298), __webpack_require__(299), __webpack_require__(300), __webpack_require__(301), __webpack_require__(302), __webpack_require__(303), __webpack_require__(304), __webpack_require__(305), __webpack_require__(306), __webpack_require__(307), __webpack_require__(308), __webpack_require__(309), __webpack_require__(310), __webpack_require__(311), __webpack_require__(312), __webpack_require__(313), __webpack_require__(314), __webpack_require__(315), __webpack_require__(316), __webpack_require__(317), __webpack_require__(318), __webpack_require__(319), __webpack_require__(320), __webpack_require__(321), __webpack_require__(322), __webpack_require__(323), __webpack_require__(324), __webpack_require__(325), __webpack_require__(326), __webpack_require__(327), __webpack_require__(328), __webpack_require__(329));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -36866,7 +36843,7 @@
 	}));
 
 /***/ },
-/* 321 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
@@ -37631,13 +37608,13 @@
 	}));
 
 /***/ },
-/* 322 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321));
+			module.exports = exports = factory(__webpack_require__(297));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -37940,13 +37917,13 @@
 	}));
 
 /***/ },
-/* 323 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321));
+			module.exports = exports = factory(__webpack_require__(297));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -38021,13 +37998,13 @@
 	}));
 
 /***/ },
-/* 324 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321));
+			module.exports = exports = factory(__webpack_require__(297));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -38175,13 +38152,13 @@
 	}));
 
 /***/ },
-/* 325 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321));
+			module.exports = exports = factory(__webpack_require__(297));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -38315,13 +38292,13 @@
 	}));
 
 /***/ },
-/* 326 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321));
+			module.exports = exports = factory(__webpack_require__(297));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -38588,13 +38565,13 @@
 	}));
 
 /***/ },
-/* 327 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321));
+			module.exports = exports = factory(__webpack_require__(297));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -38743,13 +38720,13 @@
 	}));
 
 /***/ },
-/* 328 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321));
+			module.exports = exports = factory(__webpack_require__(297));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -38947,13 +38924,13 @@
 	}));
 
 /***/ },
-/* 329 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(328));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(304));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -39032,13 +39009,13 @@
 	}));
 
 /***/ },
-/* 330 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(322));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(298));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -39360,13 +39337,13 @@
 	}));
 
 /***/ },
-/* 331 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(322), __webpack_require__(330));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(298), __webpack_require__(306));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -39448,13 +39425,13 @@
 	}));
 
 /***/ },
-/* 332 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(322));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(298));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -39776,13 +39753,13 @@
 	}));
 
 /***/ },
-/* 333 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321));
+			module.exports = exports = factory(__webpack_require__(297));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -40048,13 +40025,13 @@
 	}));
 
 /***/ },
-/* 334 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321));
+			module.exports = exports = factory(__webpack_require__(297));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -40196,13 +40173,13 @@
 	}));
 
 /***/ },
-/* 335 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(327), __webpack_require__(334));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(303), __webpack_require__(310));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -40346,13 +40323,13 @@
 	}));
 
 /***/ },
-/* 336 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(327), __webpack_require__(334));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(303), __webpack_require__(310));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -40483,13 +40460,13 @@
 	}));
 
 /***/ },
-/* 337 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(336));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(312));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41368,13 +41345,13 @@
 	}));
 
 /***/ },
-/* 338 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41451,13 +41428,13 @@
 	}));
 
 /***/ },
-/* 339 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41514,13 +41491,13 @@
 	}));
 
 /***/ },
-/* 340 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41635,13 +41612,13 @@
 	}));
 
 /***/ },
-/* 341 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41694,13 +41671,13 @@
 	}));
 
 /***/ },
-/* 342 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41739,13 +41716,13 @@
 	}));
 
 /***/ },
-/* 343 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41793,13 +41770,13 @@
 	}));
 
 /***/ },
-/* 344 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41842,13 +41819,13 @@
 	}));
 
 /***/ },
-/* 345 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41887,13 +41864,13 @@
 	}));
 
 /***/ },
-/* 346 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41937,13 +41914,13 @@
 	}));
 
 /***/ },
-/* 347 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -41972,13 +41949,13 @@
 	}));
 
 /***/ },
-/* 348 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -42043,13 +42020,13 @@
 	}));
 
 /***/ },
-/* 349 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(325), __webpack_require__(326), __webpack_require__(336), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(301), __webpack_require__(302), __webpack_require__(312), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -42280,13 +42257,13 @@
 	}));
 
 /***/ },
-/* 350 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(325), __webpack_require__(326), __webpack_require__(336), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(301), __webpack_require__(302), __webpack_require__(312), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -43055,13 +43032,13 @@
 	}));
 
 /***/ },
-/* 351 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(325), __webpack_require__(326), __webpack_require__(336), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(301), __webpack_require__(302), __webpack_require__(312), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -43199,13 +43176,13 @@
 	}));
 
 /***/ },
-/* 352 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(325), __webpack_require__(326), __webpack_require__(336), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(301), __webpack_require__(302), __webpack_require__(312), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -43396,13 +43373,13 @@
 	}));
 
 /***/ },
-/* 353 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(321), __webpack_require__(325), __webpack_require__(326), __webpack_require__(336), __webpack_require__(337));
+			module.exports = exports = factory(__webpack_require__(297), __webpack_require__(301), __webpack_require__(302), __webpack_require__(312), __webpack_require__(313));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
