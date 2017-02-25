@@ -55,7 +55,7 @@ module.exports = {
 		})
 	},
 
-	//put data here, form data in jquerey?
+	//put data here, form data in jquerey
 		// console.log(songData);
 	postSongAWS: function(songData) {
 		$.ajax({
