@@ -36629,8 +36629,8 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		AccessKey: 'AKIAIQTPQMEOXLUWIJCA',
-		SKey: 'pXYKj5jJTyqQLa9/deEH9ktoGFrtbRpFOi+KcbMu'
+		AccessKey: 'AKIAJCKDZPBHHI3AEKEA',
+		SKey: 'Pdp1TzBFejs/pkjuQALPZsbwUpMaBC74i1ojdI73'
 	};
 
 /***/ },
