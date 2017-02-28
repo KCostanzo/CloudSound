@@ -134,14 +134,14 @@ module.exports = React.createClass({
 	    console.log(policyBase64);
 
 	    fd.append('key', key);
-	    fd.append('bucket', bucket);
-	    fd.append('acl', 'public-read');
+	    // fd.append('bucket', bucket);
+	    // fd.append('acl', 'public-read');
 	    fd.append('Content-Type', file.type);  
 	    fd.append('AWSAccessKeyID', accessKeyID);
 	    fd.append('policy', policyBase64);
-	    fd.append('x-amz-credential', accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request");
-	    fd.append('x-amz-algorithm', 'AWS4-HMAC-SHA256');
-	    fd.append('x-amz-date', date + "T000000Z");
+	    // fd.append('x-amz-credential', accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request");
+	    // fd.append('x-amz-algorithm', 'AWS4-HMAC-SHA256');
+	    // fd.append('x-amz-date', date + "T000000Z");
 
 	    var signatureKey = getSignatureKey(secretAccessKey, date, region, serviceName);  //for version 4
 	    // var signatureKey = secretAccessKey; //for original signature version
@@ -150,7 +150,7 @@ module.exports = React.createClass({
 		// .toString(CryptoJS.enc.Hex)
 		console.log('s3Signature:', s3Signature);
 
-	    fd.append('x-amz-signature', s3Signature);
+	    // fd.append('x-amz-signature', s3Signature);
 	    fd.append('signature', s3Signature);
 
 	    fd.append('file', file);

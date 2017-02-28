@@ -35953,7 +35953,7 @@
 			var secretAccessKey = AWSInfo.SKey;
 	
 			var bucket = "musicstoreforapp";
-			var region = "us-west-1"; // overwrite region
+			var region = "us-west-2"; // overwrite region
 			var dateObj = new Date(); // overwrite date
 			var mm = dateObj.getMonth() + 1;
 			var dd = dateObj.getDate();
@@ -35986,14 +35986,14 @@
 			console.log(policyBase64);
 	
 			fd.append('key', key);
-			fd.append('bucket', bucket);
-			fd.append('acl', 'public-read');
+			// fd.append('bucket', bucket);
+			// fd.append('acl', 'public-read');
 			fd.append('Content-Type', file.type);
 			fd.append('AWSAccessKeyID', accessKeyID);
 			fd.append('policy', policyBase64);
-			fd.append('x-amz-credential', accessKeyID + "/" + date + "/" + region + "/" + serviceName + "/aws4_request");
-			fd.append('x-amz-algorithm', 'AWS4-HMAC-SHA256');
-			fd.append('x-amz-date', date + "T000000Z");
+			// fd.append('x-amz-credential', accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request");
+			// fd.append('x-amz-algorithm', 'AWS4-HMAC-SHA256');
+			// fd.append('x-amz-date', date + "T000000Z");
 	
 			var signatureKey = getSignatureKey(secretAccessKey, date, region, serviceName); //for version 4
 			// var signatureKey = secretAccessKey; //for original signature version
@@ -36002,7 +36002,7 @@
 			// .toString(CryptoJS.enc.Hex)
 			console.log('s3Signature:', s3Signature);
 	
-			fd.append('x-amz-signature', s3Signature);
+			// fd.append('x-amz-signature', s3Signature);
 			fd.append('signature', s3Signature);
 	
 			fd.append('file', file);
@@ -36629,8 +36629,8 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		AccessKey: 'AKIAIHJE3D2ZOEIR4RBA',
-		SKey: 'np53Hjbh9bhIZPEkpZ0BLo6pIAgcpsPX0SXC85eb'
+		AccessKey: 'AKIAIQTPQMEOXLUWIJCA',
+		SKey: 'pXYKj5jJTyqQLa9/deEH9ktoGFrtbRpFOi+KcbMu'
 	};
 
 /***/ },
