@@ -11,7 +11,13 @@
 /log/*
 !/log/.keep
 /tmp
+
 node_modules
+
 /docs/info/*
+
+## Webpack:
+
 /app/assets/javascripts/bundle.js
 /app/assets/javascripts/bundle.js.map
+
