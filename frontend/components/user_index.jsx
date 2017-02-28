@@ -111,21 +111,21 @@ module.exports = React.createClass({
 		   return kSigning;
 		};
 
-        var POLICY_JSON = { "expiration": "2020-12-28T00:00:00Z",
-                "conditions": [
-                ["bucket", "musicstoreforapp"],
-                ["starts-with", "$key", ""],
-                {"acl": "public-read"},
-                ["starts-with", "$Content-Type", ""],
-                ["content-length-range", 0, 524288000],
-                {"x-amz-server-side-encryption": "AES256"},
-                ["starts-with", "$x-amz-meta-tag", ""],
+    //     var POLICY_JSON = { "expiration": "2020-12-28T00:00:00Z",
+    //             "conditions": [
+    //             ["bucket", "musicstoreforapp"],
+    //             ["starts-with", "$key", ""],
+    //             {"acl": "public-read"},
+    //             ["starts-with", "$Content-Type", ""],
+    //             ["content-length-range", 0, 524288000],
+    //             {"x-amz-server-side-encryption": "AES256"},
+    //             ["starts-with", "$x-amz-meta-tag", ""],
 
-				{"x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request"},
-				{"x-amz-algorithm": "AWS4-HMAC-SHA256"},
-				{"x-amz-date": date + "T000000Z" }
-                ]
-              };
+				// {"x-amz-credential": accessKeyID + "/" + date + "/" + region + "/" + serviceName +"/aws4_request"},
+				// {"x-amz-algorithm": "AWS4-HMAC-SHA256"},
+				// {"x-amz-date": date + "T000000Z" }
+    //             ]
+    //           };
 
                 // {"success_action_redirect": this.successAction},
                 // {"x-amz-meta-filename": this.get('filename')},
