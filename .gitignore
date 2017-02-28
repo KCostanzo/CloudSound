@@ -13,5 +13,5 @@
 /tmp
 node_modules
 /docs/info/*
-bundle.js
-bundle.js.map
+/app/assets/javascripts/bundle.js
+/app/assets/javascripts/bundle.js.map
