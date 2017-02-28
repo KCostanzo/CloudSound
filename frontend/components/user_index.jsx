@@ -89,7 +89,7 @@ module.exports = React.createClass({
 		var secretAccessKey = AWSInfo.SKey;
 
 		var bucket = "musicstoreforapp";
-		var region = "us-west-1"; // overwrite region
+		var region = "us-west-2"; // overwrite region
 		var dateObj = new Date; // overwrite date
 		var mm = dateObj.getMonth() + 1;
 		var dd = dateObj.getDate();
