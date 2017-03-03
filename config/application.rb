@@ -21,6 +21,15 @@ module SampleProjectProposalMaster
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
+
+    config.paperclip_defaults = {
+        storage: "s3",
+        s3_credentials: {
+
+        }
+    }
+
+
     config.active_record.raise_in_transactional_callbacks = true
   end
 end
