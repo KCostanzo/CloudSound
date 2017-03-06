@@ -61,6 +61,8 @@ module.exports = {
 		$.ajax({
 			method: 'POST',
 			url: 'https://musicstoreforapp.s3.amazonaws.com/',
+			contentType: false,
+			processData: false,
 			data: songData,
 			success: function(postedSong) {
 				console.log(postedSong);
