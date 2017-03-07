@@ -56,11 +56,13 @@ module.exports = {
 	},
 
 	//put data here, form data in jquerey?
+	//url: 'https://musicstoreforapp.s3.amazonaws.com/',
 	// console.log(songData);
 	postSongAWS: function(songData) {
 		$.ajax({
+			url: '/api/songs',
 			method: 'POST',
-			url: 'https://musicstoreforapp.s3.amazonaws.com/',
+			dataType: 'json',
 			contentType: false,
 			processData: false,
 			data: songData,
