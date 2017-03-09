@@ -24,6 +24,17 @@ var resetSongs = function(songs) {
 	});
 };
 
+var mySongReset = function(songs) {
+	if(!songs.mySongs) {
+		returnl
+	}
+
+	_mySongs = [];
+	songs.mySongs.forEach(function(song) {
+		_mySongs.push(song);
+	});
+};
+
 var removeSong = function(like) {
 	var songIds = []
 	_likedSongs.forEach(function(song) {

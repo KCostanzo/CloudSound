@@ -14,7 +14,7 @@ var DropZone = require('react-dropzone');
 module.exports = React.createClass({
 	getInitialState: function() {
 		return {
-			songIds: [], songs: [], modalOpen: false, errors: [],
+			songIds: [], songs: [], modalOpen: false, errors: [], mySongs: []
 		}
 	},
 
@@ -131,6 +131,13 @@ module.exports = React.createClass({
 						{
 							this.state.songs.map(function(song) {
 								return <IndexItem song={song} key={song.id + 1000} />
+							})
+						}
+					</ul>
+					<ul>
+						{
+							this.state.mySongs.map(function(song) {
+								return <IndexItem song={song} key={song.id + 5000} />
 							})
 						}
 					</ul>

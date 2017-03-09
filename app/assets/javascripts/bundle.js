@@ -27426,6 +27426,17 @@
 		});
 	};
 	
+	var mySongReset = function (songs) {
+		if (!songs.mySongs) {
+			returnl;
+		}
+	
+		_mySongs = [];
+		songs.mySongs.forEach(function (song) {
+			_mySongs.push(song);
+		});
+	};
+	
 	var removeSong = function (like) {
 		var songIds = [];
 		_likedSongs.forEach(function (song) {
@@ -35880,7 +35891,7 @@
 	
 		getInitialState: function () {
 			return {
-				songIds: [], songs: [], modalOpen: false, errors: []
+				songIds: [], songs: [], modalOpen: false, errors: [], mySongs: []
 			};
 		},
 	
@@ -35999,6 +36010,13 @@
 					null,
 					this.state.songs.map(function (song) {
 						return React.createElement(IndexItem, { song: song, key: song.id + 1000 });
+					})
+				),
+				React.createElement(
+					'ul',
+					null,
+					this.state.mySongs.map(function (song) {
+						return React.createElement(IndexItem, { song: song, key: song.id + 5000 });
 					})
 				),
 				React.createElement(
