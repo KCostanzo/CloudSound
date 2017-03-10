@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Db Songs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @db_songs.each do |db_song| %>
+      <tr>
+        <td><%= link_to 'Show', db_song %></td>
+        <td><%= link_to 'Edit', edit_db_song_path(db_song) %></td>
+        <td><%= link_to 'Destroy', db_song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Db song', new_db_song_path %>
