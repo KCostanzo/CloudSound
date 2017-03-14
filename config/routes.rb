@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
 	resources :likes, only: [:index,:create,:destroy]
 
+    resources :db_songs, only: [:create, :index, :update, :edit, :show, :destroy]
+
 		# get 'likes/:user_id', to: 'likes#index_songs'
   end
 

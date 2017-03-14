@@ -12,10 +12,10 @@ class Api::DbSongsController < ApplicationController
   def show
   end
 
-  # GET /db_songs/new
-  def new
-    @db_song = DbSong.new
-  end
+  # # GET /db_songs/new
+  # def new
+  #   @db_song = DbSong.new
+  # end
 
   # GET /db_songs/1/edit
   def edit
