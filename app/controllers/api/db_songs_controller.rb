@@ -24,7 +24,8 @@ class Api::DbSongsController < ApplicationController
   # POST /db_songs
   # POST /db_songs.json
   def create
-    @db_song = DbSong.new(db_song_params)
+    # db_song_params
+    @db_song = DbSong.new(user_id: current_user.id, aws_song: params[:aws_song])
 
     # respond_to do |format|
     #   if @db_song.save
@@ -47,25 +48,26 @@ class Api::DbSongsController < ApplicationController
   # PATCH/PUT /db_songs/1
   # PATCH/PUT /db_songs/1.json
   def update
-    respond_to do |format|
-      if @db_song.update(db_song_params)
-        format.html { redirect_to @db_song, notice: 'Db song was successfully updated.' }
-        format.json { render :show, status: :ok, location: @db_song }
-      else
-        format.html { render :edit }
-        format.json { render json: @db_song.errors, status: :unprocessable_entity }
-      end
-    end
+    # respond_to do |format|
+    #   if @db_song.update(db_song_params)
+    #     format.html { redirect_to @db_song, notice: 'Db song was successfully updated.' }
+    #     format.json { render :show, status: :ok, location: @db_song }
+    #   else
+    #     format.html { render :edit }
+    #     format.json { render json: @db_song.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /db_songs/1
   # DELETE /db_songs/1.json
   def destroy
-    @db_song.destroy
-    respond_to do |format|
-      format.html { redirect_to db_songs_url, notice: 'Db song was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    # @db_song.destroy
+
+    # respond_to do |format|
+    #   format.html { redirect_to db_songs_url, notice: 'Db song was successfully destroyed.' }
+    #   format.json { head :no_content }
+    # end
   end
 
   private
