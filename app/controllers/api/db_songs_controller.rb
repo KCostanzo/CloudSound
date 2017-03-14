@@ -1,5 +1,5 @@
-class DbSongsController < ApplicationController
-  before_action :set_db_song, only: [:show, :edit, :update, :destroy]
+class Api::DbSongsController < ApplicationController
+  # before_action :set_db_song, only: [:create, :show, :edit, :update, :destroy]
 
   # GET /db_songs
   # GET /db_songs.json
@@ -26,14 +26,21 @@ class DbSongsController < ApplicationController
   def create
     @db_song = DbSong.new(db_song_params)
 
-    respond_to do |format|
-      if @db_song.save
-        format.html { redirect_to @db_song, notice: 'Db song was successfully created.' }
-        format.json { render :show, status: :created, location: @db_song }
-      else
-        format.html { render :new }
-        format.json { render json: @db_song.errors, status: :unprocessable_entity }
-      end
+    # respond_to do |format|
+    #   if @db_song.save
+    #     format.html { redirect_to @db_song, notice: 'Db song was successfully created.' }
+    #     format.json { render :show, status: :created, location: @db_song }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @db_song.errors, status: :unprocessable_entity }
+    #   end
+    # 
+
+    if @db_song.save
+      render 'api/likes/index'
+    else
+      @errors = @db_song.errors.full_messages
+      render 'api/shared/errors', status: 430
     end
   end
 
@@ -69,6 +76,7 @@ class DbSongsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def db_song_params
-      params.fetch(:db_song, {})
+      # params.fetch(:db_song, {})
+      params.require(:db_song).permit(:user_id, :aws_song)
     end
 end
