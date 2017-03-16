@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
     through: :likes,
     source: :liked_song
 
-  # has_many :db_songs
+  has_many :db_songs
   # has_attached_file :db_song, default_url: "/Nas_Damian_Jr_Gong_Marley_-_Nah_Mean[www.MP3Fiber.com].mp3"
   # validates_attachment_content_type :db_song, content_type: /\Amp3\/.*\z/
 
