@@ -2,7 +2,7 @@
 
 [CloudSound live][heroku]
 
-[heroku]: http://www.cloudsound.site
+[heroku]: http://cloudsoundapp.herokuapp.com
 
 CloudSound is a full-stack web application inspired by Soundcloud.  It utilizes Ruby on Rails on the backend, a PostgreSQL database, and React.js with a Flux architectural framework on the frontend.  
 
