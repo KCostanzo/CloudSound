@@ -15,7 +15,7 @@ var CoverPage = require('./components/cover_index.jsx');
 var ArtistIndex = require('./components/artist_index.jsx');
 var UserIndex = require('./components/user_index.jsx');
 
-
+//refresh store
 ClientActions.fetchCurrentUser();
 
 var routes = (
