@@ -5,6 +5,8 @@ var NowPlayingBar = require('./now_playing_bar.jsx');
 var PlayQueue = require('./now_playing_queue.jsx');
 
 module.exports = React.createClass({
+
+  //Navbar, PlayQueue, NowPlayingBar are persistent elements, must clear state etc
   render: function() {
     return (
     <div id='main'>
