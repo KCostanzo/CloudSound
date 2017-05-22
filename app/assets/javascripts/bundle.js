@@ -52,10 +52,7 @@
 	var Route = __webpack_require__(186).Route;
 	var IndexRoute = __webpack_require__(186).IndexRoute;
 	var hashHistory = __webpack_require__(186).hashHistory;
-	// var Store = require('./stores/session_store.js');
-	// var SongStor = require('./stores/song_store.js');
-	// var PlayStore = require('./stores/play_store.js');
-	// var UStore = require('./stores/user_store.js');
+	
 	var Likes = __webpack_require__(245);
 	var ClientActions = __webpack_require__(268);
 	
@@ -64,6 +61,7 @@
 	var ArtistIndex = __webpack_require__(290);
 	var UserIndex = __webpack_require__(291);
 	
+	//refresh store
 	ClientActions.fetchCurrentUser();
 	
 	var routes = React.createElement(
@@ -34550,6 +34548,8 @@
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
+	
+	  //Navbar, PlayQueue, NowPlayingBar are persistent elements, must clear state etc
 	  render: function () {
 	    return React.createElement(
 	      'div',
@@ -35909,7 +35909,6 @@
 	
 		openModal: function () {
 			this.setState({ modalOpen: true });
-			// console.log('working');
 			// debugger;
 		},
 	
@@ -35962,6 +35961,8 @@
 			console.log('accepted: ', file);
 	
 			var key = new Date().getTime() + '-' + file.name; //.split(" ").join("");
+	
+			//working
 		},
 	
 		// Helper functions
