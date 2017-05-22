@@ -32,7 +32,6 @@ module.exports = React.createClass({
 
 	openModal: function() {
 		this.setState({ modalOpen: true });
-		// console.log('working');
 		// debugger;
 	},
 
@@ -84,7 +83,7 @@ module.exports = React.createClass({
 
 	    var key = (new Date).getTime() + '-' + file.name;    //.split(" ").join("");
 
-
+	    //working
 	},
 
 // Helper functions
