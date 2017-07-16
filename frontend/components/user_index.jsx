@@ -86,8 +86,6 @@ module.exports = React.createClass({
 	    //working
 	},
 
-// Helper functions
-
 	uploadProgress: function(evt) {
     	// if (evt.lengthComputable) {
      // 	 var percentComplete = Math.round(evt.loaded * 100 / evt.total);

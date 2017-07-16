@@ -74,14 +74,6 @@ module.exports = React.createClass({
 		}
 	},
 
-	// playButton: function() {
-	// 	if (this.state.songPlaying) {
-	// 		return <button className="imgPlay" onClick={this.addSong}>&#43;</button>
-	// 	} else {
-	// 		return <button className="imgPlay" onClick={this.playSong}>▶</button>
-	// 	}
-	// },
-
 	render: function() {
 		return (
 			<li className='songItem'>
