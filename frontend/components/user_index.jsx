@@ -97,18 +97,18 @@ module.exports = React.createClass({
     	console.log('working');
   	},
 
-  	uploadComplete:	function(evt) {
-    /* This event is raised when the server send back a response */
-   		 alert("Done - " + evt.target.responseText );
-  	},
+ //  	uploadComplete:	function(evt) {
+ //    /* This event is raised when the server send back a response */
+ //   		 alert("Done - " + evt.target.responseText );
+ //  	},
 
-	uploadFailed: function(evt) {
-	    alert("There was an error attempting to upload the file." + evt);
-	},
+	// uploadFailed: function(evt) {
+	//     alert("There was an error attempting to upload the file." + evt);
+	// },
 
-	uploadCanceled: function(evt) {
-	    alert("The upload has been canceled by the user or the browser dropped the connection.");
-	},
+	// uploadCanceled: function(evt) {
+	//     alert("The upload has been canceled by the user or the browser dropped the connection.");
+	// },
 
 	successAction: function() {
 		console.log('successActionRedirect');
