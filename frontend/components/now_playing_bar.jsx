@@ -75,8 +75,8 @@ module.exports = React.createClass({
 	soundAdjust: function(e) {
 		e.preventDefault();
 		const audioPlayer = document.getElementById('nowPlaying');
-		let adjustBar = document.getElementById('audioAdjust');
-		let clickSoundSpot = (e.pageX - this.refs['soundBar'].offsetLeft) / this.refs['soundBar'].offsetWidth;
+		const adjustBar = document.getElementById('audioAdjust');
+		const clickSoundSpot = (e.pageX - this.refs['soundBar'].offsetLeft) / this.refs['soundBar'].offsetWidth;
 		//console.log(clickSoundSpot);
 
 		audioPlayer.volume = clickSoundSpot;
