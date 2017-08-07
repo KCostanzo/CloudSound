@@ -35376,7 +35376,7 @@
 				{ id: 'progress', ref: 'progressBar', onClick: this.updateProgress },
 				React.createElement('div', { id: 'bar' })
 			);
-			let audioAdjust = React.createElement(
+			const audioAdjust = React.createElement(
 				'div',
 				{ id: 'outerSoundBar', ref: 'soundBar', onClick: this.soundAdjust },
 				React.createElement('div', { id: 'innerSoundBar' })
