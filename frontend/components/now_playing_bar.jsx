@@ -16,12 +16,13 @@ module.exports = React.createClass({
 	},
 
 	componentDidUpdate: function() {
-	    var song = document.getElementById('nowPlaying');
+	    const song = document.getElementById('nowPlaying');
 	    if (!song) {
 	    	return;
 	    }
 	    if (song.volume) {
 	      song.volume = 0.89;
+	      this.setSound();
 	    }
 	 },
 
