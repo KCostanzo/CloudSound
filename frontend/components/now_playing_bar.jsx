@@ -65,6 +65,12 @@ module.exports = React.createClass({
 		audioPlayer.currentTime = clickTime;
 	}, 
 
+	soundAdjust: () => {
+		const audioPlayer = document.getElementById('nowPlaying');
+		let adjustBar = document.getElementById('audioAdjust');
+
+	},
+
 	nextSong: function(event) {
 		event.preventDefault();
 		ClientActions.nextSong();
@@ -72,6 +78,7 @@ module.exports = React.createClass({
 
 	render: function() {
 		var song, player, playToggle;
+
 		if (this.state.currentSong) {
 			song = (<audio id="nowPlaying" onTimeUpdate={this.setProgress} onEnded={this.songOver} src={this.state.currentSong.audio_url} autoPlay/>)
 		} else {
@@ -84,11 +91,12 @@ module.exports = React.createClass({
 			playToggle = <button className="playControlToggle" onClick={this.play}>▶</button>
 		}
 
-		var next = (<button className="playControl" onClick={this.nextSong}>▶▌</button>)
-		var progress = (<div id='progress' ref="progressBar" onClick={this.updateProgress} ><div id='bar'></div></div>)
+		var next = (<button className="playControl" onClick={this.nextSong}>▶▌</button>);
+		var progress = (<div id='progress' ref="progressBar" onClick={this.updateProgress} ><div id='bar'></div></div>);
+		let audioAdjust = (<div id="outerSoundBar" ref="soundBar" onClick={this.soundAdjust} ><div id="innerSoundBar"></div></div>);
 
 		if (this.state.currentSong) {
-			player = (<div className='playBar'>{song}{playToggle}{next} {this.state.currentSong.title}, &nbsp; {this.state.currentSong.artist} {progress}</div>)
+			player = (<div className='playBar'>{song}{playToggle}{next} {this.state.currentSong.title}, &nbsp; {this.state.currentSong.artist} {progress} {audioAdjust}</div>)
 		} else {
 			player= <div/>
 		}

@@ -1,3 +1,24 @@
 // Place all the styles related to the songs controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+
+#outerSoundBar {
+  float: right;
+  position: relative;
+  margin: 10px;
+  border: 1px solid black;
+  width: 400px;
+  z-index: 2;
+  cursor: pointer;
+  left: 90px;
+  margin-right: 100px;
+}
+
+#innerSoundBar {
+  position: relative;
+  height: 10px;
+  background: #79bbff;
+  z-index: 2;
+}
