@@ -67,7 +67,7 @@ module.exports = React.createClass({
 
 	setSound: function() {
 		const audioPlayer = document.getElementById('nowPlaying');
-		let innerBar = document.getElementById('innerSoundBar');
+		const innerBar = document.getElementById('innerSoundBar');
 
 		innerBar.style.width = (audioPlayer.volume * 100) + "%";
 	},
@@ -105,7 +105,7 @@ module.exports = React.createClass({
 
 		var next = (<button className="playControl" onClick={this.nextSong}>▶▌</button>);
 		var progress = (<div id='progress' ref="progressBar" onClick={this.updateProgress} ><div id='bar'></div></div>);
-		const audioAdjust = (<div id="outerSoundBar" ref="soundBar" onClick={this.soundAdjust} ><div id="innerSoundBar"></div></div>);
+		let audioAdjust = (<div id="outerSoundBar" ref="soundBar" onClick={this.soundAdjust} ><div id="innerSoundBar"></div></div>);
 
 		if (this.state.currentSong) {
 			player = (<div className='playBar'>{song}{playToggle}{next} {this.state.currentSong.title}, &nbsp; {this.state.currentSong.artist} {progress} {audioAdjust}</div>)

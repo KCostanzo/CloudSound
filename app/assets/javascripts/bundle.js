@@ -35322,7 +35322,7 @@
 	
 		setSound: function () {
 			const audioPlayer = document.getElementById('nowPlaying');
-			let innerBar = document.getElementById('innerSoundBar');
+			const innerBar = document.getElementById('innerSoundBar');
 	
 			innerBar.style.width = audioPlayer.volume * 100 + "%";
 		},
@@ -35376,7 +35376,7 @@
 				{ id: 'progress', ref: 'progressBar', onClick: this.updateProgress },
 				React.createElement('div', { id: 'bar' })
 			);
-			const audioAdjust = React.createElement(
+			let audioAdjust = React.createElement(
 				'div',
 				{ id: 'outerSoundBar', ref: 'soundBar', onClick: this.soundAdjust },
 				React.createElement('div', { id: 'innerSoundBar' })
