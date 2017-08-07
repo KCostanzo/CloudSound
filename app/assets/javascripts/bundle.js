@@ -35682,14 +35682,14 @@
 					'ul',
 					null,
 					this.state.songs.map(function (song) {
-						return React.createElement(IndexItem, { song: song, key: song.id + 1000 });
+						return React.createElement(IndexItem, { song: song, key: song.id + 100000 });
 					})
 				),
 				React.createElement(
 					'ul',
 					null,
 					this.state.mySongs.map(function (song) {
-						return React.createElement(IndexItem, { song: song, key: song.id + 5000 });
+						return React.createElement(IndexItem, { song: song, key: song.id + 500000 });
 					})
 				),
 				React.createElement(

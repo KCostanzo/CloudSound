@@ -127,14 +127,14 @@ module.exports = React.createClass({
 					<ul>
 						{
 							this.state.songs.map(function(song) {
-								return <IndexItem song={song} key={song.id + 1000} />
+								return <IndexItem song={song} key={song.id + 100000} />
 							})
 						}
 					</ul>
 					<ul>
 						{
 							this.state.mySongs.map(function(song) {
-								return <IndexItem song={song} key={song.id + 5000} />
+								return <IndexItem song={song} key={song.id + 500000} />
 							})
 						}
 					</ul>
