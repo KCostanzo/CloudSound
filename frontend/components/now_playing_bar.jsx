@@ -105,7 +105,7 @@ module.exports = React.createClass({
 
 		var next = (<button className="playControl" onClick={this.nextSong}>▶▌</button>);
 		var progress = (<div id='progress' ref="progressBar" onClick={this.updateProgress} ><div id='bar'></div></div>);
-		let audioAdjust = (<div id="outerSoundBar" ref="soundBar" onClick={this.soundAdjust} ><div id="innerSoundBar"></div></div>);
+		const audioAdjust = (<div id="outerSoundBar" ref="soundBar" onClick={this.soundAdjust} ><div id="innerSoundBar"></div></div>);
 
 		if (this.state.currentSong) {
 			player = (<div className='playBar'>{song}{playToggle}{next} {this.state.currentSong.title}, &nbsp; {this.state.currentSong.artist} {progress} {audioAdjust}</div>)
