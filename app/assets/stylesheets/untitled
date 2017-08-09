@@ -1,7 +1,0 @@
-
-
-const songReducer = (state = [], action) => {
-		
-}
-
-export default songReducer;
