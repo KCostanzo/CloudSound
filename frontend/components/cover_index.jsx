@@ -10,7 +10,7 @@ var LikeActions = require('../actions/like_actions.js');
 module.exports = React.createClass({
 	getInitialState: function() {
 		return {
-			songs: []
+			songs: [], testArr: [1,2,3,4]
 		}
 	},
 
@@ -19,6 +19,7 @@ module.exports = React.createClass({
 		// this.userListen = SessionStore.addListener(this.userChange);
 		SongActions.fetchSongs();
 		LikeActions.getLiked();
+		//console.log([...(this.state.testArr),...[5,6]]);
 	},
 
 	componentWillUnmount: function() {

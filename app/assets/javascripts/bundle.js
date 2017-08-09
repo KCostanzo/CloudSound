@@ -38184,7 +38184,7 @@
 	
 		getInitialState: function () {
 			return {
-				songs: []
+				songs: [], testArr: [1, 2, 3, 4]
 			};
 		},
 	
@@ -38193,6 +38193,7 @@
 			// this.userListen = SessionStore.addListener(this.userChange);
 			SongActions.fetchSongs();
 			LikeActions.getLiked();
+			//console.log([...(this.state.testArr),...[5,6]]);
 		},
 	
 		componentWillUnmount: function () {

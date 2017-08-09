@@ -44,3 +44,6 @@ Song.create(title: 'Virus', artist: 'Iron Maiden', user_id: 2, img_url: 'http://
 Song.create(title: 'Seek N Destroy', artist: 'Metallica',user_id: 2, audio_url: 'https://s3-us-west-1.amazonaws.com/musicstoreforapp/Metallica_-_Seek_Destroy_-_432Hz%5Bwww.MP3Fiber.com%5D.mp3', img_url: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462571756/metallica_kill_emall_fp8ar1.jpg')
 Song.create(title: 'Orion', artist: 'Metallica', user_id: 2, audio_url: 'https://s3-us-west-1.amazonaws.com/musicstoreforapp/METALLICA_-_Orion_Song_432_Hz-Vubey.mp3', img_url: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462050582/master_of_puppets_fumkwi.jpg')
 Song.create(title: 'Harvester of Sorrow', artist: 'Metallica', user_id: 2, audio_url: 'https://s3-us-west-1.amazonaws.com/musicstoreforapp/Metallica_-_Harverster_of_Sorrow_432Hz%5Bwww.MP3Fiber.com%5D.mp3', img_url: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462571756/and_Justice_for_All__album_wa7iq4.jpg')
+
+
+DbSong.create(user_id: 1, aws)
