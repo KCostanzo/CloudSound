@@ -38221,12 +38221,6 @@
 
 	'use strict';
 	
-	var _alertModal = __webpack_require__(316);
-	
-	var _alertModal2 = _interopRequireDefault(_alertModal);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(217).hashHistory;
 	var SongActions = __webpack_require__(311);
@@ -38235,7 +38229,6 @@
 	var LikeStore = __webpack_require__(276);
 	var IndexItem = __webpack_require__(317);
 	var LikeActions = __webpack_require__(302);
-	
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -38268,7 +38261,6 @@
 		// },
 	
 		//new tag line: change your tone;
-		// <AlertModal/>
 	
 		render: function render() {
 			return React.createElement(
