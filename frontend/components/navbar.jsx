@@ -7,6 +7,8 @@ var SessionStore = require('../stores/session_store.js');
 var LikeStore = require('../stores/likes_store.js');
 var hashHistory = require('react-router').hashHistory;
 var Search = require('./song_search.jsx');
+import AlertModal from './alertModal.js';
+
 
 module.exports = React.createClass({
 	getInitialState: function() {
@@ -59,6 +61,7 @@ module.exports = React.createClass({
 		if (this.state.userPresent) {
 			return (
 				<nav className="logged"> <h2 onClick={this.linkToHome}>CloudSound</h2>
+					<AlertModal/>
 					<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png' onClick={this.linkToHome}/>
 					<Search />
 					<a className="userPage" onClick={this.sendUser}>User Page</a>
@@ -68,6 +71,7 @@ module.exports = React.createClass({
 		} else {
 			return(
 				 <nav> <h2 onClick={this.linkToHome}>Cloud Sound</h2>
+				 <AlertModal/>
 				 	<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png' onClick={this.linkToHome} />
 				 	<Search />
 		  			<SignUp clickedLogin={this.clickedLogin} currentlyClicked={this.state.currentlyClicked} enableButtons={this.enableButtons} />

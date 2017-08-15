@@ -6,12 +6,12 @@ var SessionStore = require('../stores/session_store.js');
 var LikeStore = require('../stores/likes_store.js');
 var IndexItem = require('./index_item.jsx');
 var LikeActions = require('../actions/like_actions.js');
-//import AlertModal from './alertModal.js';
+import AlertModal from './alertModal.js';
 
 module.exports = React.createClass({
 	getInitialState: function() {
 		return {
-			songs: [], testArr: [1,2,3,4]
+			songs: []
 		}
 	},
 
@@ -20,7 +20,6 @@ module.exports = React.createClass({
 		// this.userListen = SessionStore.addListener(this.userChange);
 		SongActions.fetchSongs();
 		LikeActions.getLiked();
-		//console.log([...(this.state.testArr),...[5,6]]);
 	},
 
 	componentWillUnmount: function() {
@@ -38,9 +37,7 @@ module.exports = React.createClass({
 	// },
 
 	//new tag line: change your tone;
-
-
-	//<alertModal/>
+				// <AlertModal/>
 
 	render: function() {
 		return (

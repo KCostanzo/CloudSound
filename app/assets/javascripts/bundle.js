@@ -44,6 +44,8 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(45);
 	var Modal = __webpack_require__(197);
@@ -58,8 +60,8 @@
 	
 	var App = __webpack_require__(305);
 	var CoverPage = __webpack_require__(315);
-	var ArtistIndex = __webpack_require__(321);
-	var UserIndex = __webpack_require__(322);
+	var ArtistIndex = __webpack_require__(322);
+	var UserIndex = __webpack_require__(323);
 	
 	//refresh store
 	ClientActions.fetchCurrentUser();
@@ -30239,6 +30241,8 @@
 /* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Store = __webpack_require__(277).Store;
 	var AppDispatcher = __webpack_require__(295);
 	var Constants = __webpack_require__(298);
@@ -30251,7 +30255,7 @@
 	// 	_likedSongs.push(like);
 	// };
 	
-	var resetSongs = function (songs) {
+	var resetSongs = function resetSongs(songs) {
 		if (!songs.songs) {
 			return;
 		}
@@ -30262,7 +30266,7 @@
 		});
 	};
 	
-	var mySongReset = function (songs) {
+	var mySongReset = function mySongReset(songs) {
 		if (!songs.mySongs) {
 			returnl;
 		}
@@ -30273,7 +30277,7 @@
 		});
 	};
 	
-	var removeSong = function (like) {
+	var removeSong = function removeSong(like) {
 		var songIds = [];
 		_likedSongs.forEach(function (song) {
 			songIds.push(song.id);
@@ -36824,6 +36828,8 @@
 /* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Dispatcher = __webpack_require__(296).Dispatcher;
 	
 	module.exports = new Dispatcher();
@@ -37085,6 +37091,8 @@
 /* 298 */
 /***/ function(module, exports) {
 
+	'use strict';
+	
 	module.exports = {
 	  LOGIN_USER: 'LOGIN_USER',
 	  LOGOUT_USER: 'LOGOUT_USER',
@@ -37113,26 +37121,28 @@
 /* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Util = __webpack_require__(300);
 	
 	module.exports = {
-	  fetchCurrentUser: function () {
+	  fetchCurrentUser: function fetchCurrentUser() {
 	    Util.fetchCurrentUser();
 	  },
 	
-	  loginUser: function (user) {
+	  loginUser: function loginUser(user) {
 	    Util.loginUser(user);
 	  },
 	
-	  createUser: function (user) {
+	  createUser: function createUser(user) {
 	    Util.createUser(user);
 	  },
 	
-	  logoutUser: function (user) {
+	  logoutUser: function logoutUser(user) {
 	    Util.logoutUser(user);
 	  },
 	
-	  updateUser: function (user) {
+	  updateUser: function updateUser(user) {
 	    Util.updateUser(user);
 	  }
 	};
@@ -37141,16 +37151,18 @@
 /* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	// var ClientActions = require('../actions/client_actions.js');
 	var ServerActions = __webpack_require__(301);
 	var LikeActions = __webpack_require__(302);
 	
 	module.exports = {
-	  fetchCurrentUser: function () {
+	  fetchCurrentUser: function fetchCurrentUser() {
 	    $.ajax({
 	      method: 'GET',
 	      url: 'api/session',
-	      success: function (object) {
+	      success: function success(object) {
 	        if (object.username) {
 	          ServerActions.fetchCurrentUser(object);
 	        } else {
@@ -37158,61 +37170,61 @@
 	        }
 	      },
 	      statusCode: {
-	        299: function (response) {}
+	        299: function _(response) {}
 	      }
 	    });
 	  },
 	  //console.log('no user logged in')
 	
-	  loginUser: function (loginData) {
+	  loginUser: function loginUser(loginData) {
 	    $.ajax({
 	      method: 'POST',
 	      url: 'api/session',
 	      data: loginData,
-	      success: function (user) {
+	      success: function success(user) {
 	        ServerActions.login(user);
 	        LikeActions.getLiked();
 	      },
-	      error: function (error) {
-	        ServerActions.receiveError(error);
+	      error: function error(_error) {
+	        ServerActions.receiveError(_error);
 	      }
 	    });
 	  },
 	
-	  createUser: function (userData) {
+	  createUser: function createUser(userData) {
 	    $.ajax({
 	      method: 'POST',
 	      url: 'api/users',
 	      data: userData,
-	      success: function (user) {
+	      success: function success(user) {
 	        if (user.username) {
 	          ServerActions.login(user);
 	        } else {
 	          ServerActions.receiveError(user);
 	        }
 	      },
-	      error: function (error) {
-	        ServerActions.receiveError(error);
+	      error: function error(_error2) {
+	        ServerActions.receiveError(_error2);
 	      }
 	    });
 	  },
 	
-	  logoutUser: function (user) {
+	  logoutUser: function logoutUser(user) {
 	    $.ajax({
 	      method: 'DELETE',
 	      url: 'api/session',
-	      success: function (user) {
+	      success: function success(user) {
 	        ServerActions.logout(user);
 	      }
 	    });
 	  },
 	
-	  updateUser: function (userData) {
+	  updateUser: function updateUser(userData) {
 	    $.ajax({
 	      method: 'PATCH',
 	      url: 'api/users/' + userData.id,
 	      data: userData,
-	      success: function (user) {
+	      success: function success(user) {
 	        ServerActions.update(user);
 	      }
 	    });
@@ -37223,46 +37235,48 @@
 /* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Dispatcher = __webpack_require__(295);
 	var Constants = __webpack_require__(298);
 	
 	module.exports = {
-	  fetchCurrentUser: function (user) {
+	  fetchCurrentUser: function fetchCurrentUser(user) {
 	    Dispatcher.dispatch({
 	      actionType: Constants.LOGIN_USER,
 	      user: user
 	    });
 	  },
 	
-	  login: function (user) {
+	  login: function login(user) {
 	    Dispatcher.dispatch({
 	      actionType: Constants.LOGIN_USER,
 	      user: user
 	    });
 	  },
 	
-	  create: function (user) {
+	  create: function create(user) {
 	    Dispatcher.dispatch({
 	      actionType: Constants.USER_RECEIVED,
 	      user: user
 	    });
 	  },
 	
-	  receiveError: function (errors) {
+	  receiveError: function receiveError(errors) {
 	    Dispatcher.dispatch({
 	      actionType: Constants.ERROR_RECEIVED,
 	      errors: errors
 	    });
 	  },
 	
-	  logout: function (user) {
+	  logout: function logout(user) {
 	    Dispatcher.dispatch({
 	      actionType: Constants.LOGOUT_USER,
 	      user: user
 	    });
 	  },
 	
-	  update: function (user) {
+	  update: function update(user) {
 	    Dispatcher.dispatch({
 	      actionType: Constants.USER_UPDATED,
 	      user: user
@@ -37274,20 +37288,22 @@
 /* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Util = __webpack_require__(303);
 	var Dispatcher = __webpack_require__(295);
 	var Constants = __webpack_require__(298);
 	
 	module.exports = {
-		createLike: function (songId) {
+		createLike: function createLike(songId) {
 			Util.createLike(songId);
 		},
 	
-		getLiked: function () {
+		getLiked: function getLiked() {
 			Util.getLikedSongs();
 		},
 	
-		unlike: function (songId) {
+		unlike: function unlike(songId) {
 			Util.unlikeSong(songId);
 		}
 	};
@@ -37296,46 +37312,48 @@
 /* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var LikeActions = __webpack_require__(304);
 	
 	module.exports = {
-		createLike: function (song_id) {
+		createLike: function createLike(song_id) {
 			$.ajax({
 				method: 'POST',
 				url: 'api/likes',
 				data: { song_id: song_id },
-				success: function (songs) {
+				success: function success(songs) {
 					LikeActions.likeCreated(songs);
 				},
-				error: function (error) {
-					LikeActions.likeError(error);
+				error: function error(_error) {
+					LikeActions.likeError(_error);
 				}
 			});
 		},
 	
-		getLikedSongs: function () {
+		getLikedSongs: function getLikedSongs() {
 			$.ajax({
 				method: 'GET',
 				url: 'api/likes',
-				success: function (songs) {
+				success: function success(songs) {
 					LikeActions.getLikedSongs(songs);
 				},
-				error: function (error) {
-					LikeActions.likeError(error);
+				error: function error(_error2) {
+					LikeActions.likeError(_error2);
 				}
 			});
 		},
 	
-		unlikeSong: function (songId) {
+		unlikeSong: function unlikeSong(songId) {
 			$.ajax({
 				method: 'DELETE',
 				url: 'api/likes/' + songId,
 				data: { song_id: songId },
-				success: function (like) {
+				success: function success(like) {
 					LikeActions.unlike(like);
 				},
-				error: function (error) {
-					LikeActions.likeError(error);
+				error: function error(_error3) {
+					LikeActions.likeError(_error3);
 				}
 			});
 		}
@@ -37345,50 +37363,54 @@
 /* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Dispatcher = __webpack_require__(295);
 	var Constants = __webpack_require__(298);
 	
 	module.exports = {
-		getLikedSongs: function (songs) {
+		getLikedSongs: function getLikedSongs(songs) {
 			Dispatcher.dispatch({
 				actionType: Constants.LIKED_SONGS,
 				songs: songs
 			});
 		},
 	
-		likeCreated: function (songs) {
+		likeCreated: function likeCreated(songs) {
 			Dispatcher.dispatch({
 				actionType: Constants.LIKE_MADE,
 				songs: songs
 			});
 		},
 	
-		unlike: function (like) {
+		unlike: function unlike(like) {
 			Dispatcher.dispatch({
 				actionType: Constants.UNLIKED,
 				like: like
 			});
 		},
 	
-		likeError: function (error) {}
+		likeError: function likeError(error) {}
 	};
 
 /***/ },
 /* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var Navbar = __webpack_require__(306);
 	var CoverPage = __webpack_require__(315);
-	var NowPlayingBar = __webpack_require__(318);
-	var PlayQueue = __webpack_require__(319);
+	var NowPlayingBar = __webpack_require__(319);
+	var PlayQueue = __webpack_require__(320);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
 	
 	  //Navbar, PlayQueue, NowPlayingBar are persistent elements, must clear state etc
-	  render: function () {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      { id: 'main' },
@@ -37409,6 +37431,14 @@
 /* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	var _alertModal = __webpack_require__(316);
+	
+	var _alertModal2 = _interopRequireDefault(_alertModal);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var React = __webpack_require__(1);
 	var Login = __webpack_require__(307);
 	var SignUp = __webpack_require__(309);
@@ -37419,10 +37449,11 @@
 	var hashHistory = __webpack_require__(217).hashHistory;
 	var Search = __webpack_require__(310);
 	
+	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
-		getInitialState: function () {
+		getInitialState: function getInitialState() {
 			return {
 				userPresent: SessionStore.userPresent(),
 				currentUser: SessionStore.currentUser(),
@@ -37430,19 +37461,19 @@
 			};
 		},
 	
-		componentDidMount: function () {
+		componentDidMount: function componentDidMount() {
 			this.SSListener = SessionStore.addListener(this.storeChange);
 		},
 	
-		componentWillUnmount: function () {
+		componentWillUnmount: function componentWillUnmount() {
 			this.SSListener.remove();
 		},
 	
-		storeChange: function () {
+		storeChange: function storeChange() {
 			this.setState({ userPresent: SessionStore.userPresent(), currentUser: SessionStore.currentUser() });
 		},
 	
-		logoutUser: function (event) {
+		logoutUser: function logoutUser(event) {
 			event.preventDefault();
 			ClientActions.logoutUser(this.state.currentUser);
 			this.enableButtons();
@@ -37451,24 +37482,24 @@
 			// console.log('logged out');
 		},
 	
-		linkToHome: function () {
+		linkToHome: function linkToHome() {
 			hashHistory.push('/');
 		},
 	
-		clickedLogin: function () {
+		clickedLogin: function clickedLogin() {
 			this.setState({ currentlyClicked: true });
 		},
 	
-		enableButtons: function () {
+		enableButtons: function enableButtons() {
 			this.setState({ currentlyClicked: false });
 			// LikeActions.getLiked();
 		},
 	
-		sendUser: function () {
+		sendUser: function sendUser() {
 			hashHistory.push("users/" + this.state.currentUser.id);
 		},
 	
-		render: function () {
+		render: function render() {
 			if (this.state.userPresent) {
 				return React.createElement(
 					'nav',
@@ -37479,6 +37510,7 @@
 						{ onClick: this.linkToHome },
 						'CloudSound'
 					),
+					React.createElement(_alertModal2.default, null),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
 					React.createElement(Search, null),
 					React.createElement(
@@ -37502,6 +37534,7 @@
 						{ onClick: this.linkToHome },
 						'Cloud Sound'
 					),
+					React.createElement(_alertModal2.default, null),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),
 					React.createElement(Search, null),
 					React.createElement(SignUp, { clickedLogin: this.clickedLogin, currentlyClicked: this.state.currentlyClicked, enableButtons: this.enableButtons }),
@@ -37515,6 +37548,8 @@
 /* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(299);
 	var Modal = __webpack_require__(197);
@@ -37524,21 +37559,21 @@
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
-	  getInitialState: function () {
+	  getInitialState: function getInitialState() {
 	    return { modalOpen: false, username: '', password: '', errors: [] };
 	  },
 	
-	  closeModal: function () {
+	  closeModal: function closeModal() {
 	    this.setState({ modalOpen: false });
 	    this.props.enableButtons();
 	  },
 	
-	  openModal: function () {
+	  openModal: function openModal() {
 	    this.setState({ modalOpen: true });
 	    this.props.clickedLogin();
 	  },
 	
-	  loginUser: function (event) {
+	  loginUser: function loginUser(event) {
 	    event.preventDefault();
 	    Store.emptyErrors();
 	    var user = { user: {
@@ -37554,7 +37589,7 @@
 	    }
 	  },
 	
-	  guestLogin: function (event) {
+	  guestLogin: function guestLogin(event) {
 	    var user = { user: {
 	        username: 'guest',
 	        password: 'password369'
@@ -37562,15 +37597,15 @@
 	    ClientActions.loginUser(user);
 	  },
 	
-	  nameChange: function (event) {
+	  nameChange: function nameChange(event) {
 	    this.setState({ username: event.target.value });
 	  },
 	
-	  passChange: function (event) {
+	  passChange: function passChange(event) {
 	    this.setState({ password: event.target.value });
 	  },
 	
-	  errors: function () {
+	  errors: function errors() {
 	    if (this.state.errors.length === 0) {
 	      return;
 	    } else {
@@ -37588,7 +37623,7 @@
 	    }
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      null,
@@ -37646,6 +37681,8 @@
 /* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
 	var Store = __webpack_require__(277).Store;
 	var AppDispatcher = __webpack_require__(295);
 	var SessionConstants = __webpack_require__(298);
@@ -37656,17 +37693,17 @@
 	var _errors = [];
 	var _userPresent = false;
 	
-	var loginUser = function (user) {
+	var loginUser = function loginUser(user) {
 	  _currentUser = user;
 	  _userPresent = true;
 	};
 	
-	var logout = function (user) {
+	var logout = function logout(user) {
 	  _currentUser = null;
 	  _userPresent = false;
 	};
 	
-	var addErrors = function (errors) {
+	var addErrors = function addErrors(errors) {
 	  var temp = errors.responseText;
 	  if (temp) {
 	    _errors.push(temp);
@@ -37712,6 +37749,8 @@
 /* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var ClientActions = __webpack_require__(299);
 	var Modal = __webpack_require__(197);
@@ -37719,21 +37758,21 @@
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
-	  getInitialState: function () {
+	  getInitialState: function getInitialState() {
 	    return { modalOpen: false, username: '', password: '', errors: [] };
 	  },
 	
-	  closeModal: function () {
+	  closeModal: function closeModal() {
 	    this.setState({ modalOpen: false });
 	    this.props.enableButtons();
 	  },
 	
-	  openModal: function () {
+	  openModal: function openModal() {
 	    this.setState({ modalOpen: true });
 	    this.props.clickedLogin();
 	  },
 	
-	  signupUser: function (event) {
+	  signupUser: function signupUser(event) {
 	    event.preventDefault();
 	    Store.emptyErrors();
 	    var user = { user: {
@@ -37750,15 +37789,15 @@
 	    }
 	  },
 	
-	  nameChange: function (event) {
+	  nameChange: function nameChange(event) {
 	    this.setState({ username: event.target.value });
 	  },
 	
-	  passChange: function (event) {
+	  passChange: function passChange(event) {
 	    this.setState({ password: event.target.value });
 	  },
 	
-	  errors: function () {
+	  errors: function errors() {
 	    if (this.state.errors.length === 0) {
 	      return;
 	    } else {
@@ -37776,7 +37815,7 @@
 	    }
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      null,
@@ -37829,6 +37868,8 @@
 /* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(217).hashHistory;
 	var SongActions = __webpack_require__(311);
@@ -37837,34 +37878,34 @@
 	module.exports = React.createClass({
 	  displayName: 'exports',
 	
-	  getInitialState: function () {
+	  getInitialState: function getInitialState() {
 	    return { songName: "" };
 	  },
 	
-	  componentDidMount: function () {
+	  componentDidMount: function componentDidMount() {
 	    this.songListener = SongStore.addListener(this.getSongs);
 	    SongActions.fetchSongs();
 	  },
 	
-	  componentWillUnmount: function () {
+	  componentWillUnmount: function componentWillUnmount() {
 	    this.songListener.remove();
 	  },
 	
-	  fillSongName: function (e) {
+	  fillSongName: function fillSongName(e) {
 	    var song = SongStore.find(e.target.value);
 	    this.setState({ songName: "" });
 	    hashHistory.push({ pathname: 'artists/' + song.artist });
 	  },
 	
-	  getSongs: function () {
+	  getSongs: function getSongs() {
 	    return SongStore.findSongs(this.state.songName);
 	  },
 	
-	  updateSong: function (e) {
+	  updateSong: function updateSong(e) {
 	    this.setState({ songName: e.target.value });
 	  },
 	
-	  render: function () {
+	  render: function render() {
 	    var songs = this.getSongs();
 	    var songList = [];
 	    if (songs.length > 0) {
@@ -37903,39 +37944,41 @@
 /* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Util = __webpack_require__(312);
 	var Dispatcher = __webpack_require__(295);
 	var Constants = __webpack_require__(298);
 	
 	module.exports = {
-		fetchSongs: function () {
+		fetchSongs: function fetchSongs() {
 			Util.fetchSongs();
 		},
 	
-		fetchArtistSongs: function (artist) {
+		fetchArtistSongs: function fetchArtistSongs(artist) {
 			Util.fetchArtistSongs(artist);
 		},
 	
-		playSong: function (song) {
+		playSong: function playSong(song) {
 			Util.getSong(song);
 		},
 	
-		addSong: function (song) {
+		addSong: function addSong(song) {
 			Util.addSong(song);
 		},
 	
-		postSongAWS: function (songData) {
+		postSongAWS: function postSongAWS(songData) {
 			// console.log(songData);
 			Util.postSongAWS(songData);
 		},
 	
-		nextSong: function () {
+		nextSong: function nextSong() {
 			Dispatcher.dispatch({
 				actionType: Constants.NEXT_SONG
 			});
 		},
 	
-		removeFromQueue: function (qIdx) {
+		removeFromQueue: function removeFromQueue(qIdx) {
 			Dispatcher.dispatch({
 				actionType: Constants.QUEUE_REMOVE,
 				idx: qIdx
@@ -37947,59 +37990,61 @@
 /* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var ServerActions = __webpack_require__(313);
 	var LikeActions = __webpack_require__(302);
 	
 	module.exports = {
-		fetchSongs: function () {
+		fetchSongs: function fetchSongs() {
 			$.ajax({
 				method: 'GET',
 				url: 'api/songs',
-				success: function (songs) {
+				success: function success(songs) {
 					ServerActions.getSongs(songs);
 				},
-				error: function (error) {
-					ServerActions.songError(error);
+				error: function error(_error) {
+					ServerActions.songError(_error);
 				}
 			});
 		},
 	
-		fetchArtistSongs: function (artist) {
+		fetchArtistSongs: function fetchArtistSongs(artist) {
 			artist.split(" ").join("%20");
 			$.ajax({
 				method: 'GET',
 				url: 'api/artist/' + artist,
-				success: function (songs) {
+				success: function success(songs) {
 					ServerActions.getArtistSongs(songs);
 				},
-				error: function (error) {
-					ServerActions.songError(error);
+				error: function error(_error2) {
+					ServerActions.songError(_error2);
 				}
 			});
 		},
 	
-		getSong: function (songId) {
+		getSong: function getSong(songId) {
 			$.ajax({
 				method: 'GET',
 				url: 'api/songs/' + songId,
-				success: function (song) {
+				success: function success(song) {
 					ServerActions.getSong(song);
 				},
-				error: function (error) {
-					ServerActions.songError(error);
+				error: function error(_error3) {
+					ServerActions.songError(_error3);
 				}
 			});
 		},
 	
-		addSong: function (songId) {
+		addSong: function addSong(songId) {
 			$.ajax({
 				method: 'GET',
 				url: 'api/songs/' + songId,
-				success: function (song) {
+				success: function success(song) {
 					ServerActions.addSong(song);
 				},
-				error: function (error) {
-					ServerActions.songError(error);
+				error: function error(_error4) {
+					ServerActions.songError(_error4);
 				}
 			});
 		},
@@ -38007,7 +38052,7 @@
 		//put data here, form data in jquerey?
 		//url: 'https://musicstoreforapp.s3.amazonaws.com/',
 		// console.log(songData);
-		postSongAWS: function (songData) {
+		postSongAWS: function postSongAWS(songData) {
 			$.ajax({
 				url: '/api/songs',
 				method: 'POST',
@@ -38015,14 +38060,14 @@
 				contentType: false,
 				processData: false,
 				data: songData,
-				success: function (postedSong) {
+				success: function success(postedSong) {
 					console.log(postedSong);
 					console.log('success');
 					ServerActions.songPosted(postedSong);
 				},
-				error: function (error) {
+				error: function error(_error5) {
 					console.log('error');
-					ServerActions.postSongError(error);
+					ServerActions.postSongError(_error5);
 				}
 			});
 		}
@@ -38032,46 +38077,48 @@
 /* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var Dispatcher = __webpack_require__(295);
 	var Constants = __webpack_require__(298);
 	
 	module.exports = {
-		getSongs: function (songs) {
+		getSongs: function getSongs(songs) {
 			Dispatcher.dispatch({
 				actionType: Constants.SONGS_RECEIVED,
 				songs: songs
 			});
 		},
 	
-		getArtistSongs: function (songs) {
+		getArtistSongs: function getArtistSongs(songs) {
 			Dispatcher.dispatch({
 				actionType: Constants.ARTIST_SONGS,
 				songs: songs
 			});
 		},
 	
-		getSong: function (song) {
+		getSong: function getSong(song) {
 			Dispatcher.dispatch({
 				actionType: Constants.SONG_RECEIVED,
 				song: song
 			});
 		},
 	
-		addSong: function (song) {
+		addSong: function addSong(song) {
 			Dispatcher.dispatch({
 				actionType: Constants.ADD_SONG,
 				song: song
 			});
 		},
 	
-		songPosted: function (song) {
+		songPosted: function songPosted(song) {
 			Dispatcher.dispatch({
 				actionType: Constants.POST_SONG,
 				song: song
 			});
 		},
 	
-		songError: function (errors) {
+		songError: function songError(errors) {
 			Dispatcher.dispatch({
 				actionType: Constants.SONGS_ERROR,
 				errors: errors
@@ -38083,6 +38130,8 @@
 /* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
 	var Store = __webpack_require__(277).Store;
 	var AppDispatcher = __webpack_require__(295);
 	var SongConstants = __webpack_require__(298);
@@ -38092,7 +38141,7 @@
 	var _songs = {};
 	var _errors = [];
 	
-	var setErrors = function (errors) {
+	var setErrors = function setErrors(errors) {
 		var temp = errors;
 		if (temp.length > 0) {
 			temp.forEach(function (error) {
@@ -38103,7 +38152,7 @@
 		}
 	};
 	
-	var resetSongs = function (songs) {
+	var resetSongs = function resetSongs(songs) {
 		_songs = {};
 	
 		songs.forEach(function (song) {
@@ -38170,39 +38219,46 @@
 /* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	var _alertModal = __webpack_require__(316);
+	
+	var _alertModal2 = _interopRequireDefault(_alertModal);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(217).hashHistory;
 	var SongActions = __webpack_require__(311);
 	var SongStore = __webpack_require__(314);
 	var SessionStore = __webpack_require__(308);
 	var LikeStore = __webpack_require__(276);
-	var IndexItem = __webpack_require__(316);
+	var IndexItem = __webpack_require__(317);
 	var LikeActions = __webpack_require__(302);
-	//import AlertModal from './alertModal.js';
+	
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
-		getInitialState: function () {
+		getInitialState: function getInitialState() {
 			return {
-				songs: [], testArr: [1, 2, 3, 4]
+				songs: []
 			};
 		},
 	
-		componentDidMount: function () {
+		componentDidMount: function componentDidMount() {
 			this.songListener = SongStore.addListener(this.songChange);
 			// this.userListen = SessionStore.addListener(this.userChange);
 			SongActions.fetchSongs();
 			LikeActions.getLiked();
-			//console.log([...(this.state.testArr),...[5,6]]);
 		},
 	
-		componentWillUnmount: function () {
+		componentWillUnmount: function componentWillUnmount() {
 			this.songListener.remove();
 			// this.userListen.remove();
 		},
 	
-		songChange: function () {
+		songChange: function songChange() {
 			this.setState({ songs: SongStore.all() });
 		},
 	
@@ -38212,10 +38268,9 @@
 		// },
 	
 		//new tag line: change your tone;
+		// <AlertModal/>
 	
-		//<alertModal/>
-	
-		render: function () {
+		render: function render() {
 			return React.createElement(
 				'div',
 				{ className: 'cover-index' },
@@ -38234,38 +38289,126 @@
 /* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactModal = __webpack_require__(197);
+	
+	var _reactModal2 = _interopRequireDefault(_reactModal);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ToneAlertModal = function (_React$Component) {
+		_inherits(ToneAlertModal, _React$Component);
+	
+		function ToneAlertModal(props) {
+			_classCallCheck(this, ToneAlertModal);
+	
+			var _this = _possibleConstructorReturn(this, (ToneAlertModal.__proto__ || Object.getPrototypeOf(ToneAlertModal)).call(this, props));
+	
+			_this.state = {
+				modalOpen: true
+				// console.log(this.state);
+			};return _this;
+		}
+	
+		// componentDidMount() {
+		// 	console.log("mounting");
+		// 	this.setState({
+		// 		modalOpen: true
+		// 	});
+		// }
+	
+		_createClass(ToneAlertModal, [{
+			key: 'closeAlert',
+			value: function closeAlert() {
+				// console.log("closelaertfn");			
+				this.setState({
+					modalOpen: false
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					{ className: 'alertDiv', onClick: this.closeAlert },
+					_react2.default.createElement(
+						_reactModal2.default,
+						{ className: 'alertModal', isOpen: this.state.modalOpen, onRequestClose: this.closeAlert.bind(this) },
+						_react2.default.createElement(
+							'h1',
+							{ className: 'alertHeader' },
+							' Hello!'
+						),
+						_react2.default.createElement(
+							'a',
+							{ className: 'alertText' },
+							'Welcome to CloudSound, where we specialize in bringing you music tuned to 432 and 528 hz. Please enjoy the soothing sounds of these naturally pure and phisiologically beneficial tones.'
+						)
+					)
+				);
+			}
+		}]);
+	
+		return ToneAlertModal;
+	}(_react2.default.Component);
+	
+	exports.default = ToneAlertModal;
+
+/***/ },
+/* 317 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var SongActions = __webpack_require__(311);
 	var hashHistory = __webpack_require__(217).hashHistory;
 	var LikeActions = __webpack_require__(302);
 	var SessionStore = __webpack_require__(308);
 	var LikeStore = __webpack_require__(276);
-	var PlayStore = __webpack_require__(317);
+	var PlayStore = __webpack_require__(318);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
-		getInitialState: function () {
+		getInitialState: function getInitialState() {
 			return { userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id), songPlaying: false };
 		},
 	
-		componentDidMount: function () {
+		componentDidMount: function componentDidMount() {
 			this.userListener = SessionStore.addListener(this.userPresence);
 			this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 			// this.playListen = PlayStore.addListener(this.playChange);
 		},
 	
-		componentWillUnmount: function () {
+		componentWillUnmount: function componentWillUnmount() {
 			this.userListener.remove();
 			this.likeStoreListen.remove();
 			// this.playListen.remove();
 		},
 	
-		userPresence: function () {
+		userPresence: function userPresence() {
 			this.setState({ userLoggedIn: SessionStore.userPresent() });
 		},
 	
-		likesUpdate: function () {
+		likesUpdate: function likesUpdate() {
 			this.setState({ songLiked: LikeStore.songLiked(this.props.song.id) });
 		},
 	
@@ -38273,33 +38416,33 @@
 		// 	this.setState({ songPlaying: PlayStore.songPlaying() })
 		// },
 	
-		playSong: function (event) {
+		playSong: function playSong(event) {
 			event.preventDefault();
 			SongActions.playSong(this.props.song.id);
 		},
 	
-		addSong: function (event) {
+		addSong: function addSong(event) {
 			event.preventDefault();
 			SongActions.addSong(this.props.song.id);
 		},
 	
-		artistRoute: function (event) {
+		artistRoute: function artistRoute(event) {
 			event.preventDefault();
 			// var betterRoute = this.props.song.artist.split(" ").join("%20");
 			hashHistory.push("artists/" + this.props.song.artist);
 		},
 	
-		createLike: function (event) {
+		createLike: function createLike(event) {
 			event.preventDefault();
 			LikeActions.createLike(this.props.song.id);
 		},
 	
-		unlike: function (event) {
+		unlike: function unlike(event) {
 			event.preventDefault();
 			LikeActions.unlike(this.props.song.id);
 		},
 	
-		buttonToggle: function () {
+		buttonToggle: function buttonToggle() {
 			if (this.state.userLoggedIn) {
 				if (this.state.songLiked) {
 					return React.createElement(
@@ -38319,7 +38462,7 @@
 			}
 		},
 	
-		render: function () {
+		render: function render() {
 			return React.createElement(
 				'li',
 				{ className: 'songItem' },
@@ -38332,7 +38475,7 @@
 				React.createElement(
 					'button',
 					{ className: 'imgPlay', id: 'add', onClick: this.playSong },
-					'▶'
+					'\u25B6'
 				),
 				this.buttonToggle(),
 				React.createElement('br', null),
@@ -38353,9 +38496,11 @@
 	// <img src={this.props.song.imgUrl} onClick={this.playSong} />
 
 /***/ },
-/* 317 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
 	var Store = __webpack_require__(277).Store;
 	var AppDispatcher = __webpack_require__(295);
 	var SongConstants = __webpack_require__(298);
@@ -38366,19 +38511,19 @@
 	var _errors = [];
 	var _nowPlaying = null;
 	
-	var setErrors = function (error) {
+	var setErrors = function setErrors(error) {
 		_errors.push(error);
 	};
 	
-	var addSong = function (song) {
+	var addSong = function addSong(song) {
 		_queue.push(song);
 	};
 	
-	var playSong = function (song) {
+	var playSong = function playSong(song) {
 		_nowPlaying = song;
 	};
 	
-	var removeFromQueue = function (queueIdx) {
+	var removeFromQueue = function removeFromQueue(queueIdx) {
 		_queue.splice(queueIdx, 1);
 	};
 	
@@ -38395,7 +38540,7 @@
 	// 	PlayStore.__emitChange();
 	// };
 	
-	var nextSong = function () {
+	var nextSong = function nextSong() {
 		_nowPlaying = _queue[0];
 		_queue = _queue.slice(1);
 	};
@@ -38437,30 +38582,32 @@
 	module.exports = PlayStore;
 
 /***/ },
-/* 318 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
-	var PlayStore = __webpack_require__(317);
+	var PlayStore = __webpack_require__(318);
 	var ClientActions = __webpack_require__(311);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
-		getInitialState: function () {
+		getInitialState: function getInitialState() {
 			return { currentSong: null, playing: false };
 		},
 	
-		componentDidMount: function () {
+		componentDidMount: function componentDidMount() {
 			this.playListen = PlayStore.addListener(this.playChange);
 		},
 	
-		componentWillUnmount: function () {
+		componentWillUnmount: function componentWillUnmount() {
 			this.playListen.remove();
 		},
 	
-		componentDidUpdate: function () {
-			const song = document.getElementById('nowPlaying');
+		componentDidUpdate: function componentDidUpdate() {
+			var song = document.getElementById('nowPlaying');
 			if (!song) {
 				return;
 			}
@@ -38470,7 +38617,7 @@
 			}
 		},
 	
-		playChange: function () {
+		playChange: function playChange() {
 			if (PlayStore.nowPlaying()) {
 				if (this.state.currentSong !== PlayStore.nowPlaying()) {
 					this.setState({ currentSong: PlayStore.nowPlaying(), playing: true });
@@ -38478,30 +38625,30 @@
 			}
 		},
 	
-		songOver: function () {
+		songOver: function songOver() {
 			this.setState({ currentSong: null, playing: false });
 			ClientActions.nextSong();
 		},
 	
-		play: function (event) {
+		play: function play(event) {
 			event.preventDefault();
 			var play = document.getElementById('nowPlaying').play();
 			this.setState({ currentSong: this.state.currentSong, playing: true });
 		},
 	
-		pause: function (event) {
+		pause: function pause(event) {
 			event.preventDefault();
 			document.getElementById('nowPlaying').pause();
 			this.setState({ currentSong: this.state.currentSong, playing: false });
 		},
 	
-		setProgress: function () {
+		setProgress: function setProgress() {
 			var audioPlayer = document.getElementById('nowPlaying');
 			var bar = document.getElementById('bar');
 			bar.style.width = parseInt(audioPlayer.currentTime / audioPlayer.duration * 100, 10) + "%";
 		},
 	
-		updateProgress: function (e) {
+		updateProgress: function updateProgress(e) {
 			e.preventDefault();
 			var audioPlayer = document.getElementById('nowPlaying');
 			var clickSpot = (e.pageX - this.refs['progressBar'].offsetLeft) / this.refs["progressBar"].offsetWidth;
@@ -38510,30 +38657,30 @@
 			audioPlayer.currentTime = clickTime;
 		},
 	
-		setSound: function () {
-			const audioPlayer = document.getElementById('nowPlaying');
-			const innerBar = document.getElementById('innerSoundBar');
+		setSound: function setSound() {
+			var audioPlayer = document.getElementById('nowPlaying');
+			var innerBar = document.getElementById('innerSoundBar');
 	
 			innerBar.style.width = audioPlayer.volume * 100 + "%";
 		},
 	
-		soundAdjust: function (e) {
+		soundAdjust: function soundAdjust(e) {
 			e.preventDefault();
-			const audioPlayer = document.getElementById('nowPlaying');
-			const adjustBar = document.getElementById('audioAdjust');
-			const clickSoundSpot = (e.pageX - this.refs['soundBar'].offsetLeft) / this.refs['soundBar'].offsetWidth;
+			var audioPlayer = document.getElementById('nowPlaying');
+			var adjustBar = document.getElementById('audioAdjust');
+			var clickSoundSpot = (e.pageX - this.refs['soundBar'].offsetLeft) / this.refs['soundBar'].offsetWidth;
 			//console.log(clickSoundSpot);
 	
 			audioPlayer.volume = clickSoundSpot;
 			this.setSound();
 		},
 	
-		nextSong: function (event) {
+		nextSong: function nextSong(event) {
 			event.preventDefault();
 			ClientActions.nextSong();
 		},
 	
-		render: function () {
+		render: function render() {
 			var song, player, playToggle;
 	
 			if (this.state.currentSong) {
@@ -38546,27 +38693,27 @@
 				playToggle = React.createElement(
 					'button',
 					{ className: 'playControlToggle', onClick: this.pause },
-					'▌▌'
+					'\u258C\u258C'
 				);
 			} else {
 				playToggle = React.createElement(
 					'button',
 					{ className: 'playControlToggle', onClick: this.play },
-					'▶'
+					'\u25B6'
 				);
 			}
 	
 			var next = React.createElement(
 				'button',
 				{ className: 'playControl', onClick: this.nextSong },
-				'▶▌'
+				'\u25B6\u258C'
 			);
 			var progress = React.createElement(
 				'div',
 				{ id: 'progress', ref: 'progressBar', onClick: this.updateProgress },
 				React.createElement('div', { id: 'bar' })
 			);
-			const audioAdjust = React.createElement(
+			var audioAdjust = React.createElement(
 				'div',
 				{ id: 'outerSoundBar', ref: 'soundBar', onClick: this.soundAdjust },
 				React.createElement('div', { id: 'innerSoundBar' })
@@ -38581,7 +38728,7 @@
 					next,
 					' ',
 					this.state.currentSong.title,
-					',   ',
+					', \xA0 ',
 					this.state.currentSong.artist,
 					' ',
 					progress,
@@ -38597,34 +38744,36 @@
 	});
 
 /***/ },
-/* 319 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
-	var PlayStore = __webpack_require__(317);
+	var PlayStore = __webpack_require__(318);
 	var ClientActions = __webpack_require__(311);
-	var QueueItem = __webpack_require__(320);
+	var QueueItem = __webpack_require__(321);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
-		getInitialState: function () {
+		getInitialState: function getInitialState() {
 			return { nowPlaying: null, queue: [] };
 		},
 	
-		componentDidMount: function () {
+		componentDidMount: function componentDidMount() {
 			this.playListen = PlayStore.addListener(this.playChange);
 		},
 	
-		componentWillUnmount: function () {
+		componentWillUnmount: function componentWillUnmount() {
 			this.playListen.remove();
 		},
 	
-		playChange: function () {
+		playChange: function playChange() {
 			this.setState({ nowPlaying: PlayStore.nowPlaying(), queue: PlayStore.queue() });
 		},
 	
-		render: function () {
+		render: function render() {
 			if (PlayStore.queue().length > 0) {
 				return React.createElement(
 					'div',
@@ -38649,21 +38798,23 @@
 	});
 
 /***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var SongActions = __webpack_require__(311);
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
-		removeSongFromQueue: function (event) {
+		removeSongFromQueue: function removeSongFromQueue(event) {
 			event.preventDefault();
 			SongActions.removeFromQueue(this.props.idx);
 		},
 	
-		render: function () {
+		render: function render() {
 			return React.createElement(
 				'li',
 				{ className: 'queueItem' },
@@ -38681,43 +38832,45 @@
 	});
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var SongActions = __webpack_require__(311);
 	var SongStore = __webpack_require__(314);
-	var IndexItem = __webpack_require__(316);
+	var IndexItem = __webpack_require__(317);
 	var hashHistory = __webpack_require__(217).hashHistory;
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
-		getInitialState: function () {
+		getInitialState: function getInitialState() {
 			return {
 				songs: []
 			};
 		},
 	
-		componentDidMount: function () {
+		componentDidMount: function componentDidMount() {
 			this.songListener = SongStore.addListener(this.songChange);
 			SongActions.fetchArtistSongs(this.props.params.artist);
 			// LikeActions.getLiked();
 		},
 	
-		componentWillUnmount: function () {
+		componentWillUnmount: function componentWillUnmount() {
 			this.songListener.remove();
 		},
 	
-		songChange: function () {
+		songChange: function songChange() {
 			this.setState({ songs: SongStore.all() });
 		},
 	
-		linkToHome: function () {
+		linkToHome: function linkToHome() {
 			hashHistory.push('/');
 		},
 	
-		render: function () {
+		render: function render() {
 			return React.createElement(
 				'div',
 				{ className: 'artist-index' },
@@ -38733,9 +38886,11 @@
 	});
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(217).hashHistory;
 	var Modal = __webpack_require__(197);
@@ -38743,8 +38898,8 @@
 	var LikeActions = __webpack_require__(302);
 	var SongStore = __webpack_require__(314);
 	var LikeStore = __webpack_require__(276);
-	var IndexItem = __webpack_require__(316);
-	var DropZone = __webpack_require__(323);
+	var IndexItem = __webpack_require__(317);
+	var DropZone = __webpack_require__(324);
 	// var AWSInfo = require('../../docs/info/s3info.js');
 	// var Base64 = require('base-64');
 	// var CryptoJS = require('crypto-js');
@@ -38752,34 +38907,34 @@
 	module.exports = React.createClass({
 		displayName: 'exports',
 	
-		getInitialState: function () {
+		getInitialState: function getInitialState() {
 			return {
 				songIds: [], songs: [], modalOpen: false, errors: [], mySongs: []
 			};
 		},
 	
-		componentDidMount: function () {
+		componentDidMount: function componentDidMount() {
 			// this.songListen = SongStore.addListener(this.songChange);
 			// SongActions.fetchSongs();
 			this.likeListen = LikeStore.addListener(this.likeChange);
 			LikeActions.getLiked();
 		},
 	
-		componentWillUnmount: function () {
+		componentWillUnmount: function componentWillUnmount() {
 			this.likeListen.remove();
 			// this.songListen.remove();
 		},
 	
-		openModal: function () {
+		openModal: function openModal() {
 			this.setState({ modalOpen: true });
 			// debugger;
 		},
 	
-		closeModal: function () {
+		closeModal: function closeModal() {
 			this.setState({ modalOpen: false });
 		},
 	
-		errors: function () {
+		errors: function errors() {
 			if (this.state.errors.length === 0) {
 				return;
 			} else {
@@ -38797,12 +38952,12 @@
 			}
 		},
 	
-		likeChange: function () {
+		likeChange: function likeChange() {
 			this.setState({ songs: LikeStore.all() });
 			// this.setSongs(this.state.songIds);
 		},
 	
-		linkToHome: function () {
+		linkToHome: function linkToHome() {
 			hashHistory.push('/');
 		},
 	
@@ -38811,11 +38966,11 @@
 		// 	// SongActions.addSong(event);
 		// },
 	
-		addSong: function () {
+		addSong: function addSong() {
 			console.log('outerSubmitFn');
 		},
 	
-		postSong: function (accepted, rejected) {
+		postSong: function postSong(accepted, rejected) {
 			// SongActions.postSongAWS(accepted[0]);
 			// console.log('rejected: ', rejected);
 	
@@ -38828,7 +38983,7 @@
 			//working
 		},
 	
-		uploadProgress: function (evt) {
+		uploadProgress: function uploadProgress(evt) {
 			// if (evt.lengthComputable) {
 			// 	 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
 			//  	document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
@@ -38852,7 +39007,7 @@
 		//     alert("The upload has been canceled by the user or the browser dropped the connection.");
 		// },
 	
-		successAction: function () {
+		successAction: function successAction() {
 			console.log('successActionRedirect');
 		},
 		// songChange: function() {
@@ -38863,7 +39018,7 @@
 		// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
 		// },
 	
-		render: function () {
+		render: function render() {
 			return React.createElement(
 				'div',
 				{ className: 'user-index' },
@@ -38940,7 +39095,7 @@
 	});
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
