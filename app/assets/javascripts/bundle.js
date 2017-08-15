@@ -38178,6 +38178,7 @@
 	var LikeStore = __webpack_require__(276);
 	var IndexItem = __webpack_require__(316);
 	var LikeActions = __webpack_require__(302);
+	//import AlertModal from './alertModal.js';
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -38209,6 +38210,10 @@
 		// 	LikeActions.getLiked()
 		// 	// this.setState({ likes: LikeActions.getLiked() });
 		// },
+	
+		//new tag line: change your tone;
+	
+		//<alertModal/>
 	
 		render: function () {
 			return React.createElement(

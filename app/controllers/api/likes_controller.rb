@@ -26,5 +26,9 @@ class Api::LikesController < ApplicationController
 		like = Like.find_by(user_id: current_user.id,song_id: params[:song_id])
 		like.destroy
 		render json: {song_id: params[:song_id]}
+
+		# @user = current_user
+		# redner :index
+		# might make things way easier
 	end
 end

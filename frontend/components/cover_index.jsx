@@ -6,6 +6,7 @@ var SessionStore = require('../stores/session_store.js');
 var LikeStore = require('../stores/likes_store.js');
 var IndexItem = require('./index_item.jsx');
 var LikeActions = require('../actions/like_actions.js');
+//import AlertModal from './alertModal.js';
 
 module.exports = React.createClass({
 	getInitialState: function() {
@@ -35,6 +36,11 @@ module.exports = React.createClass({
 	// 	LikeActions.getLiked()
 	// 	// this.setState({ likes: LikeActions.getLiked() });
 	// },
+
+	//new tag line: change your tone;
+
+
+	//<alertModal/>
 
 	render: function() {
 		return (
