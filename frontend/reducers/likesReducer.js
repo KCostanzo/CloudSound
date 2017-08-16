@@ -1,4 +1,4 @@
-import Constants from '../allConstants';
+import Constants from '../constants/allConstants';
 
 
 const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {

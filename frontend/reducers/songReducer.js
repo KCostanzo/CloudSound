@@ -1,4 +1,4 @@
-import SongConstants from '../allConstants';
+import SongConstants from '../constants/allConstants';
 
 
 const songsReducer = (state = {songs:[], errors:[]}, action) => {

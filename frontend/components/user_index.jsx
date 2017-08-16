@@ -11,35 +11,38 @@ var DropZone = require('react-dropzone');
 // var Base64 = require('base-64');
 // var CryptoJS = require('crypto-js');
 
-module.exports = React.createClass({
-	getInitialState: function() {
-		return {
-			songIds: [], songs: [], modalOpen: false, errors: [], mySongs: []
-		}
-	},
 
-	componentDidMount: function() {
+export default class UserIndex extends React.Component {
+	constructor(props) {
+		super(props);
+		this.likeChange = this.likeChange.bind(this);
+
+		this.state = {
+			songIds: [], songs: [], modalOpen: false, errors: [], mySongs: []
+		};
+	}
+	componentDidMount() {
 		// this.songListen = SongStore.addListener(this.songChange);
 		// SongActions.fetchSongs();
 		this.likeListen = LikeStore.addListener(this.likeChange);
 		LikeActions.getLiked();
-	},
+	}
 
-	componentWillUnmount: function() {
+	componentWillUnmount() {
 		this.likeListen.remove();
 		// this.songListen.remove();
-	},
+	}
 
-	openModal: function() {
+	openModal() {
 		this.setState({ modalOpen: true });
 		// debugger;
-	},
+	}
 
-	closeModal: function() {
+	closeModal() {
 		this.setState({ modalOpen: false});
-	},
+	}
 
-	errors: function() {
+	errors() {
 	    if (this.state.errors.length === 0) {
 	      return;
 	    } else {
@@ -53,27 +56,27 @@ module.exports = React.createClass({
 	          </ul>
 	      )
 	    }
-	  },
+	  }
 
-	likeChange: function() {
+	likeChange() {
 		this.setState({songs: LikeStore.all()});
 		// this.setSongs(this.state.songIds);
-	},
+	}
 
-	linkToHome: function() {
+	linkToHome() {
 		hashHistory.push('/');
-	},
+	}
 
-	// addSongForm: function(event) {
+	// addSongForm(event) {
 	// 	event.preventDefault();
 	// 	// SongActions.addSong(event);
-	// },
+	// }
 
-	addSong: function() {
+	addSong() {
 		console.log('outerSubmitFn');
-	},
+	}
 
-	postSong: function(accepted, rejected) {
+	postSong(accepted, rejected) {
 		// SongActions.postSongAWS(accepted[0]);
 		// console.log('rejected: ', rejected);
 
@@ -84,9 +87,9 @@ module.exports = React.createClass({
 	    var key = (new Date).getTime() + '-' + file.name;    //.split(" ").join("");
 
 	    //working
-	},
+	}
 
-	uploadProgress: function(evt) {
+	uploadProgress(evt) {
     	// if (evt.lengthComputable) {
      // 	 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
      //  	document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
@@ -95,33 +98,33 @@ module.exports = React.createClass({
      //  		document.getElementById('progressNumber').innerHTML = 'unable to compute';
     	// }
     	console.log('working');
-  	},
+  	}
 
  //  	uploadComplete:	function(evt) {
  //    /* This event is raised when the server send back a response */
  //   		 alert("Done - " + evt.target.responseText );
- //  	},
+ //  	}
 
-	// uploadFailed: function(evt) {
+	// uploadFailed(evt) {
 	//     alert("There was an error attempting to upload the file." + evt);
-	// },
+	// }
 
-	// uploadCanceled: function(evt) {
+	// uploadCanceled(evt) {
 	//     alert("The upload has been canceled by the user or the browser dropped the connection.");
-	// },
+	// }
 
-	successAction: function() {
+	successAction() {
 		console.log('successActionRedirect');
-	},
-	// songChange: function() {
+	}
+	// songChange() {
 	// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
-	// },
+	// }
 
-	// setSongs: function() {
+	// setSongs() {
 	// 	this.setState({songs: SongStore.likedSongs(this.state.songIds)});
-	// },
+	// }
 
-	render: function() {
+	render() {
 		return (
 			<div className='user-index'>
 					<ul>
@@ -170,4 +173,4 @@ module.exports = React.createClass({
 				</div>
 			);
 	}
-})
+}

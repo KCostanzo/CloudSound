@@ -13,7 +13,10 @@ var ClientActions = require('./actions/client_actions.js');
 var App = require('./components/app.jsx');
 var CoverPage = require('./components/cover_index.jsx');
 var ArtistIndex = require('./components/artist_index.jsx');
-var UserIndex = require('./components/user_index.jsx');
+// var UserIndex = require('./components/user_index.jsx');
+import UserIndex from './components/user_index.jsx';
+import {Provider} from 'react-redux';
+import store from './stores/configure.js'
 
 //refresh store
 ClientActions.fetchCurrentUser();
@@ -29,7 +32,15 @@ var routes = (
 document.addEventListener('DOMContentLoaded', function() {
   Modal.setAppElement(document.body);
   ReactDOM.render(
-    <Router history={hashHistory}>{routes}</Router>,
+    <Provider store={store()}><Router history={hashHistory}>{routes}</Router></Provider>,
     document.getElementById('root')
   );
 });
+
+//const Root = ({ store }) => (
+  // <Provider store={store}>
+  //   <Router history={hashHistory}>{routes}</Router>
+  // </Provider>
+  // )
+
+

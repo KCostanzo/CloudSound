@@ -11,13 +11,6 @@ export default class ToneAlertModal extends React.Component {
 		// console.log(this.state);
 	}
 
-	// componentDidMount() {
-	// 	console.log("mounting");
-	// 	this.setState({
-	// 		modalOpen: true
-	// 	});
-	// }
-
 	closeAlert() {
 		// console.log("closelaertfn");			
 		this.setState({
