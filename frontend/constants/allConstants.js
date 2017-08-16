@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   LOGIN_USER: 'LOGIN_USER',
   LOGOUT_USER: 'LOGOUT_USER',
   ERROR_RECEIVED: 'ERROR_RECEIVED',
@@ -17,6 +17,8 @@ module.exports = {
   LIKED_SONGS: 'LIKED_SONGS',
   LIKE_MADE: 'LIKE_MADE',
   UNLIKED: 'UNLIKED',
+  LIKE_ERR: 'LIKE_ERR',
+  UNLIKE_ERR: 'UNLIKE_ERR',
 
   ADD_SONG: 'ADD_SONG',
   POST_SONG: 'POST_SONG'

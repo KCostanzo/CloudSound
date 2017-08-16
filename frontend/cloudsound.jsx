@@ -11,12 +11,14 @@ var Likes = require('./stores/likes_store.js');
 var ClientActions = require('./actions/client_actions.js');
 
 var App = require('./components/app.jsx');
-var CoverPage = require('./components/cover_index.jsx');
+// var CoverPage = require('./components/cover_index.jsx');
 var ArtistIndex = require('./components/artist_index.jsx');
 // var UserIndex = require('./components/user_index.jsx');
+import CoverPage from './components/cover_index.jsx';
 import UserIndex from './components/user_index.jsx';
 import {Provider} from 'react-redux';
 import store from './stores/configure.js'
+console.log(CoverPage);
 
 //refresh store
 ClientActions.fetchCurrentUser();

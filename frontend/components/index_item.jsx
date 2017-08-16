@@ -5,64 +5,75 @@ var LikeActions = require('../actions/like_actions.js');
 var SessionStore = require('../stores/session_store.js');
 var LikeStore = require('../stores/likes_store.js');
 var PlayStore = require('../stores/play_store.js');
+import { connect } from 'react-redux';
+import { createLike, unlike } from '../actions/likeActions.js';
 
 
-module.exports = React.createClass({
-	getInitialState: function() {
-		return {userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id), songPlaying: false}
-	},
+class IndexItem extends  React.Component {
+	constructor(props) {
+		super(props)
 
-	componentDidMount: function() {
+		this.userPresence = this.userPresence.bind(this);
+		this.likesUpdate = this.likesUpdate.bind(this);
+
+		this.state = {
+			userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id), songPlaying: false
+		};
+	}
+
+	componentDidMount() {
 		this.userListener = SessionStore.addListener(this.userPresence);
 		this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 		// this.playListen = PlayStore.addListener(this.playChange);
-	},
+	}
 
-	componentWillUnmount: function() {
+	componentWillUnmount() {
 		this.userListener.remove();
 		this.likeStoreListen.remove();
 		// this.playListen.remove();
-	},
+	}
 
-	userPresence: function() {
+	userPresence() {
 		this.setState({ userLoggedIn: SessionStore.userPresent() });
-	},
+	}
 
-	likesUpdate: function() {
+	likesUpdate() {
 		this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
-	},
+	}
 
-	// playChange: function() {
+	// playChange() {
 	// 	this.setState({ songPlaying: PlayStore.songPlaying() })
-	// },
+	// }
 
-	playSong: function(event) {
+	playSong(event) {
 		event.preventDefault();
 		SongActions.playSong(this.props.song.id);
-	},
+	}
 
-	addSong: function(event) {
+	addSong(event) {
 		event.preventDefault();
 		SongActions.addSong(this.props.song.id);
-	},
+	}
 
-	artistRoute: function(event) {
+	artistRoute(event) {
 		event.preventDefault();
 		// var betterRoute = this.props.song.artist.split(" ").join("%20");
 		hashHistory.push("artists/"+ this.props.song.artist);
-	},
+	}
 
-	createLike: function(event) {
+	createLike(event) {
 		event.preventDefault();
-		LikeActions.createLike(this.props.song.id);
-	},
+		// LikeActions.createLike(this.props.song.id);
+		this.props.createLike(this.props.song.id);
+	}
 
-	unlike: function(event) {
+	unlike(event) {
 		event.preventDefault();
-		LikeActions.unlike(this.props.song.id);
-	},
+		// LikeActions.unlike(this.props.song.id);
+		this.props.unlike(this.props.song.id);
+	}
 
-	buttonToggle: function() {
+	buttonToggle() {
 		if (this.state.userLoggedIn) {
 			if (this.state.songLiked) {
 				return <button className="like" onClick={this.unlike}>Unlike</button>
@@ -72,14 +83,14 @@ module.exports = React.createClass({
 		} else {
 			return <div id='imgSpace'/>
 		}
-	},
+	}
 
-	render: function() {
+	render() {
 		return (
 			<li className='songItem'>
 				<img src={this.props.song.img_url} onClick={this.artistRoute} />
-				<button className="imgPlay" id='play' onClick={this.addSong}>&#43;</button>
-				<button className="imgPlay" id='add' onClick={this.playSong}>▶</button>
+				<button className="imgPlay" id='play' onClick={this.addSong.bind(this)}>&#43;</button>
+				<button className="imgPlay" id='add' onClick={this.playSong.bind(this)}>▶</button>
 				{this.buttonToggle()}
 				<br/>
 				<label className="indexTitle">
@@ -89,5 +100,13 @@ module.exports = React.createClass({
 			</li>
 		);
 	}
+}
+
+const mapDispatchToProps = dispatch => ({
+	createLike: songid => dispatch(createLike(songid)),
+	unlike: songid => dispatch(unlike(songid))
 })
+
+export default connect(null, mapDispatchToProps)(IndexItem);
+
 				// <img src={this.props.song.imgUrl} onClick={this.playSong} />

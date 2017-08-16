@@ -11,9 +11,9 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 			return state;
 
 		case Constants.LIKE_MADE:
-			state.likedSongs = action.songs;
+			console.log("like Case in like Reducer");
+			state.likedSongs = action.payload;
 			return state;
-
 		case Constants.UNLIKED:
 			//given action.like.song_id for song to remove from likedSongs
 			//working, but should do directly on newstate Arr
@@ -27,6 +27,7 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 			return state;
 
 		default: 
+			// console.log("likeDefaultrtn");
 			return state;
 	}
 

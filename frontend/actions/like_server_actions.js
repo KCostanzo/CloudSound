@@ -1,5 +1,6 @@
 var Dispatcher = require('../dispatcher/dispatcher');
-var Constants = require('../constants/allConstants');
+// var Constants = require('../constants/allConstants');
+import Constants from '../constants/allConstants.js';
 
 module.exports = {
 	getLikedSongs: function(songs) {

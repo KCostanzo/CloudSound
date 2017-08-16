@@ -1,5 +1,7 @@
 var Dispatcher = require('../dispatcher/dispatcher.js');
-var Constants = require('../constants/allConstants.js');
+import Constants from '../constants/allConstants.js';
+
+// console.log(Constants);
 
 module.exports = {
 	getSongs: function(songs) {
@@ -17,6 +19,7 @@ module.exports = {
 	},
 
 	getSong: function(song) {
+		console.log("song add to bar");
 		Dispatcher.dispatch({
 			actionType: Constants.SONG_RECEIVED,
 			song: song

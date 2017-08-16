@@ -1,5 +1,6 @@
 var Dispatcher = require('../dispatcher/dispatcher.js');
-var Constants = require('../constants/allConstants.js');
+// var Constants = require('../constants/allConstants.js');
+import Constants from '../constants/allConstants.js';
 
 module.exports = {
   fetchCurrentUser: function(user) {

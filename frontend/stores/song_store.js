@@ -1,6 +1,6 @@
 var Store = require('flux/utils').Store;
 var AppDispatcher = require("../dispatcher/dispatcher.js");
-var SongConstants = require("../constants/allConstants.js");
+import SongConstants from '../constants/allConstants.js';
 
 var SongStore = new Store(AppDispatcher);
 
@@ -20,6 +20,7 @@ var setErrors = function(errors) {
 };
 
 var resetSongs = function(songs) {
+	// console.log(songs);
 	_songs = {};
 
 	songs.forEach(function(song) {
@@ -67,6 +68,8 @@ SongStore.likedSongs = function(songIds) {
 SongStore.__onDispatch = function(payload) {
 	switch (payload.actionType) {
 		case SongConstants.SONGS_RECEIVED:
+			// console.log("songs recieved");
+			// console.log(payload);
 			resetSongs(payload.songs);
 			break;
 		case SongConstants.SONGS_ERROR:

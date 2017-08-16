@@ -1,6 +1,7 @@
 var Store = require('flux/utils').Store;
 var AppDispatcher = require("../dispatcher/dispatcher.js");
-var SongConstants = require("../constants/allConstants.js");
+// var SongConstants = require("../constants/allConstants.js");
+import SongConstants from '../constants/allConstants.js';
 
 var PlayStore = new Store(AppDispatcher);
 
@@ -57,6 +58,8 @@ PlayStore.songPlaying = function() {
 PlayStore.__onDispatch = function(payload) {
 	switch (payload.actionType) {
 		case SongConstants.SONG_RECEIVED:
+		console.log("now playing song");
+		console.log(payload);
 			playSong(payload.song);
 			break;
 		case SongConstants.ADD_SONG:
