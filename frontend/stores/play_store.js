@@ -41,6 +41,8 @@ PlayStore.queue = function() {
 var nextSong = function() {
 	_nowPlaying = _queue[0];
 	_queue = _queue.slice(1);
+
+	//console.log(_nowPlaying);
 };
 
 PlayStore.nowPlaying = function() {
@@ -58,8 +60,8 @@ PlayStore.songPlaying = function() {
 PlayStore.__onDispatch = function(payload) {
 	switch (payload.actionType) {
 		case SongConstants.SONG_RECEIVED:
-		console.log("now playing song");
-		console.log(payload);
+		// console.log("now playing song");
+		// console.log(payload);
 			playSong(payload.song);
 			break;
 		case SongConstants.ADD_SONG:
@@ -69,6 +71,7 @@ PlayStore.__onDispatch = function(payload) {
 			setErrors(payload.errors);
 			break;
 		case SongConstants.NEXT_SONG:
+		// console.log("next song working dispatch receiver");
 			nextSong();
 			break;
 		case SongConstants.QUEUE_REMOVE:

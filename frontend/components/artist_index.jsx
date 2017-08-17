@@ -1,7 +1,8 @@
 var React = require('react');
 var SongActions = require('../actions/song_client_actions.js');
 var SongStore = require('../stores/song_store.js');
-var IndexItem = require('./index_item.jsx');
+// var IndexItem = require('./index_item.jsx');
+import IndexItem from './index_item.jsx';
 var hashHistory = require('react-router').hashHistory;
 
 module.exports = React.createClass({

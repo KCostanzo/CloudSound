@@ -1,6 +1,7 @@
 var Store = require('flux/utils').Store;
 var AppDispatcher = require('../dispatcher/dispatcher.js');
-var Constants = require('../constants/allConstants.js');
+// var Constants = require('../constants/allConstants.js');
+import Constants from '../constants/allConstants.js';
 
 var LikeStore = new Store(AppDispatcher);
 
@@ -11,6 +12,7 @@ var _likedSongs = [];
 // };
 
 var resetSongs = function(songs) {
+	// console.log(songs);
 	if(!songs.songs) {
 		return;
 	}

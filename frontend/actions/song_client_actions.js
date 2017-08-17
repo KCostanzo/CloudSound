@@ -1,6 +1,7 @@
 var Util = require('../util/songs_util.js');
 var Dispatcher = require('../dispatcher/dispatcher.js');
-var Constants = require('../constants/allConstants.js');
+// var Constants = require('../constants/allConstants.js');
+import Constants from '../constants/allConstants.js';
 
 
 module.exports = {
@@ -26,6 +27,7 @@ module.exports = {
 	},
 
 	nextSong: function() {
+		// console.log("client dispatch nextsong");
 		Dispatcher.dispatch({
 			actionType: Constants.NEXT_SONG
 		});

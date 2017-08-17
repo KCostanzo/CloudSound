@@ -41,10 +41,6 @@ class IndexItem extends  React.Component {
 		this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
 	}
 
-	// playChange() {
-	// 	this.setState({ songPlaying: PlayStore.songPlaying() })
-	// }
-
 	playSong(event) {
 		event.preventDefault();
 		SongActions.playSong(this.props.song.id);
