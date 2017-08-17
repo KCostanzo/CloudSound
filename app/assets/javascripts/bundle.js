@@ -251,6 +251,9 @@
 	
 			_this.userPresence = _this.userPresence.bind(_this);
 			_this.likesUpdate = _this.likesUpdate.bind(_this);
+			_this.artistRoute = _this.artistRoute.bind(_this);
+			_this.createLike = _this.createLike.bind(_this);
+			_this.unlike = _this.unlike.bind(_this);
 	
 			_this.state = {
 				userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(_this.props.song.id), songPlaying: false

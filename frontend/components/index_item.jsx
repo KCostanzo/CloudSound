@@ -15,6 +15,9 @@ class IndexItem extends  React.Component {
 
 		this.userPresence = this.userPresence.bind(this);
 		this.likesUpdate = this.likesUpdate.bind(this);
+		this.artistRoute = this.artistRoute.bind(this);
+		this.createLike = this.createLike.bind(this);
+		this.unlike = this.unlike.bind(this);
 
 		this.state = {
 			userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id), songPlaying: false
