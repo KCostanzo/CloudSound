@@ -1,7 +1,7 @@
 var React = require('react');
 var SongActions = require('../actions/song_client_actions.js');
 var hashHistory = require('react-router').hashHistory;
-var LikeActions = require('../actions/like_actions.js');
+// var LikeActions = require('../actions/like_actions.js');
 var SessionStore = require('../stores/session_store.js');
 var LikeStore = require('../stores/likes_store.js');
 var PlayStore = require('../stores/play_store.js');

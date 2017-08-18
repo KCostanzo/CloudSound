@@ -1,6 +1,6 @@
 var Util = require('../util/likes_util.js');
 var Dispatcher = require('../dispatcher/dispatcher');
-var Constants = require('../constants/allConstants');
+// var Constants = require('../constants/allConstants');
 
 module.exports = {
 	createLike: function(songId) {

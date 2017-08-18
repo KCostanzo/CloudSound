@@ -2,6 +2,7 @@ import Constants from '../constants/allConstants';
 
 
 const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
+	console.log(action);
 	
 	switch (action.type) {
 		case Constants.LIKED_SONGS:

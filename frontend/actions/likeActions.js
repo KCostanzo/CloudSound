@@ -2,7 +2,6 @@ import axios from 'axios';
 import Constants from '../constants/allConstants.js'
 
 export const createLike = song_id => dispatch => (
-
 	axios({
 		method: 'POST',
 		url: 'api/likes',
@@ -17,10 +16,13 @@ export const createLike = song_id => dispatch => (
 );
 
 
-export const unlike = song_id => dispatch => (
+
+export const unlike = song_id => dispatch => {
+	// console.log(song_id);
+	return(
 	axios({
 		method: 'DELETE',
-		url: 'api/likes' + song_id,
+		url: 'api/likes/' + song_id,
 		data: {song_id}
 	}).then(response => dispatch => ({
 		type: Constants.UNLIKED,
@@ -31,3 +33,4 @@ export const unlike = song_id => dispatch => (
 	}))
 
 );
+}

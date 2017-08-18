@@ -236,7 +236,7 @@
 	var React = __webpack_require__(6);
 	var SongActions = __webpack_require__(125);
 	var hashHistory = __webpack_require__(135).hashHistory;
-	var LikeActions = __webpack_require__(132);
+	// var LikeActions = require('../actions/like_actions.js');
 	var SessionStore = __webpack_require__(193);
 	var LikeStore = __webpack_require__(211);
 	var PlayStore = __webpack_require__(212);
@@ -8121,9 +8121,10 @@
 	
 	var unlike = exports.unlike = function unlike(song_id) {
 		return function (dispatch) {
+			// console.log(song_id);
 			return (0, _axios2.default)({
 				method: 'DELETE',
-				url: 'api/likes' + song_id,
+				url: 'api/likes/' + song_id,
 				data: { song_id: song_id }
 			}).then(function (response) {
 				return function (dispatch) {
@@ -10236,7 +10237,7 @@
 	
 	var Util = __webpack_require__(133);
 	var Dispatcher = __webpack_require__(128);
-	var Constants = __webpack_require__(124);
+	// var Constants = require('../constants/allConstants');
 	
 	module.exports = {
 		createLike: function createLike(songId) {
@@ -22295,6 +22296,7 @@
 	};
 	
 	LikeStore.__onDispatch = function (payload) {
+		console.log("in likes store");
 		switch (payload.actionType) {
 			case _allConstants2.default.LIKED_SONGS:
 				resetSongs(payload.songs);
@@ -42579,6 +42581,7 @@
 		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { likedSongs: [], errors: [] };
 		var action = arguments[1];
 	
+		console.log(action);
 	
 		switch (action.type) {
 			case _allConstants2.default.LIKED_SONGS:
