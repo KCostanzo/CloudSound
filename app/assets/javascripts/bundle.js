@@ -8095,6 +8095,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// import LikesStore from '../stores/likes_store.js'
+	
+	
 	var createLike = exports.createLike = function createLike(song_id) {
 		return function (dispatch) {
 			return (0, _axios2.default)({
@@ -8143,6 +8146,8 @@
 			});
 		};
 	};
+	
+	// ReduxReducer.dispatch(action);
 
 /***/ },
 /* 98 */
