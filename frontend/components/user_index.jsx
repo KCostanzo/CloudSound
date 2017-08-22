@@ -7,6 +7,7 @@ var SongStore = require('../stores/song_store.js');
 var LikeStore = require('../stores/likes_store.js');
 // var IndexItem = require('./index_item.jsx');
 import IndexItem from './index_item.jsx';
+// import LikeActions from '../actions/likeActions';
 
 // var DropZone = require('react-dropzone');
 // var AWSInfo = require('../../docs/info/s3info.js');
@@ -28,6 +29,7 @@ export default class UserIndex extends React.Component {
 		// SongActions.fetchSongs();
 		this.likeListen = LikeStore.addListener(this.likeChange);
 		LikeActions.getLiked();
+		//LikeActions.getLikes();
 	}
 
 	componentWillUnmount() {

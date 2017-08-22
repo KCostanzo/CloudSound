@@ -66,7 +66,7 @@ LikeStore.songLiked = function(songId) {
 };
 
 LikeStore.__onDispatch = function(payload) {
-	console.log("in likes store");
+	// console.log("in likes store");
 	switch(payload.actionType) {
 		case Constants.LIKED_SONGS:
 			resetSongs(payload.songs);

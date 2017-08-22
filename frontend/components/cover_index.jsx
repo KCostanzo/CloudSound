@@ -7,6 +7,9 @@ var LikeStore = require('../stores/likes_store.js');
 // var IndexItem = require('./index_item.jsx');
 import IndexItem from './index_item.jsx';
 var LikeActions = require('../actions/like_actions.js');
+// import LikeAction from '../actions/likeActions';
+import {connect} from 'react-redux';
+import {getLikes} from '../actions/likeActions';
 
 export default class CoverIndex extends React.Component {
 	constructor(props) {
@@ -25,6 +28,7 @@ export default class CoverIndex extends React.Component {
 		// console.log("fetching all songs");
 		SongActions.fetchSongs();
 		LikeActions.getLiked();
+		// this.props.getLikes();
 	}
 
 	componentWillUnmount() {
@@ -49,7 +53,7 @@ export default class CoverIndex extends React.Component {
 					<ul>
 						{
 							this.state.songs.map(function(song) {
-								return <IndexItem song={song} key={song.id} />
+								return <IndexItem song={song} key={song.id}/>
 							})
 						}
 					</ul>
@@ -57,3 +61,17 @@ export default class CoverIndex extends React.Component {
 			);
 	}
 }
+
+
+// const mapStateToProps = state => ({
+// 	songs: state.songs,
+// 	likedSongs: state.likedSongs
+// })
+
+
+// const mapDispatchToProps = dispatch => ({
+// 	getLikes: () => dispatch(getLikes())
+// })
+
+
+// export default connect(mapStateToProps, mapDispatchToProps)(CoverIndex);

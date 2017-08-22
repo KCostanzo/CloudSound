@@ -79,7 +79,8 @@
 	var ArtistIndex = __webpack_require__(406);
 	// var UserIndex = require('./components/user_index.jsx');
 	
-	console.log(_cover_index2.default);
+	// console.log(store);
+	// console.log(CoverPage);
 	
 	//refresh store
 	ClientActions.fetchCurrentUser();
@@ -127,6 +128,10 @@
 	
 	var _index_item2 = _interopRequireDefault(_index_item);
 	
+	var _reactRedux = __webpack_require__(3);
+	
+	var _likeActions = __webpack_require__(97);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -144,6 +149,7 @@
 	// var IndexItem = require('./index_item.jsx');
 	
 	var LikeActions = __webpack_require__(132);
+	// import LikeAction from '../actions/likeActions';
 	
 	var CoverIndex = function (_React$Component) {
 		_inherits(CoverIndex, _React$Component);
@@ -169,6 +175,7 @@
 				// console.log("fetching all songs");
 				SongActions.fetchSongs();
 				LikeActions.getLiked();
+				// this.props.getLikes();
 			}
 		}, {
 			key: 'componentWillUnmount',
@@ -208,6 +215,20 @@
 	
 		return CoverIndex;
 	}(React.Component);
+	
+	// const mapStateToProps = state => ({
+	// 	songs: state.songs,
+	// 	likedSongs: state.likedSongs
+	// })
+	
+	
+	// const mapDispatchToProps = dispatch => ({
+	// 	getLikes: () => dispatch(getLikes())
+	// })
+	
+	
+	// export default connect(mapStateToProps, mapDispatchToProps)(CoverIndex);
+	
 	
 	exports.default = CoverIndex;
 
@@ -256,8 +277,10 @@
 			_this.unlike = _this.unlike.bind(_this);
 	
 			_this.state = {
-				userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(_this.props.song.id), songPlaying: false
+				userLoggedIn: SessionStore.userPresent(), songPlaying: false, songLiked: LikeStore.songLiked(_this.props.song.id), likedSongs: _this.props.likedSongs
 			};
+	
+			// songLiked: LikeStore.songLiked(this.props.song.id),
 			return _this;
 		}
 	
@@ -267,6 +290,7 @@
 				this.userListener = SessionStore.addListener(this.userPresence);
 				this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 				// this.playListen = PlayStore.addListener(this.playChange);
+				// console.log(this.props.likedSongs);
 			}
 		}, {
 			key: 'componentWillUnmount',
@@ -8083,7 +8107,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.unlike = exports.createLike = undefined;
+	exports.unlike = exports.createLike = exports.getLikes = undefined;
 	
 	var _axios = __webpack_require__(98);
 	
@@ -8093,11 +8117,36 @@
 	
 	var _allConstants2 = _interopRequireDefault(_allConstants);
 	
+	var _rootReducer = __webpack_require__(407);
+	
+	var _rootReducer2 = _interopRequireDefault(_rootReducer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// export const checkIfLiked = songId => dispatch => ({
+	// 	type: Constants.CHECKIFLIKED,
+	// 	payload: songId
+	// });
+	
+	var getLikes = exports.getLikes = function getLikes() {
+		return function (dispatch) {
+			return (0, _axios2.default)({
+				method: 'GET',
+				url: 'api/likes'
+			}).then(function (response) {
+				return dispatch({
+					type: _allConstants2.default.LIKED_SONGS,
+					payload: response.data
+				});
+			}).catch(function (error) {
+				return dispatch({
+					type: _allConstants2.default.LIKES_ERR,
+					payload: error
+				});
+			});
+		};
+	};
 	// import LikesStore from '../stores/likes_store.js'
-	
-	
 	var createLike = exports.createLike = function createLike(song_id) {
 		return function (dispatch) {
 			return (0, _axios2.default)({
@@ -8105,19 +8154,15 @@
 				url: 'api/likes',
 				data: { song_id: song_id }
 			}).then(function (response) {
-				return function (dispatch) {
-					return {
-						type: _allConstants2.default.LIKE_MADE,
-						payload: response.data
-					};
-				};
+				return dispatch({
+					type: _allConstants2.default.LIKE_MADE,
+					payload: response.data
+				});
 			}).catch(function (error) {
-				return function (dispatch) {
-					return {
-						type: _allConstants2.default.LIKE_ERR,
-						payload: error
-					};
-				};
+				return dispatch({
+					type: _allConstants2.default.LIKE_ERR,
+					payload: error
+				});
 			});
 		};
 	};
@@ -8130,24 +8175,18 @@
 				url: 'api/likes/' + song_id,
 				data: { song_id: song_id }
 			}).then(function (response) {
-				return function (dispatch) {
-					return {
-						type: _allConstants2.default.UNLIKED,
-						payload: response.data
-					};
-				};
+				return dispatch({
+					type: _allConstants2.default.UNLIKED,
+					payload: response.data
+				});
 			}).catch(function (error) {
-				return function (dispatch) {
-					return {
-						type: Constant.UNLIKE_ERR,
-						payload: error
-					};
-				};
+				return dispatch({
+					type: Constant.UNLIKE_ERR,
+					payload: error
+				});
 			});
 		};
 	};
-	
-	// ReduxReducer.dispatch(action);
 
 /***/ },
 /* 98 */
@@ -9706,8 +9745,10 @@
 	  LIKED_SONGS: 'LIKED_SONGS',
 	  LIKE_MADE: 'LIKE_MADE',
 	  UNLIKED: 'UNLIKED',
+	  LIKES_ERR: 'LIKES_ERR',
 	  LIKE_ERR: 'LIKE_ERR',
 	  UNLIKE_ERR: 'UNLIKE_ERR',
+	  CHECKIFLIKED: 'CHECKIFLIKED',
 	
 	  ADD_SONG: 'ADD_SONG',
 	  POST_SONG: 'POST_SONG'
@@ -22301,7 +22342,7 @@
 	};
 	
 	LikeStore.__onDispatch = function (payload) {
-		console.log("in likes store");
+		// console.log("in likes store");
 		switch (payload.actionType) {
 			case _allConstants2.default.LIKED_SONGS:
 				resetSongs(payload.songs);
@@ -22548,6 +22589,8 @@
 	var LikeStore = __webpack_require__(211);
 	// var IndexItem = require('./index_item.jsx');
 	
+	// import LikeActions from '../actions/likeActions';
+	
 	// var DropZone = require('react-dropzone');
 	// var AWSInfo = require('../../docs/info/s3info.js');
 	// var Base64 = require('base-64');
@@ -22577,6 +22620,7 @@
 				// SongActions.fetchSongs();
 				this.likeListen = LikeStore.addListener(this.likeChange);
 				LikeActions.getLiked();
+				//LikeActions.getLikes();
 			}
 		}, {
 			key: 'componentWillUnmount',
@@ -42489,16 +42533,17 @@
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 	
-	var _index = __webpack_require__(391);
+	var _rootReducer = __webpack_require__(407);
 	
-	var _index2 = _interopRequireDefault(_index);
+	var _rootReducer2 = _interopRequireDefault(_rootReducer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var configureStore = function configureStore() {
-	  return (0, _redux.createStore)(_index2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _reduxLogger2.default));
+	  return (0, _redux.createStore)(_rootReducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _reduxLogger2.default));
 	};
 	
+	// console.log(configureStore);
 	exports.default = configureStore;
 
 /***/ },
@@ -42538,33 +42583,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 391 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _redux = __webpack_require__(60);
-	
-	var _likesReducer = __webpack_require__(392);
-	
-	var _likesReducer2 = _interopRequireDefault(_likesReducer);
-	
-	var _songReducer = __webpack_require__(393);
-	
-	var _songReducer2 = _interopRequireDefault(_songReducer);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = (0, _redux.combineReducers)({
-		likes: _likesReducer2.default,
-		songs: _songReducer2.default
-	});
-
-/***/ },
+/* 391 */,
 /* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -42586,24 +42605,27 @@
 		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { likedSongs: [], errors: [] };
 		var action = arguments[1];
 	
+		console.log("in likes reducer");
+		console.log(state);
 		console.log(action);
 	
 		switch (action.type) {
 			case _allConstants2.default.LIKED_SONGS:
+				console.log("all liked songs received");
 				//let newstate = merge({},state);
 				//newState.likedSongs = action.songs;
-				state.likedSongs = action.songs;
+				state.likedSongs = action.payload.songs;
 				return state;
 	
 			case _allConstants2.default.LIKE_MADE:
 				console.log("like Case in like Reducer");
-				state.likedSongs = action.payload;
+				state.likedSongs = action.payload.songs;
 				return state;
 			case _allConstants2.default.UNLIKED:
 				//given action.like.song_id for song to remove from likedSongs
 				//working, but should do directly on newstate Arr
 				var tempLikeArr = [].concat(_toConsumableArray(state.likedSongs));
-				var rmIdx = tempLikeArr.indexOf(parseInt(action.like.song_id));
+				var rmIdx = tempLikeArr.indexOf(parseInt(action.song_id));
 				tempLikeArr.splice(rmIdx, 1);
 	
 				state.likedSongs = tempLikeArr;
@@ -43714,6 +43736,33 @@
 				)
 			);
 		}
+	});
+
+/***/ },
+/* 407 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _redux = __webpack_require__(60);
+	
+	var _likesReducer = __webpack_require__(392);
+	
+	var _likesReducer2 = _interopRequireDefault(_likesReducer);
+	
+	var _songReducer = __webpack_require__(393);
+	
+	var _songReducer2 = _interopRequireDefault(_songReducer);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = (0, _redux.combineReducers)({
+		likes: _likesReducer2.default,
+		songs: _songReducer2.default
 	});
 
 /***/ }

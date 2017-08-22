@@ -20,14 +20,17 @@ class IndexItem extends  React.Component {
 		this.unlike = this.unlike.bind(this);
 
 		this.state = {
-			userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id), songPlaying: false
+			userLoggedIn: SessionStore.userPresent(), songPlaying: false, songLiked: LikeStore.songLiked(this.props.song.id), likedSongs: this.props.likedSongs
 		};
+
+		// songLiked: LikeStore.songLiked(this.props.song.id),
 	}
 
 	componentDidMount() {
 		this.userListener = SessionStore.addListener(this.userPresence);
 		this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 		// this.playListen = PlayStore.addListener(this.playChange);
+		// console.log(this.props.likedSongs);
 	}
 
 	componentWillUnmount() {
@@ -100,6 +103,7 @@ class IndexItem extends  React.Component {
 		);
 	}
 }
+
 
 const mapDispatchToProps = dispatch => ({
 	createLike: songid => dispatch(createLike(songid)),
