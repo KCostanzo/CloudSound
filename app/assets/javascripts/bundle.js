@@ -177,20 +177,19 @@
 	
 		}, {
 			key: 'componentWillUnmount',
-			value: function componentWillUnmount() {
-				// this.userListen.remove();
-			}
-		}, {
-			key: 'checkLikeStatus',
-			value: function checkLikeStatus(songId) {
-				var likedSongs = this.props.likedSongs;
-				for (var i = 0; i < likedSongs.length; i++) {
-					if (songId === likedSongs[i].id) {
-						return true;
-					}
-				};
-				return false;
-			}
+			value: function componentWillUnmount() {}
+			// this.userListen.remove();
+	
+	
+			// checkLikeStatus(songId) {
+			// 	const likedSongs = this.props.likedSongs;
+			// 	for (let i = 0; i < likedSongs.length; i++) {
+			// 		if (songId === likedSongs[i].id) {
+			// 			return true;
+			// 		}
+			// 	};
+			// 	return false;
+			// }
 	
 			//new tag line: change your tone;
 	
@@ -206,7 +205,7 @@
 						'ul',
 						null,
 						this.props.songs.map(function (song) {
-							return React.createElement(_index_item2.default, { song: song, key: song.id, liked: that.checkLikeStatus(song.id) });
+							return React.createElement(_index_item2.default, { song: song, key: song.id });
 						})
 					)
 				);
@@ -279,9 +278,11 @@
 			_this.artistRoute = _this.artistRoute.bind(_this);
 			_this.createLike = _this.createLike.bind(_this);
 			_this.unlike = _this.unlike.bind(_this);
+			_this.buttonToggle = _this.buttonToggle.bind(_this);
+			_this.checkIfLiked = _this.checkIfLiked.bind(_this);
 	
 			_this.state = {
-				userLoggedIn: SessionStore.userPresent(), songPlaying: false, songLiked: LikeStore.songLiked(_this.props.song.id), likedSongs: _this.props.likedSongs
+				userLoggedIn: SessionStore.userPresent(), songPlaying: false, songLiked: LikeStore.songLiked(_this.props.song.id)
 			};
 			// songLiked: LikeStore.songLiked(this.props.song.id),
 			return _this;
@@ -348,13 +349,21 @@
 		}, {
 			key: 'checkIfLiked',
 			value: function checkIfLiked() {
-				var allLikedSongs = this.props.likedSongs;
+				var allLikedSongs = this.props.myLikedSongs;
+	
+				for (var i = 0; i < allLikedSongs.length; i++) {
+					if (this.props.song.id === allLikedSongs[i].id) {
+						return true;
+					}
+				};
+				console.log("out of loop");
+				return false;
 			}
 		}, {
 			key: 'buttonToggle',
 			value: function buttonToggle() {
 				if (this.state.userLoggedIn) {
-					if (this.props.liked) {
+					if (this.checkIfLiked()) {
 						return React.createElement(
 							'button',
 							{ className: 'like', onClick: this.unlike },
@@ -408,6 +417,12 @@
 		return IndexItem;
 	}(React.Component);
 	
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			myLikedSongs: state.likes.likedSongs
+		};
+	};
+	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		return {
 			createLike: function createLike(songid) {
@@ -419,7 +434,7 @@
 		};
 	};
 	
-	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(IndexItem);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(IndexItem);
 	
 	// <img src={this.props.song.imgUrl} onClick={this.playSong} />
 

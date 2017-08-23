@@ -18,9 +18,11 @@ class IndexItem extends  React.Component {
 		this.artistRoute = this.artistRoute.bind(this);
 		this.createLike = this.createLike.bind(this);
 		this.unlike = this.unlike.bind(this);
+		this.buttonToggle = this.buttonToggle.bind(this);
+		this.checkIfLiked = this.checkIfLiked.bind(this);
 
 		this.state = {
-			userLoggedIn: SessionStore.userPresent(), songPlaying: false, songLiked: LikeStore.songLiked(this.props.song.id), likedSongs: this.props.likedSongs
+			userLoggedIn: SessionStore.userPresent(), songPlaying: false, songLiked: LikeStore.songLiked(this.props.song.id)
 		};
 		// songLiked: LikeStore.songLiked(this.props.song.id),
 	}
@@ -75,13 +77,20 @@ class IndexItem extends  React.Component {
 	}
 
 	checkIfLiked() {
-		const allLikedSongs = this.props.likedSongs;
+		const allLikedSongs = this.props.myLikedSongs;
 
+		for (let i = 0; i < allLikedSongs.length; i++) {
+			if (this.props.song.id === allLikedSongs[i].id) {
+				return true;
+			}
+		};
+		console.log("out of loop")
+		return false;
 	}
 
 	buttonToggle() {
 		if (this.state.userLoggedIn) {
-			if (this.props.liked) {
+			if (this.checkIfLiked()) {
 				return <button className="like" onClick={this.unlike}>Unlike</button>
 			} else{
 				return <button className="like" onClick={this.createLike}>Like</button>
@@ -109,11 +118,15 @@ class IndexItem extends  React.Component {
 }
 
 
+const mapStateToProps = state => ({
+	myLikedSongs: state.likes.likedSongs
+})
+
 const mapDispatchToProps = dispatch => ({
 	createLike: songid => dispatch(createLike(songid)),
 	unlike: songid => dispatch(unlike(songid))
 })
 
-export default connect(null, mapDispatchToProps)(IndexItem);
+export default connect(mapStateToProps, mapDispatchToProps)(IndexItem);
 
 				// <img src={this.props.song.imgUrl} onClick={this.playSong} />
