@@ -19,7 +19,7 @@ export const getLikes = () => dispatch => (
 	})).catch(error => dispatch({
 		type: Constants.LIKES_ERR,
 		payload: error
-}))
+	}))
 );
 
 

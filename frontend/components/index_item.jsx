@@ -22,7 +22,6 @@ class IndexItem extends  React.Component {
 		this.state = {
 			userLoggedIn: SessionStore.userPresent(), songPlaying: false, songLiked: LikeStore.songLiked(this.props.song.id), likedSongs: this.props.likedSongs
 		};
-
 		// songLiked: LikeStore.songLiked(this.props.song.id),
 	}
 
@@ -30,7 +29,7 @@ class IndexItem extends  React.Component {
 		this.userListener = SessionStore.addListener(this.userPresence);
 		this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 		// this.playListen = PlayStore.addListener(this.playChange);
-		// console.log(this.props.likedSongs);
+		// console.log(this.props);
 	}
 
 	componentWillUnmount() {
@@ -75,9 +74,14 @@ class IndexItem extends  React.Component {
 		this.props.unlike(this.props.song.id);
 	}
 
+	checkIfLiked() {
+		const allLikedSongs = this.props.likedSongs;
+
+	}
+
 	buttonToggle() {
 		if (this.state.userLoggedIn) {
-			if (this.state.songLiked) {
+			if (this.props.liked) {
 				return <button className="like" onClick={this.unlike}>Unlike</button>
 			} else{
 				return <button className="like" onClick={this.createLike}>Like</button>

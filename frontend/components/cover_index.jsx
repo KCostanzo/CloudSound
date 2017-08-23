@@ -10,50 +10,50 @@ var LikeActions = require('../actions/like_actions.js');
 // import LikeAction from '../actions/likeActions';
 import {connect} from 'react-redux';
 import {getLikes} from '../actions/likeActions';
+import {getSongs} from '../actions/songActions';
 
-export default class CoverIndex extends React.Component {
+class CoverIndex extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.songChange = this.songChange.bind(this);
-
-		this.state = {
-			songs: []
-		};
 	}
 
 	componentDidMount() {
-		this.songListener = SongStore.addListener(this.songChange);
 		// this.userListen = SessionStore.addListener(this.userChange);
-		// console.log("fetching all songs");
-		SongActions.fetchSongs();
-		LikeActions.getLiked();
-		// this.props.getLikes();
+		console.log("fetching all songs");
+		this.props.getLikes();
+		this.props.getSongs();
 	}
 
+	// componentWillReceiveProps(nextProps) {
+	// 	console.log(nextProps);
+	// }
+
 	componentWillUnmount() {
-		this.songListener.remove();
 		// this.userListen.remove();
 	}
 
-	songChange() {
-		this.setState({songs: SongStore.all()});
+	checkLikeStatus(songId) {
+		const likedSongs = this.props.likedSongs;
+		for (let i = 0; i < likedSongs.length; i++) {
+			if (songId === likedSongs[i].id) {
+				return true;
+			}
+		};
+		return false;
 	}
-
-	// userChange() {
-	// 	LikeActions.getLiked()
-	// 	// this.setState({ likes: LikeActions.getLiked() });
-	// }
 
 	//new tag line: change your tone;
 
 	render() {
+		console.log(this.props);
+		const that = this;
 		return (
 			<div className='cover-index'>
 					<ul>
 						{
-							this.state.songs.map(function(song) {
-								return <IndexItem song={song} key={song.id}/>
+							this.props.songs.map(function(song) {
+								return <IndexItem song={song} key={song.id} liked={that.checkLikeStatus(song.id)}/>
 							})
 						}
 					</ul>
@@ -63,15 +63,16 @@ export default class CoverIndex extends React.Component {
 }
 
 
-// const mapStateToProps = state => ({
-// 	songs: state.songs,
-// 	likedSongs: state.likedSongs
-// })
+const mapStateToProps = state => ({
+	songs: state.songs.songs,
+	likedSongs: state.likes.likedSongs
+})
 
 
-// const mapDispatchToProps = dispatch => ({
-// 	getLikes: () => dispatch(getLikes())
-// })
+const mapDispatchToProps = dispatch => ({
+	getSongs: () => dispatch(getSongs()),
+	getLikes: () => dispatch(getLikes())
+})
 
 
-// export default connect(mapStateToProps, mapDispatchToProps)(CoverIndex);
+export default connect(mapStateToProps, mapDispatchToProps)(CoverIndex);
