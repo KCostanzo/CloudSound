@@ -166,7 +166,7 @@
 			key: 'componentDidMount',
 			value: function componentDidMount() {
 				// this.userListen = SessionStore.addListener(this.userChange);
-				console.log("fetching all songs");
+				// console.log("fetching all songs");
 				this.props.getLikes();
 				this.props.getSongs();
 			}
@@ -177,26 +177,27 @@
 	
 		}, {
 			key: 'componentWillUnmount',
-			value: function componentWillUnmount() {}
-			// this.userListen.remove();
-	
-	
-			// checkLikeStatus(songId) {
-			// 	const likedSongs = this.props.likedSongs;
-			// 	for (let i = 0; i < likedSongs.length; i++) {
-			// 		if (songId === likedSongs[i].id) {
-			// 			return true;
-			// 		}
-			// 	};
-			// 	return false;
-			// }
+			value: function componentWillUnmount() {
+				// this.userListen.remove();
+			}
+		}, {
+			key: 'checkLikeStatus',
+			value: function checkLikeStatus(songId) {
+				var likedSongs = this.props.likedSongs;
+				for (var i = 0; i < likedSongs.length; i++) {
+					if (songId === likedSongs[i].id) {
+						return true;
+					}
+				};
+				console.log("out of check like loop");
+				return false;
+			}
 	
 			//new tag line: change your tone;
 	
 		}, {
 			key: 'render',
 			value: function render() {
-				console.log(this.props);
 				var that = this;
 				return React.createElement(
 					'div',
@@ -205,7 +206,7 @@
 						'ul',
 						null,
 						this.props.songs.map(function (song) {
-							return React.createElement(_index_item2.default, { song: song, key: song.id });
+							return React.createElement(_index_item2.default, { song: song, key: song.id, liked: that.checkLikeStatus(song.id) });
 						})
 					)
 				);
@@ -274,15 +275,15 @@
 			var _this = _possibleConstructorReturn(this, (IndexItem.__proto__ || Object.getPrototypeOf(IndexItem)).call(this, props));
 	
 			_this.userPresence = _this.userPresence.bind(_this);
-			_this.likesUpdate = _this.likesUpdate.bind(_this);
+			// this.likesUpdate = this.likesUpdate.bind(this);
 			_this.artistRoute = _this.artistRoute.bind(_this);
 			_this.createLike = _this.createLike.bind(_this);
 			_this.unlike = _this.unlike.bind(_this);
 			_this.buttonToggle = _this.buttonToggle.bind(_this);
-			_this.checkIfLiked = _this.checkIfLiked.bind(_this);
+			// this.checkIfLiked = this.checkIfLiked.bind(this);
 	
 			_this.state = {
-				userLoggedIn: SessionStore.userPresent(), songPlaying: false, songLiked: LikeStore.songLiked(_this.props.song.id)
+				userLoggedIn: SessionStore.userPresent(), songPlaying: false
 			};
 			// songLiked: LikeStore.songLiked(this.props.song.id),
 			return _this;
@@ -292,7 +293,7 @@
 			key: 'componentDidMount',
 			value: function componentDidMount() {
 				this.userListener = SessionStore.addListener(this.userPresence);
-				this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
+				// this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 				// this.playListen = PlayStore.addListener(this.playChange);
 				// console.log(this.props);
 			}
@@ -308,11 +309,11 @@
 			value: function userPresence() {
 				this.setState({ userLoggedIn: SessionStore.userPresent() });
 			}
-		}, {
-			key: 'likesUpdate',
-			value: function likesUpdate() {
-				this.setState({ songLiked: LikeStore.songLiked(this.props.song.id) });
-			}
+	
+			// likesUpdate() {
+			// 	this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
+			// }
+	
 		}, {
 			key: 'playSong',
 			value: function playSong(event) {
@@ -346,24 +347,24 @@
 				// LikeActions.unlike(this.props.song.id);
 				this.props.unlike(this.props.song.id);
 			}
-		}, {
-			key: 'checkIfLiked',
-			value: function checkIfLiked() {
-				var allLikedSongs = this.props.myLikedSongs;
 	
-				for (var i = 0; i < allLikedSongs.length; i++) {
-					if (this.props.song.id === allLikedSongs[i].id) {
-						return true;
-					}
-				};
-				console.log("out of loop");
-				return false;
-			}
+			// checkIfLiked() {
+			// 	const allLikedSongs = this.props.myLikedSongs;
+	
+			// 	for (let i = 0; i < allLikedSongs.length; i++) {
+			// 		if (this.props.song.id === allLikedSongs[i].id) {
+			// 			return true;
+			// 		}
+			// 	};
+			// 	console.log("out of loop")
+			// 	return false;
+			// }
+	
 		}, {
 			key: 'buttonToggle',
 			value: function buttonToggle() {
 				if (this.state.userLoggedIn) {
-					if (this.checkIfLiked()) {
+					if (this.props.liked) {
 						return React.createElement(
 							'button',
 							{ className: 'like', onClick: this.unlike },
@@ -435,8 +436,6 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(IndexItem);
-	
-	// <img src={this.props.song.imgUrl} onClick={this.playSong} />
 
 /***/ },
 /* 3 */
@@ -9825,8 +9824,6 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
 	var likesRedcuer = function likesRedcuer() {
 		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { likedSongs: [], errors: [] };
 		var action = arguments[1];
@@ -9845,20 +9842,27 @@
 				var newLikeMade = (0, _merge2.default)({}, state);
 				newLikeMade.likedSongs = action.payload.songs;
 				return newLikeMade;
+	
 			case _allConstants2.default.UNLIKED:
 				console.log("unlike");
-				//given action.like.song_id for song to remove from likedSongs
-				//working, but should do directly on newstate Arr
-				var unlikeObject = (0, _merge2.default)({}, state);
-				var tempLikeArr = [].concat(_toConsumableArray(unlikeObject.likedSongs));
-				var rmIdx = tempLikeArr.indexOf(parseInt(action.song_id));
-				tempLikeArr.splice(rmIdx, 1);
 	
-				unlikeObject.likedSongs = tempLikeArr;
+				var unlikeObject = (0, _merge2.default)({}, state);
+				var rmIdx = null;
+	
+				for (var i = 0; i < unlikeObject.likedSongs.length; i++) {
+					if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
+						// console.log("equal checked");
+						rmIdx = i;
+					}
+				};
+				// console.log(rmIdx);
+				if (rmIdx) {
+					unlikeObject.likedSongs.splice(rmIdx, 1);
+				}
+	
 				return unlikeObject;
 	
 			default:
-				// console.log("likeDefaultrtn");
 				return state;
 		}
 	};
@@ -9891,8 +9895,6 @@
 		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { songs: [], errors: [] };
 		var action = arguments[1];
 	
-	
-		//find and use loadash merge here b4 using if needed 4 mutability
 	
 		switch (action.type) {
 			case _allConstants2.default.ADD_SONG:

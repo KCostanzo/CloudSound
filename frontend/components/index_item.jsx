@@ -14,22 +14,22 @@ class IndexItem extends  React.Component {
 		super(props)
 
 		this.userPresence = this.userPresence.bind(this);
-		this.likesUpdate = this.likesUpdate.bind(this);
+		// this.likesUpdate = this.likesUpdate.bind(this);
 		this.artistRoute = this.artistRoute.bind(this);
 		this.createLike = this.createLike.bind(this);
 		this.unlike = this.unlike.bind(this);
 		this.buttonToggle = this.buttonToggle.bind(this);
-		this.checkIfLiked = this.checkIfLiked.bind(this);
+		// this.checkIfLiked = this.checkIfLiked.bind(this);
 
 		this.state = {
-			userLoggedIn: SessionStore.userPresent(), songPlaying: false, songLiked: LikeStore.songLiked(this.props.song.id)
+			userLoggedIn: SessionStore.userPresent(), songPlaying: false, 
 		};
 		// songLiked: LikeStore.songLiked(this.props.song.id),
 	}
 
 	componentDidMount() {
 		this.userListener = SessionStore.addListener(this.userPresence);
-		this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
+		// this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 		// this.playListen = PlayStore.addListener(this.playChange);
 		// console.log(this.props);
 	}
@@ -44,9 +44,9 @@ class IndexItem extends  React.Component {
 		this.setState({ userLoggedIn: SessionStore.userPresent() });
 	}
 
-	likesUpdate() {
-		this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
-	}
+	// likesUpdate() {
+	// 	this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
+	// }
 
 	playSong(event) {
 		event.preventDefault();
@@ -76,23 +76,23 @@ class IndexItem extends  React.Component {
 		this.props.unlike(this.props.song.id);
 	}
 
-	checkIfLiked() {
-		const allLikedSongs = this.props.myLikedSongs;
+	// checkIfLiked() {
+	// 	const allLikedSongs = this.props.myLikedSongs;
 
-		for (let i = 0; i < allLikedSongs.length; i++) {
-			if (this.props.song.id === allLikedSongs[i].id) {
-				return true;
-			}
-		};
-		console.log("out of loop")
-		return false;
-	}
+	// 	for (let i = 0; i < allLikedSongs.length; i++) {
+	// 		if (this.props.song.id === allLikedSongs[i].id) {
+	// 			return true;
+	// 		}
+	// 	};
+	// 	console.log("out of loop")
+	// 	return false;
+	// }
 
 	buttonToggle() {
 		if (this.state.userLoggedIn) {
-			if (this.checkIfLiked()) {
+			if (this.props.liked) {
 				return <button className="like" onClick={this.unlike}>Unlike</button>
-			} else{
+			} else {
 				return <button className="like" onClick={this.createLike}>Like</button>
 			}
 		} else {
@@ -128,5 +128,3 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexItem);
-
-				// <img src={this.props.song.imgUrl} onClick={this.playSong} />

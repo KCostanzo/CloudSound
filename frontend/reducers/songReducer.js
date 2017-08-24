@@ -3,8 +3,6 @@ import merge from 'lodash/merge';
 
 
 const songsReducer = (state = {songs:[], errors:[]}, action) => {
-	
-	//find and use loadash merge here b4 using if needed 4 mutability
 
 	switch (action.type) {
 		case SongConstants.ADD_SONG: 

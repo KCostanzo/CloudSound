@@ -20,7 +20,7 @@ class CoverIndex extends React.Component {
 
 	componentDidMount() {
 		// this.userListen = SessionStore.addListener(this.userChange);
-		console.log("fetching all songs");
+		// console.log("fetching all songs");
 		this.props.getLikes();
 		this.props.getSongs();
 	}
@@ -33,27 +33,27 @@ class CoverIndex extends React.Component {
 		// this.userListen.remove();
 	}
 
-	// checkLikeStatus(songId) {
-	// 	const likedSongs = this.props.likedSongs;
-	// 	for (let i = 0; i < likedSongs.length; i++) {
-	// 		if (songId === likedSongs[i].id) {
-	// 			return true;
-	// 		}
-	// 	};
-	// 	return false;
-	// }
+	checkLikeStatus(songId) {
+		const likedSongs = this.props.likedSongs;
+		for (let i = 0; i < likedSongs.length; i++) {
+			if (songId === likedSongs[i].id) {
+				return true;
+			}
+		};
+		console.log("out of check like loop");
+		return false;
+	}
 
 	//new tag line: change your tone;
 
 	render() {
-		console.log(this.props);
 		const that = this;
 		return (
 			<div className='cover-index'>
 					<ul>
 						{
 							this.props.songs.map(function(song) {
-								return <IndexItem song={song} key={song.id} />
+								return <IndexItem song={song} key={song.id} liked={that.checkLikeStatus(song.id)}/>
 							})
 						}
 					</ul>

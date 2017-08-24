@@ -17,20 +17,27 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 			let newLikeMade = merge({},state);
 			newLikeMade.likedSongs = action.payload.songs;
 			return newLikeMade;
+
 		case Constants.UNLIKED:
 			console.log("unlike");
-			//given action.like.song_id for song to remove from likedSongs
-			//working, but should do directly on newstate Arr
-			let unlikeObject = merge({}, state);
-			let tempLikeArr = [...unlikeObject.likedSongs];
-			const rmIdx = tempLikeArr.indexOf(parseInt(action.song_id));
-			tempLikeArr.splice(rmIdx,1);
 
-			unlikeObject.likedSongs = tempLikeArr;
+			let unlikeObject = merge({}, state);
+			let rmIdx = null;
+
+			for (let i=0; i < unlikeObject.likedSongs.length; i++) {
+				if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
+					// console.log("equal checked");
+					rmIdx = i;
+				}
+			};
+			// console.log(rmIdx);
+			if (rmIdx) {
+				unlikeObject.likedSongs.splice(rmIdx,1);
+			}
+
 			return unlikeObject;
 
 		default: 
-			// console.log("likeDefaultrtn");
 			return state;
 	}
 
