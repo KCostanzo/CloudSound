@@ -3,7 +3,7 @@ import merge from 'lodash/merge';
 
 
 const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
-	// console.log("in likes reducer");
+	console.log("in likes reducer");
 	
 	switch (action.type) {
 		case Constants.LIKED_SONGS:

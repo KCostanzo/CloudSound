@@ -9828,7 +9828,7 @@
 		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { likedSongs: [], errors: [] };
 		var action = arguments[1];
 	
-		// console.log("in likes reducer");
+		console.log("in likes reducer");
 	
 		switch (action.type) {
 			case _allConstants2.default.LIKED_SONGS:
