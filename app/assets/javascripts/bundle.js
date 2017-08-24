@@ -9829,6 +9829,7 @@
 		var action = arguments[1];
 	
 		console.log("in likes reducer");
+		console.log(action);
 	
 		switch (action.type) {
 			case _allConstants2.default.LIKED_SONGS:
