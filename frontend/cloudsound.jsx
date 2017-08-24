@@ -17,8 +17,9 @@ var ArtistIndex = require('./components/artist_index.jsx');
 import CoverPage from './components/cover_index.jsx';
 import UserIndex from './components/user_index.jsx';
 import {Provider} from 'react-redux';
-import store from './stores/configure.js'
-console.log(CoverPage);
+import store from './stores/configure.js';
+// console.log(store);
+// console.log(CoverPage);
 
 //refresh store
 ClientActions.fetchCurrentUser();
@@ -44,5 +45,4 @@ document.addEventListener('DOMContentLoaded', function() {
   //   <Router history={hashHistory}>{routes}</Router>
   // </Provider>
   // )
-
 

@@ -1,4 +1,6 @@
 class Api::LikesController < ApplicationController
+	skip_before_action :verify_authenticity_token
+	# remember to remove before master branch deploy
 
 	def index
 		if current_user

@@ -1,33 +1,43 @@
 import Constants from '../constants/allConstants';
+import merge from 'lodash/merge';
 
 
 const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
+	// console.log("in likes reducer");
 	
 	switch (action.type) {
 		case Constants.LIKED_SONGS:
-			//let newstate = merge({},state);
-			//newState.likedSongs = action.songs;
-			state.likedSongs = action.songs;
-			return state;
+			console.log("all liked songs received");
+			let newState = merge({},state);
+			newState.likedSongs = action.payload.songs;
+			return newState;
 
 		case Constants.LIKE_MADE:
 			console.log("like Case in like Reducer");
-			state.likedSongs = action.payload;
-			return state;
-		case Constants.UNLIKED:
-			//given action.like.song_id for song to remove from likedSongs
-			//working, but should do directly on newstate Arr
-			let tempLikeArr = [...state.likedSongs];
-			const rmIdx = tempLikeArr.indexOf(parseInt(action.like.song_id));
-			tempLikeArr.splice(rmIdx,1);
+			let newLikeMade = merge({},state);
+			newLikeMade.likedSongs = action.payload.songs;
+			return newLikeMade;
 
-			state.likedSongs = tempLikeArr;
-			//newState.likedSongs = tempLikeArr;
-			//return newState;
-			return state;
+		case Constants.UNLIKED:
+			// console.log("unlike");
+
+			let unlikeObject = merge({}, state);
+			let rmIdx = null;
+
+			for (let i=0; i < unlikeObject.likedSongs.length; i++) {
+				if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
+					// console.log("equal checked");
+					rmIdx = i;
+				}
+			};
+			// console.log(rmIdx);
+			if (rmIdx) {
+				unlikeObject.likedSongs.splice(rmIdx,1);
+			}
+
+			return unlikeObject;
 
 		default: 
-			// console.log("likeDefaultrtn");
 			return state;
 	}
 

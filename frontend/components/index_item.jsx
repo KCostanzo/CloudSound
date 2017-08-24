@@ -1,7 +1,7 @@
 var React = require('react');
 var SongActions = require('../actions/song_client_actions.js');
 var hashHistory = require('react-router').hashHistory;
-var LikeActions = require('../actions/like_actions.js');
+// var LikeActions = require('../actions/like_actions.js');
 var SessionStore = require('../stores/session_store.js');
 var LikeStore = require('../stores/likes_store.js');
 var PlayStore = require('../stores/play_store.js');
@@ -14,17 +14,24 @@ class IndexItem extends  React.Component {
 		super(props)
 
 		this.userPresence = this.userPresence.bind(this);
-		this.likesUpdate = this.likesUpdate.bind(this);
+		// this.likesUpdate = this.likesUpdate.bind(this);
+		this.artistRoute = this.artistRoute.bind(this);
+		this.createLike = this.createLike.bind(this);
+		this.unlike = this.unlike.bind(this);
+		this.buttonToggle = this.buttonToggle.bind(this);
+		// this.checkIfLiked = this.checkIfLiked.bind(this);
 
 		this.state = {
-			userLoggedIn: SessionStore.userPresent(), songLiked: LikeStore.songLiked(this.props.song.id), songPlaying: false
+			userLoggedIn: SessionStore.userPresent(), songPlaying: false, 
 		};
+		// songLiked: LikeStore.songLiked(this.props.song.id),
 	}
 
 	componentDidMount() {
 		this.userListener = SessionStore.addListener(this.userPresence);
-		this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
+		// this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 		// this.playListen = PlayStore.addListener(this.playChange);
+		// console.log(this.props);
 	}
 
 	componentWillUnmount() {
@@ -37,12 +44,8 @@ class IndexItem extends  React.Component {
 		this.setState({ userLoggedIn: SessionStore.userPresent() });
 	}
 
-	likesUpdate() {
-		this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
-	}
-
-	// playChange() {
-	// 	this.setState({ songPlaying: PlayStore.songPlaying() })
+	// likesUpdate() {
+	// 	this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
 	// }
 
 	playSong(event) {
@@ -73,11 +76,23 @@ class IndexItem extends  React.Component {
 		this.props.unlike(this.props.song.id);
 	}
 
+	// checkIfLiked() {
+	// 	const allLikedSongs = this.props.myLikedSongs;
+
+	// 	for (let i = 0; i < allLikedSongs.length; i++) {
+	// 		if (this.props.song.id === allLikedSongs[i].id) {
+	// 			return true;
+	// 		}
+	// 	};
+	// 	console.log("out of loop")
+	// 	return false;
+	// }
+
 	buttonToggle() {
 		if (this.state.userLoggedIn) {
-			if (this.state.songLiked) {
+			if (this.props.liked) {
 				return <button className="like" onClick={this.unlike}>Unlike</button>
-			} else{
+			} else {
 				return <button className="like" onClick={this.createLike}>Like</button>
 			}
 		} else {
@@ -102,11 +117,14 @@ class IndexItem extends  React.Component {
 	}
 }
 
+
+const mapStateToProps = state => ({
+	myLikedSongs: state.likes.likedSongs
+})
+
 const mapDispatchToProps = dispatch => ({
 	createLike: songid => dispatch(createLike(songid)),
 	unlike: songid => dispatch(unlike(songid))
 })
 
-export default connect(null, mapDispatchToProps)(IndexItem);
-
-				// <img src={this.props.song.imgUrl} onClick={this.playSong} />
+export default connect(mapStateToProps, mapDispatchToProps)(IndexItem);

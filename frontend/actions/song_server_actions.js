@@ -19,7 +19,7 @@ module.exports = {
 	},
 
 	getSong: function(song) {
-		console.log("song add to bar");
+		// console.log("song add to bar");
 		Dispatcher.dispatch({
 			actionType: Constants.SONG_RECEIVED,
 			song: song
