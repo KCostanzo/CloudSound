@@ -301,7 +301,7 @@
 			key: 'componentWillUnmount',
 			value: function componentWillUnmount() {
 				this.userListener.remove();
-				this.likeStoreListen.remove();
+				// this.likeStoreListen.remove();
 				// this.playListen.remove();
 			}
 		}, {
@@ -9848,10 +9848,9 @@
 	
 				var unlikeObject = (0, _merge2.default)({}, state);
 				var rmIdx = null;
-				var likesArr = unlikeObject.likedSongs;
 	
-				for (var i = 0; i < likesArr.length; i++) {
-					if (likesArr[i].id === action.payload.song_id) {
+				for (var i = 0; i < unlikeObject.likedSongs.length; i++) {
+					if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
 						// console.log("equal checked");
 						rmIdx = i;
 					}

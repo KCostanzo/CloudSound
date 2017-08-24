@@ -36,7 +36,7 @@ class IndexItem extends  React.Component {
 
 	componentWillUnmount() {
 		this.userListener.remove();
-		this.likeStoreListen.remove();
+		// this.likeStoreListen.remove();
 		// this.playListen.remove();
 	}
 
