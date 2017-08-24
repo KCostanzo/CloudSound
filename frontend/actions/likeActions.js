@@ -16,9 +16,6 @@ export const getLikes = () => dispatch => (
 	}).then(response => dispatch ({
 		type: Constants.LIKED_SONGS,
 		payload: response.data
-	})).catch(error => dispatch({
-		type: Constants.LIKES_ERR,
-		payload: error
 	}))
 );
 
