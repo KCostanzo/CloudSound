@@ -8160,6 +8160,11 @@
 					type: _allConstants2.default.LIKED_SONGS,
 					payload: response.data
 				});
+			}).catch(function (error) {
+				return dispatch({
+					type: _allConstants2.default.LIKES_ERR,
+					payload: error
+				});
 			});
 		};
 	};
@@ -22656,6 +22661,11 @@
 				return dispatch({
 					type: _allConstants2.default.GET_SONGS,
 					payload: response.data
+				});
+			}).catch(function (error) {
+				return dispatch({
+					type: _allConstants2.default.SONGS_ERROR,
+					payload: error
 				});
 			});
 		};

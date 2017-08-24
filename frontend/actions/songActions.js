@@ -8,6 +8,9 @@ export const getSongs = () => dispatch => (
 	}).then(response => dispatch({
 		type: Constants.GET_SONGS,
 		payload: response.data
+	})).catch(error => dispatch({
+		type: Constants.SONGS_ERROR,
+		payload: error
 	}))
 );
 
