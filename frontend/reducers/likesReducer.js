@@ -5,7 +5,7 @@ import merge from 'lodash/merge';
 const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 	console.log("in likes reducer");
 	console.log(action);
-	
+	console.log(Constants.LIKED_SONGS);
 	switch (action.type) {
 		case Constants.LIKED_SONGS:
 			console.log("all liked songs received");
