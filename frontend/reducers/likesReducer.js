@@ -23,9 +23,10 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 
 			let unlikeObject = merge({}, state);
 			let rmIdx = null;
+			let likesArr = unlikeObject.likedSongs;
 
-			for (let i=0; i < unlikeObject.likedSongs.length; i++) {
-				if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
+			for (let i=0; i < likesArr.length; i++) {
+				if (likesArr[i].id === action.payload.song_id) {
 					// console.log("equal checked");
 					rmIdx = i;
 				}
