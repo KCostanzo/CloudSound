@@ -38,6 +38,11 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 
 			return unlikeObject;
 
+		case Constants.LIKES_ERR:
+			let newErrs = merge({}, state);
+			newErrs.errors.push(action.payload);
+			return newErrs;
+
 		default: 
 			return state;
 	}

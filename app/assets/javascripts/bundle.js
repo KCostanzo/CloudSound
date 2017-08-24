@@ -159,16 +159,34 @@
 		function CoverIndex(props) {
 			_classCallCheck(this, CoverIndex);
 	
-			return _possibleConstructorReturn(this, (CoverIndex.__proto__ || Object.getPrototypeOf(CoverIndex)).call(this, props));
+			var _this = _possibleConstructorReturn(this, (CoverIndex.__proto__ || Object.getPrototypeOf(CoverIndex)).call(this, props));
+	
+			_this.userChange = _this.userChange.bind(_this);
+	
+			_this.state = {
+				userLoggedIn: SessionStore.userPresent()
+			};
+	
+			return _this;
 		}
 	
 		_createClass(CoverIndex, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
-				// this.userListen = SessionStore.addListener(this.userChange);
+				this.userListen = SessionStore.addListener(this.userChange);
 				// console.log("fetching all songs");
-				this.props.getLikes();
 				this.props.getSongs();
+				if (this.state.userLoggedIn) {
+					this.props.getLikes();
+				}
+			}
+		}, {
+			key: 'userChange',
+			value: function userChange() {
+				this.setState({ userLoggedIn: SessionStore.userPresent() });
+				if (this.state.userLoggedIn) {
+					this.props.getLikes();
+				}
 			}
 	
 			// componentWillReceiveProps(nextProps) {
@@ -178,7 +196,7 @@
 		}, {
 			key: 'componentWillUnmount',
 			value: function componentWillUnmount() {
-				// this.userListen.remove();
+				this.userListen.remove();
 			}
 		}, {
 			key: 'checkLikeStatus',
@@ -9862,6 +9880,11 @@
 				}
 	
 				return unlikeObject;
+	
+			case _allConstants2.default.LIKES_ERR:
+				var newErrs = (0, _merge2.default)({}, state);
+				newErrs.errors.push(action.payload);
+				return newErrs;
 	
 			default:
 				return state;

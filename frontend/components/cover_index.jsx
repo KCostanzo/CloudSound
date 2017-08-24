@@ -16,13 +16,28 @@ class CoverIndex extends React.Component {
 	constructor(props) {
 		super(props)
 
+		this.userChange = this.userChange.bind(this);
+
+		this.state = {
+			userLoggedIn: SessionStore.userPresent()
+		}
+
 	}
 
 	componentDidMount() {
-		// this.userListen = SessionStore.addListener(this.userChange);
+		this.userListen = SessionStore.addListener(this.userChange);
 		// console.log("fetching all songs");
-		this.props.getLikes();
 		this.props.getSongs();
+		if (this.state.userLoggedIn) {
+			this.props.getLikes();
+		}
+	}
+
+	userChange() {
+		this.setState({ userLoggedIn: SessionStore.userPresent() });
+		if (this.state.userLoggedIn) {
+			this.props.getLikes();
+		}
 	}
 
 	// componentWillReceiveProps(nextProps) {
@@ -30,7 +45,7 @@ class CoverIndex extends React.Component {
 	// }
 
 	componentWillUnmount() {
-		// this.userListen.remove();
+		this.userListen.remove();
 	}
 
 	checkLikeStatus(songId) {
