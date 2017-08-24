@@ -9830,7 +9830,7 @@
 	
 		console.log("in likes reducer");
 		console.log(action);
-		console.log(_allConstants2.default.LIKED_SONGS);
+	
 		switch (action.type) {
 			case _allConstants2.default.LIKED_SONGS:
 				console.log("all liked songs received");
