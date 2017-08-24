@@ -8163,7 +8163,7 @@
 			}).catch(function (error) {
 				return dispatch({
 					type: _allConstants2.default.LIKES_ERR,
-					payload: error.data
+					payload: error
 				});
 			});
 		};
@@ -8183,7 +8183,7 @@
 			}).catch(function (error) {
 				return dispatch({
 					type: _allConstants2.default.LIKE_ERR,
-					payload: error.data
+					payload: error
 				});
 			});
 		};
@@ -8204,7 +8204,7 @@
 			}).catch(function (error) {
 				return dispatch({
 					type: Constant.UNLIKE_ERR,
-					payload: error.data
+					payload: error
 				});
 			});
 		};

@@ -18,7 +18,7 @@ export const getLikes = () => dispatch => (
 		payload: response.data
 	})).catch(error => dispatch({
 		type: Constants.LIKES_ERR,
-		payload: error.data
+		payload: error
 	}))
 );
 
@@ -34,7 +34,7 @@ export const createLike = song_id => dispatch => (
 		payload: response.data
 	})).catch(error => dispatch({
 		type: Constants.LIKE_ERR,
-		payload: error.data
+		payload: error
 	}))
 );
 
@@ -52,7 +52,7 @@ export const unlike = song_id => dispatch => {
 		payload: response.data
 	})).catch(error => dispatch({
 		type: Constant.UNLIKE_ERR,
-		payload: error.data
+		payload: error
 	}))
 
 );
