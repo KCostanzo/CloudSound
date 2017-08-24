@@ -19,7 +19,7 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 			return newLikeMade;
 
 		case Constants.UNLIKED:
-			console.log("unlike");
+			// console.log("unlike");
 
 			let unlikeObject = merge({}, state);
 			let rmIdx = null;

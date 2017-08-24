@@ -189,7 +189,7 @@
 						return true;
 					}
 				};
-				console.log("out of check like loop");
+				// console.log("out of check like loop");
 				return false;
 			}
 	
@@ -9844,7 +9844,7 @@
 				return newLikeMade;
 	
 			case _allConstants2.default.UNLIKED:
-				console.log("unlike");
+				// console.log("unlike");
 	
 				var unlikeObject = (0, _merge2.default)({}, state);
 				var rmIdx = null;

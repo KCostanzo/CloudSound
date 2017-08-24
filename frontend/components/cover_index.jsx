@@ -40,7 +40,7 @@ class CoverIndex extends React.Component {
 				return true;
 			}
 		};
-		console.log("out of check like loop");
+		// console.log("out of check like loop");
 		return false;
 	}
 
