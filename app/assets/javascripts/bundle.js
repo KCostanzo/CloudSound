@@ -22657,11 +22657,6 @@
 					type: _allConstants2.default.GET_SONGS,
 					payload: response.data
 				});
-			}).catch(function (error) {
-				return dispatch({
-					type: _allConstants2.default.SONGS_ERROR,
-					payload: error
-				});
 			});
 		};
 	};
