@@ -24,7 +24,6 @@ class IndexItem extends  React.Component {
 		this.state = {
 			userLoggedIn: SessionStore.userPresent(), songPlaying: false, 
 		};
-		// songLiked: LikeStore.songLiked(this.props.song.id),
 	}
 
 	componentDidMount() {

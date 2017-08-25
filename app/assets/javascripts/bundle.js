@@ -303,7 +303,6 @@
 			_this.state = {
 				userLoggedIn: SessionStore.userPresent(), songPlaying: false
 			};
-			// songLiked: LikeStore.songLiked(this.props.song.id),
 			return _this;
 		}
 	
@@ -9863,21 +9862,24 @@
 				return newLikeMade;
 	
 			case _allConstants2.default.UNLIKED:
-				// console.log("unlike");
+				console.log("unlike");
 	
 				var unlikeObject = (0, _merge2.default)({}, state);
-				var rmIdx = null;
+				var rmIdx = "null";
 	
+				// console.log(unlikeObject);
 				for (var i = 0; i < unlikeObject.likedSongs.length; i++) {
 					if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
-						// console.log("equal checked");
+						console.log("equal checked");
 						rmIdx = i;
 					}
 				};
 				// console.log(rmIdx);
-				if (rmIdx) {
+				if (rmIdx !== "null") {
 					unlikeObject.likedSongs.splice(rmIdx, 1);
 				}
+	
+				// console.log(unlikeObject);
 	
 				return unlikeObject;
 	
