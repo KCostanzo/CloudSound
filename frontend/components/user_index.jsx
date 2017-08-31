@@ -24,6 +24,7 @@ export default class UserIndex extends React.Component {
 			songIds: [], songs: [], modalOpen: false, errors: [], mySongs: []
 		};
 	}
+
 	componentDidMount() {
 		// this.songListen = SongStore.addListener(this.songChange);
 		// SongActions.fetchSongs();
@@ -110,6 +111,11 @@ export default class UserIndex extends React.Component {
 			);
 	}
 }
+
+// const mapStateToProps = state => ({
+// 	likedSongs: state.likes.likedSongs
+// })
+
 
 					// <ul>
 					// 	{

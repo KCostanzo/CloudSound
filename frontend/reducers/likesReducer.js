@@ -20,15 +20,12 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 			return newLikeMade;
 
 		case Constants.UNLIKED:
-			console.log("unlike");
-
 			let unlikeObject = merge({}, state);
 			let rmIdx = "null";
 
-			// console.log(unlikeObject);
 			for (let i=0; i < unlikeObject.likedSongs.length; i++) {
 				if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
-					console.log("equal checked");
+					// console.log("equal checked");
 					rmIdx = i;
 				}
 			};
@@ -36,7 +33,6 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 			if (rmIdx !== "null") {
 				unlikeObject.likedSongs.splice(rmIdx,1);
 			}
-
 			// console.log(unlikeObject);
 
 			return unlikeObject;

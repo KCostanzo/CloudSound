@@ -6,7 +6,6 @@ var SessionStore = require('../stores/session_store.js');
 var LikeStore = require('../stores/likes_store.js');
 // var IndexItem = require('./index_item.jsx');
 import IndexItem from './index_item.jsx';
-var LikeActions = require('../actions/like_actions.js');
 // import LikeAction from '../actions/likeActions';
 import {connect} from 'react-redux';
 import {getLikes} from '../actions/likeActions';
@@ -28,9 +27,9 @@ class CoverIndex extends React.Component {
 		this.userListen = SessionStore.addListener(this.userChange);
 		// console.log("fetching all songs");
 		this.props.getSongs();
-		if (this.state.userLoggedIn) {
-			this.props.getLikes();
-		}
+		// if (this.state.userLoggedIn) {
+			// this.props.getLikes();
+		// }
 	}
 
 	userChange() {

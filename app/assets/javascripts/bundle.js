@@ -150,7 +150,6 @@
 	var LikeStore = __webpack_require__(313);
 	// var IndexItem = require('./index_item.jsx');
 	
-	var LikeActions = __webpack_require__(230);
 	// import LikeAction from '../actions/likeActions';
 	
 	var CoverIndex = function (_React$Component) {
@@ -176,9 +175,9 @@
 				this.userListen = SessionStore.addListener(this.userChange);
 				// console.log("fetching all songs");
 				this.props.getSongs();
-				if (this.state.userLoggedIn) {
-					this.props.getLikes();
-				}
+				// if (this.state.userLoggedIn) {
+				// this.props.getLikes();
+				// }
 			}
 		}, {
 			key: 'userChange',
@@ -279,9 +278,7 @@
 	var React = __webpack_require__(6);
 	var SongActions = __webpack_require__(223);
 	var hashHistory = __webpack_require__(233).hashHistory;
-	// var LikeActions = require('../actions/like_actions.js');
 	var SessionStore = __webpack_require__(295);
-	var LikeStore = __webpack_require__(313);
 	var PlayStore = __webpack_require__(314);
 	
 	var IndexItem = function (_React$Component) {
@@ -293,7 +290,6 @@
 			var _this = _possibleConstructorReturn(this, (IndexItem.__proto__ || Object.getPrototypeOf(IndexItem)).call(this, props));
 	
 			_this.userPresence = _this.userPresence.bind(_this);
-			// this.likesUpdate = this.likesUpdate.bind(this);
 			_this.artistRoute = _this.artistRoute.bind(_this);
 			_this.createLike = _this.createLike.bind(_this);
 			_this.unlike = _this.unlike.bind(_this);
@@ -310,7 +306,6 @@
 			key: 'componentDidMount',
 			value: function componentDidMount() {
 				this.userListener = SessionStore.addListener(this.userPresence);
-				// this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 				// this.playListen = PlayStore.addListener(this.playChange);
 				// console.log(this.props);
 			}
@@ -318,7 +313,6 @@
 			key: 'componentWillUnmount',
 			value: function componentWillUnmount() {
 				this.userListener.remove();
-				// this.likeStoreListen.remove();
 				// this.playListen.remove();
 			}
 		}, {
@@ -326,11 +320,6 @@
 			value: function userPresence() {
 				this.setState({ userLoggedIn: SessionStore.userPresent() });
 			}
-	
-			// likesUpdate() {
-			// 	this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
-			// }
-	
 		}, {
 			key: 'playSong',
 			value: function playSong(event) {
@@ -354,14 +343,12 @@
 			key: 'createLike',
 			value: function createLike(event) {
 				event.preventDefault();
-				// LikeActions.createLike(this.props.song.id);
 				this.props.createLike(this.props.song.id);
 			}
 		}, {
 			key: 'unlike',
 			value: function unlike(event) {
 				event.preventDefault();
-				// LikeActions.unlike(this.props.song.id);
 				this.props.unlike(this.props.song.id);
 			}
 	
@@ -9862,15 +9849,12 @@
 				return newLikeMade;
 	
 			case _allConstants2.default.UNLIKED:
-				console.log("unlike");
-	
 				var unlikeObject = (0, _merge2.default)({}, state);
 				var rmIdx = "null";
 	
-				// console.log(unlikeObject);
 				for (var i = 0; i < unlikeObject.likedSongs.length; i++) {
 					if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
-						console.log("equal checked");
+						// console.log("equal checked");
 						rmIdx = i;
 					}
 				};
@@ -9878,7 +9862,6 @@
 				if (rmIdx !== "null") {
 					unlikeObject.likedSongs.splice(rmIdx, 1);
 				}
-	
 				// console.log(unlikeObject);
 	
 				return unlikeObject;
