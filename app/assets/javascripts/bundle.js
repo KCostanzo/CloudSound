@@ -197,17 +197,19 @@
 			value: function componentWillUnmount() {
 				this.userListen.remove();
 			}
-	
-			// checkLikeStatus(songId) {
-			// 	const likedSongs = this.props.likedSongs;
-			// 	for (let i = 0; i < likedSongs.length; i++) {
-			// 		if (songId === likedSongs[i].id) {
-			// 			return true;
-			// 		}
-			// 	};
-			// 	// console.log("out of check like loop");
-			// 	return false;
-			// }
+		}, {
+			key: 'checkLikeStatus',
+			value: function checkLikeStatus(songId) {
+				var likedSongs = this.props.likedSongs;
+				for (var i = 0; i < likedSongs.length; i++) {
+					if (songId === likedSongs[i].id) {
+						return true;
+					}
+				};
+				// console.log("out of check like loop");
+				return false;
+				//insert in IndexItem as prop if needed liked={that.checkLikeStatus(song.id)}
+			}
 	
 			//new tag line: change your tone;
 	
@@ -222,7 +224,7 @@
 						'ul',
 						null,
 						this.props.songs.map(function (song) {
-							return React.createElement(_index_item2.default, { song: song, key: song.id, liked: that.checkLikeStatus(song.id) });
+							return React.createElement(_index_item2.default, { song: song, key: song.id });
 						})
 					)
 				);
@@ -9778,7 +9780,9 @@
 	  CHECKIFLIKED: 'CHECKIFLIKED',
 	
 	  ADD_SONG: 'ADD_SONG',
-	  POST_SONG: 'POST_SONG'
+	  POST_SONG: 'POST_SONG',
+	
+	  MODAL_VIEWED: 'MODAL_VIEWED'
 	};
 
 /***/ },
@@ -9801,11 +9805,16 @@
 	
 	var _songReducer2 = _interopRequireDefault(_songReducer);
 	
+	var _modalCheckReducer = __webpack_require__(511);
+	
+	var _modalCheckReducer2 = _interopRequireDefault(_modalCheckReducer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = (0, _redux.combineReducers)({
 		likes: _likesReducer2.default,
-		songs: _songReducer2.default
+		songs: _songReducer2.default,
+		modalView: _modalCheckReducer2.default
 	});
 
 /***/ },
@@ -9832,8 +9841,8 @@
 		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { likedSongs: [], errors: [] };
 		var action = arguments[1];
 	
-		console.log("in likes reducer");
-		console.log(action);
+		// console.log("in likes reducer");
+		// console.log(action);
 	
 		switch (action.type) {
 			case _allConstants2.default.LIKED_SONGS:
@@ -47290,6 +47299,10 @@
 	
 	var _reactModal2 = _interopRequireDefault(_reactModal);
 	
+	var _reactRedux = __webpack_require__(3);
+	
+	var _modalViewAction = __webpack_require__(512);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -47319,35 +47332,56 @@
 				this.setState({
 					modalOpen: false
 				});
+	
+				this.props.modalViewed();
 			}
 		}, {
 			key: 'render',
 			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					{ className: 'alertDiv', onClick: this.closeAlert },
-					_react2.default.createElement(
-						_reactModal2.default,
-						{ className: 'alertModal', isOpen: this.state.modalOpen, onRequestClose: this.closeAlert.bind(this) },
+				// console.log(this.props.modalBool);
+				if (this.props.modalBool) {
+					return _react2.default.createElement('div', { className: 'emptyAlertDiv' });
+				} else {
+					return _react2.default.createElement(
+						'div',
+						{ className: 'alertDiv', onClick: this.closeAlert },
 						_react2.default.createElement(
-							'h1',
-							{ className: 'alertHeader' },
-							' Hello!'
-						),
-						_react2.default.createElement(
-							'a',
-							{ className: 'alertText' },
-							'Welcome to CloudSound, where we specialize in bringing you music tuned to 432 and 528 hz. Please enjoy the soothing sounds of these naturally pure and phisiologically beneficial tones.'
+							_reactModal2.default,
+							{ className: 'alertModal', isOpen: this.state.modalOpen, onRequestClose: this.closeAlert.bind(this) },
+							_react2.default.createElement(
+								'h1',
+								{ className: 'alertHeader' },
+								' Hello!'
+							),
+							_react2.default.createElement(
+								'a',
+								{ className: 'alertText' },
+								'Welcome to CloudSound, where we specialize in bringing you music tuned to 432 and 528 hz. Please enjoy the soothing sounds of these naturally pure and phisiologically beneficial tones.'
+							)
 						)
-					)
-				);
+					);
+				}
 			}
 		}]);
 	
 		return ToneAlertModal;
 	}(_react2.default.Component);
 	
-	exports.default = ToneAlertModal;
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			modalBool: state.modalView.modalBool
+		};
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			modalViewed: function modalViewed() {
+				return dispatch((0, _modalViewAction.modalViewed)());
+			}
+		};
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ToneAlertModal);
 
 /***/ },
 /* 504 */
@@ -47987,6 +48021,70 @@
 			);
 		}
 	});
+
+/***/ },
+/* 511 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _allConstants = __webpack_require__(124);
+	
+	var _allConstants2 = _interopRequireDefault(_allConstants);
+	
+	var _merge = __webpack_require__(127);
+	
+	var _merge2 = _interopRequireDefault(_merge);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var modalReducer = function modalReducer() {
+		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { modalBool: false, errors: [] };
+		var action = arguments[1];
+	
+		switch (action.type) {
+			case _allConstants2.default.MODAL_VIEWED:
+				console.log("modal viewed");
+				var newState = (0, _merge2.default)({}, state);
+	
+				newState.modalBool = true;
+				return newState;
+			default:
+				return state;
+		}
+	};
+	
+	exports.default = modalReducer;
+
+/***/ },
+/* 512 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.modalViewed = undefined;
+	
+	var _allConstants = __webpack_require__(124);
+	
+	var _allConstants2 = _interopRequireDefault(_allConstants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var modalViewed = exports.modalViewed = function modalViewed() {
+		return function (dispatch) {
+			return dispatch({
+				type: _allConstants2.default.MODAL_VIEWED,
+				payload: "COOL"
+			});
+		};
+	};
 
 /***/ }
 /******/ ]);

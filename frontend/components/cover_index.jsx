@@ -47,16 +47,17 @@ class CoverIndex extends React.Component {
 		this.userListen.remove();
 	}
 
-	// checkLikeStatus(songId) {
-	// 	const likedSongs = this.props.likedSongs;
-	// 	for (let i = 0; i < likedSongs.length; i++) {
-	// 		if (songId === likedSongs[i].id) {
-	// 			return true;
-	// 		}
-	// 	};
-	// 	// console.log("out of check like loop");
-	// 	return false;
-	// }
+	checkLikeStatus(songId) {
+		const likedSongs = this.props.likedSongs;
+		for (let i = 0; i < likedSongs.length; i++) {
+			if (songId === likedSongs[i].id) {
+				return true;
+			}
+		};
+		// console.log("out of check like loop");
+		return false;
+		//insert in IndexItem as prop if needed liked={that.checkLikeStatus(song.id)}
+	}
 
 	//new tag line: change your tone;
 
@@ -67,7 +68,7 @@ class CoverIndex extends React.Component {
 					<ul>
 						{
 							this.props.songs.map(function(song) {
-								return <IndexItem song={song} key={song.id} liked={that.checkLikeStatus(song.id)}/>
+								return <IndexItem song={song} key={song.id}/>
 							})
 						}
 					</ul>
