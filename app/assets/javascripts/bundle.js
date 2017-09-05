@@ -26077,6 +26077,8 @@
 	// var Base64 = require('base-64');
 	// var CryptoJS = require('crypto-js');
 	
+	//use mapStateToProps to change Index Item source from old likeStore to new redux state as this.props.likedSongs which should fix page updating properly with state
+	
 	
 	var UserIndex = function (_React$Component) {
 		_inherits(UserIndex, _React$Component);
