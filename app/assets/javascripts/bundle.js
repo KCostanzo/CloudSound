@@ -71,7 +71,7 @@
 	var IndexRoute = __webpack_require__(233).IndexRoute;
 	var hashHistory = __webpack_require__(233).hashHistory;
 	
-	var Likes = __webpack_require__(313);
+	var Likes = __webpack_require__(316);
 	var ClientActions = __webpack_require__(498);
 	
 	var App = __webpack_require__(501);
@@ -132,7 +132,7 @@
 	
 	var _likeActions = __webpack_require__(97);
 	
-	var _songActions = __webpack_require__(315);
+	var _songActions = __webpack_require__(314);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -145,9 +145,9 @@
 	var React = __webpack_require__(6);
 	var hashHistory = __webpack_require__(233).hashHistory;
 	var SongActions = __webpack_require__(223);
-	var SongStore = __webpack_require__(316);
+	var SongStore = __webpack_require__(315);
 	var SessionStore = __webpack_require__(295);
-	var LikeStore = __webpack_require__(313);
+	var LikeStore = __webpack_require__(316);
 	// var IndexItem = require('./index_item.jsx');
 	
 	// import LikeAction from '../actions/likeActions';
@@ -197,18 +197,17 @@
 			value: function componentWillUnmount() {
 				this.userListen.remove();
 			}
-		}, {
-			key: 'checkLikeStatus',
-			value: function checkLikeStatus(songId) {
-				var likedSongs = this.props.likedSongs;
-				for (var i = 0; i < likedSongs.length; i++) {
-					if (songId === likedSongs[i].id) {
-						return true;
-					}
-				};
-				// console.log("out of check like loop");
-				return false;
-			}
+	
+			// checkLikeStatus(songId) {
+			// 	const likedSongs = this.props.likedSongs;
+			// 	for (let i = 0; i < likedSongs.length; i++) {
+			// 		if (songId === likedSongs[i].id) {
+			// 			return true;
+			// 		}
+			// 	};
+			// 	// console.log("out of check like loop");
+			// 	return false;
+			// }
 	
 			//new tag line: change your tone;
 	
@@ -279,7 +278,7 @@
 	var SongActions = __webpack_require__(223);
 	var hashHistory = __webpack_require__(233).hashHistory;
 	var SessionStore = __webpack_require__(295);
-	var PlayStore = __webpack_require__(314);
+	var PlayStore = __webpack_require__(313);
 	
 	var IndexItem = function (_React$Component) {
 		_inherits(IndexItem, _React$Component);
@@ -294,7 +293,7 @@
 			_this.createLike = _this.createLike.bind(_this);
 			_this.unlike = _this.unlike.bind(_this);
 			_this.buttonToggle = _this.buttonToggle.bind(_this);
-			// this.checkIfLiked = this.checkIfLiked.bind(this);
+			_this.checkIfLiked = _this.checkIfLiked.bind(_this);
 	
 			_this.state = {
 				userLoggedIn: SessionStore.userPresent(), songPlaying: false
@@ -351,24 +350,25 @@
 				event.preventDefault();
 				this.props.unlike(this.props.song.id);
 			}
+		}, {
+			key: 'checkIfLiked',
+			value: function checkIfLiked() {
+				var allLikedSongs = this.props.myLikedSongs;
 	
-			// checkIfLiked() {
-			// 	const allLikedSongs = this.props.myLikedSongs;
-	
-			// 	for (let i = 0; i < allLikedSongs.length; i++) {
-			// 		if (this.props.song.id === allLikedSongs[i].id) {
-			// 			return true;
-			// 		}
-			// 	};
-			// 	console.log("out of loop")
-			// 	return false;
-			// }
-	
+				for (var i = 0; i < allLikedSongs.length; i++) {
+					if (this.props.song.id === allLikedSongs[i].id) {
+						return true;
+					}
+				};
+				// console.log("out of loop")
+				return false;
+			}
 		}, {
 			key: 'buttonToggle',
 			value: function buttonToggle() {
 				if (this.state.userLoggedIn) {
-					if (this.props.liked) {
+					if (this.checkIfLiked()) {
+						console.log("checkIfLiked");
 						return React.createElement(
 							'button',
 							{ className: 'like', onClick: this.unlike },
@@ -25655,104 +25655,6 @@
 	
 	var Store = __webpack_require__(296).Store;
 	var AppDispatcher = __webpack_require__(226);
-	// var Constants = require('../constants/allConstants.js');
-	
-	
-	var LikeStore = new Store(AppDispatcher);
-	
-	var _likedSongs = [];
-	
-	// var addSong = function(like) {
-	// 	_likedSongs.push(like);
-	// };
-	
-	var resetSongs = function resetSongs(songs) {
-		// console.log(songs);
-		if (!songs.songs) {
-			return;
-		}
-		_likedSongs = [];
-	
-		songs.songs.forEach(function (song) {
-			_likedSongs.push(song);
-		});
-	};
-	
-	var mySongReset = function mySongReset(songs) {
-		if (!songs.mySongs) {
-			returnl;
-		}
-	
-		_mySongs = [];
-		songs.mySongs.forEach(function (song) {
-			_mySongs.push(song);
-		});
-	};
-	
-	var removeSong = function removeSong(like) {
-		var songIds = [];
-		_likedSongs.forEach(function (song) {
-			songIds.push(song.id);
-		});
-		var idx = songIds.indexOf(parseInt(like.song_id));
-		_likedSongs.splice(idx, 1);
-	};
-	
-	LikeStore.all = function () {
-		var songs = [];
-		_likedSongs.forEach(function (song) {
-			songs.push(song);
-		});
-	
-		return songs;
-	};
-	
-	LikeStore.empty = function () {
-		_likedSongs = [];
-	};
-	
-	LikeStore.songLiked = function (songId) {
-		for (var i = 0; i < _likedSongs.length; i++) {
-			if (_likedSongs[i].id === songId) {
-				return true;
-			}
-		};
-		return false;
-	};
-	
-	LikeStore.__onDispatch = function (payload) {
-		// console.log("in likes store");
-		switch (payload.actionType) {
-			case _allConstants2.default.LIKED_SONGS:
-				resetSongs(payload.songs);
-				break;
-			case _allConstants2.default.LIKE_MADE:
-				resetSongs(payload.songs);
-				break;
-			case _allConstants2.default.UNLIKED:
-				removeSong(payload.like);
-				break;
-		}
-		this.__emitChange();
-	};
-	
-	window.Likes = LikeStore;
-	module.exports = LikeStore;
-
-/***/ },
-/* 314 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _allConstants = __webpack_require__(124);
-	
-	var _allConstants2 = _interopRequireDefault(_allConstants);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Store = __webpack_require__(296).Store;
-	var AppDispatcher = __webpack_require__(226);
 	// var SongConstants = require("../constants/allConstants.js");
 	
 	
@@ -25838,7 +25740,7 @@
 	module.exports = PlayStore;
 
 /***/ },
-/* 315 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25931,7 +25833,7 @@
 	// },
 
 /***/ },
-/* 316 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26029,6 +25931,104 @@
 	module.exports = SongStore;
 
 /***/ },
+/* 316 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _allConstants = __webpack_require__(124);
+	
+	var _allConstants2 = _interopRequireDefault(_allConstants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Store = __webpack_require__(296).Store;
+	var AppDispatcher = __webpack_require__(226);
+	// var Constants = require('../constants/allConstants.js');
+	
+	
+	var LikeStore = new Store(AppDispatcher);
+	
+	var _likedSongs = [];
+	
+	// var addSong = function(like) {
+	// 	_likedSongs.push(like);
+	// };
+	
+	var resetSongs = function resetSongs(songs) {
+		// console.log(songs);
+		if (!songs.songs) {
+			return;
+		}
+		_likedSongs = [];
+	
+		songs.songs.forEach(function (song) {
+			_likedSongs.push(song);
+		});
+	};
+	
+	var mySongReset = function mySongReset(songs) {
+		if (!songs.mySongs) {
+			returnl;
+		}
+	
+		_mySongs = [];
+		songs.mySongs.forEach(function (song) {
+			_mySongs.push(song);
+		});
+	};
+	
+	var removeSong = function removeSong(like) {
+		var songIds = [];
+		_likedSongs.forEach(function (song) {
+			songIds.push(song.id);
+		});
+		var idx = songIds.indexOf(parseInt(like.song_id));
+		_likedSongs.splice(idx, 1);
+	};
+	
+	LikeStore.all = function () {
+		var songs = [];
+		_likedSongs.forEach(function (song) {
+			songs.push(song);
+		});
+	
+		return songs;
+	};
+	
+	LikeStore.empty = function () {
+		_likedSongs = [];
+	};
+	
+	LikeStore.songLiked = function (songId) {
+		for (var i = 0; i < _likedSongs.length; i++) {
+			if (_likedSongs[i].id === songId) {
+				return true;
+			}
+		};
+		return false;
+	};
+	
+	LikeStore.__onDispatch = function (payload) {
+		// console.log("in likes store");
+		switch (payload.actionType) {
+			case _allConstants2.default.LIKED_SONGS:
+				resetSongs(payload.songs);
+				break;
+			case _allConstants2.default.LIKE_MADE:
+				resetSongs(payload.songs);
+				break;
+			case _allConstants2.default.UNLIKED:
+				removeSong(payload.like);
+				break;
+		}
+		this.__emitChange();
+	};
+	
+	window.Likes = LikeStore;
+	module.exports = LikeStore;
+
+/***/ },
 /* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -26057,8 +26057,8 @@
 	var Modal = __webpack_require__(318);
 	var SongActions = __webpack_require__(223);
 	var LikeActions = __webpack_require__(230);
-	var SongStore = __webpack_require__(316);
-	var LikeStore = __webpack_require__(313);
+	var SongStore = __webpack_require__(315);
+	var LikeStore = __webpack_require__(316);
 	// var IndexItem = require('./index_item.jsx');
 	
 	// import LikeActions from '../actions/likeActions';
@@ -26189,6 +26189,11 @@
 	
 		return UserIndex;
 	}(React.Component);
+	
+	// const mapStateToProps = state => ({
+	// 	likedSongs: state.likes.likedSongs
+	// })
+	
 	
 	// <ul>
 	// 	{
@@ -47166,7 +47171,7 @@
 	var ClientActions = __webpack_require__(498);
 	var LikeActions = __webpack_require__(230);
 	var SessionStore = __webpack_require__(295);
-	var LikeStore = __webpack_require__(313);
+	var LikeStore = __webpack_require__(316);
 	var hashHistory = __webpack_require__(233).hashHistory;
 	var Search = __webpack_require__(506);
 	
@@ -47605,7 +47610,7 @@
 	var React = __webpack_require__(6);
 	var hashHistory = __webpack_require__(233).hashHistory;
 	var SongActions = __webpack_require__(223);
-	var SongStore = __webpack_require__(316);
+	var SongStore = __webpack_require__(315);
 	
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -47679,7 +47684,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(6);
-	var PlayStore = __webpack_require__(314);
+	var PlayStore = __webpack_require__(313);
 	var ClientActions = __webpack_require__(223);
 	
 	module.exports = React.createClass({
@@ -47841,7 +47846,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(6);
-	var PlayStore = __webpack_require__(314);
+	var PlayStore = __webpack_require__(313);
 	var ClientActions = __webpack_require__(223);
 	var QueueItem = __webpack_require__(509);
 	
@@ -47936,7 +47941,7 @@
 	
 	var React = __webpack_require__(6);
 	var SongActions = __webpack_require__(223);
-	var SongStore = __webpack_require__(316);
+	var SongStore = __webpack_require__(315);
 	// var IndexItem = require('./index_item.jsx');
 	
 	var hashHistory = __webpack_require__(233).hashHistory;

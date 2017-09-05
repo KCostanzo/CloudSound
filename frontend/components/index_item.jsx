@@ -16,7 +16,7 @@ class IndexItem extends  React.Component {
 		this.createLike = this.createLike.bind(this);
 		this.unlike = this.unlike.bind(this);
 		this.buttonToggle = this.buttonToggle.bind(this);
-		// this.checkIfLiked = this.checkIfLiked.bind(this);
+		this.checkIfLiked = this.checkIfLiked.bind(this);
 
 		this.state = {
 			userLoggedIn: SessionStore.userPresent(), songPlaying: false, 
@@ -64,21 +64,22 @@ class IndexItem extends  React.Component {
 		this.props.unlike(this.props.song.id);
 	}
 
-	// checkIfLiked() {
-	// 	const allLikedSongs = this.props.myLikedSongs;
+	checkIfLiked() {
+		const allLikedSongs = this.props.myLikedSongs;
 
-	// 	for (let i = 0; i < allLikedSongs.length; i++) {
-	// 		if (this.props.song.id === allLikedSongs[i].id) {
-	// 			return true;
-	// 		}
-	// 	};
-	// 	console.log("out of loop")
-	// 	return false;
-	// }
+		for (let i = 0; i < allLikedSongs.length; i++) {
+			if (this.props.song.id === allLikedSongs[i].id) {
+				return true;
+			}
+		};
+		// console.log("out of loop")
+		return false;
+	}
 
 	buttonToggle() {
 		if (this.state.userLoggedIn) {
-			if (this.props.liked) {
+			if (this.checkIfLiked()) {
+				console.log("checkIfLiked")
 				return <button className="like" onClick={this.unlike}>Unlike</button>
 			} else {
 				return <button className="like" onClick={this.createLike}>Like</button>

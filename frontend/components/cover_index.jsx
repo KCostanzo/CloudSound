@@ -47,16 +47,16 @@ class CoverIndex extends React.Component {
 		this.userListen.remove();
 	}
 
-	checkLikeStatus(songId) {
-		const likedSongs = this.props.likedSongs;
-		for (let i = 0; i < likedSongs.length; i++) {
-			if (songId === likedSongs[i].id) {
-				return true;
-			}
-		};
-		// console.log("out of check like loop");
-		return false;
-	}
+	// checkLikeStatus(songId) {
+	// 	const likedSongs = this.props.likedSongs;
+	// 	for (let i = 0; i < likedSongs.length; i++) {
+	// 		if (songId === likedSongs[i].id) {
+	// 			return true;
+	// 		}
+	// 	};
+	// 	// console.log("out of check like loop");
+	// 	return false;
+	// }
 
 	//new tag line: change your tone;
 
