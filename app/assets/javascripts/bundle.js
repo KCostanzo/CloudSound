@@ -26078,6 +26078,7 @@
 	// var CryptoJS = require('crypto-js');
 	
 	//use mapStateToProps to change Index Item source from old likeStore to new redux state as this.props.likedSongs which should fix page updating properly with state
+	//LikeActions and LikeStore can be changed to redux
 	
 	
 	var UserIndex = function (_React$Component) {
@@ -47981,6 +47982,8 @@
 	// var IndexItem = require('./index_item.jsx');
 	
 	var hashHistory = __webpack_require__(233).hashHistory;
+	
+	//update SongActions/SongStore to redux
 	
 	module.exports = React.createClass({
 		displayName: 'exports',
