@@ -4,7 +4,6 @@ import merge from 'lodash/merge';
 
 const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 	// console.log("in likes reducer");
-	// console.log(action);
 
 	switch (action.type) {
 		case Constants.LIKED_SONGS:
@@ -25,7 +24,6 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 
 			for (let i=0; i < unlikeObject.likedSongs.length; i++) {
 				if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
-					// console.log("equal checked");
 					rmIdx = i;
 				}
 			};
