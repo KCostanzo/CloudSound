@@ -47358,7 +47358,7 @@
 							_react2.default.createElement(
 								'a',
 								{ className: 'alertText' },
-								'Welcome to CloudSound, where we specialize in bringing you music tuned to 432 and 528 hz. Please enjoy the soothing sounds of these naturally pure and phisiologically beneficial tones.'
+								'Welcome to CloudSound, where we specialize in bringing you music tuned to 432 and 528 hz '
 							)
 						)
 					);

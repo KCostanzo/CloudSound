@@ -31,7 +31,7 @@ class ToneAlertModal extends React.Component {
 				<div className="alertDiv" onClick={this.closeAlert}>
 					<Modal className="alertModal" isOpen={this.state.modalOpen} onRequestClose={this.closeAlert.bind(this)} >
 						<h1 className="alertHeader"> Hello!</h1>
-						<a className="alertText">Welcome to CloudSound, where we specialize in bringing you music tuned to 432 and 528 hz. Please enjoy the soothing sounds of these naturally pure and phisiologically beneficial tones.</a>
+						<a className="alertText">Welcome to CloudSound, where we specialize in bringing you music tuned to 432 and 528 hz </a>
 					</Modal>
 				</div>
 			)
