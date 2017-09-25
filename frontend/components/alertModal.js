@@ -10,7 +10,6 @@ class ToneAlertModal extends React.Component {
 		this.state = {
 			modalOpen: true,
 		}
-		// console.log(this.state);
 	}
 
 	closeAlert() {

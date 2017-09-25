@@ -9852,7 +9852,7 @@
 				return newState;
 	
 			case _allConstants2.default.LIKE_MADE:
-				console.log("like Case in like Reducer");
+				// console.log("like Case in like Reducer");
 				var newLikeMade = (0, _merge2.default)({}, state);
 				newLikeMade.likedSongs = action.payload.songs;
 				return newLikeMade;
@@ -9870,7 +9870,6 @@
 				if (rmIdx !== "null") {
 					unlikeObject.likedSongs.splice(rmIdx, 1);
 				}
-				// console.log(unlikeObject);
 	
 				return unlikeObject;
 	
@@ -47323,8 +47322,8 @@
 	
 			_this.state = {
 				modalOpen: true
-				// console.log(this.state);
-			};return _this;
+			};
+			return _this;
 		}
 	
 		_createClass(ToneAlertModal, [{

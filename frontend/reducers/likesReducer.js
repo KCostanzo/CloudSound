@@ -13,7 +13,7 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 			return newState;
 
 		case Constants.LIKE_MADE:
-			console.log("like Case in like Reducer");
+			// console.log("like Case in like Reducer");
 			let newLikeMade = merge({},state);
 			newLikeMade.likedSongs = action.payload.songs;
 			return newLikeMade;
@@ -31,7 +31,6 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 			if (rmIdx !== "null") {
 				unlikeObject.likedSongs.splice(rmIdx,1);
 			}
-			// console.log(unlikeObject);
 
 			return unlikeObject;
 
