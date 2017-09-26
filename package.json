@@ -44,7 +44,7 @@
   },
   "homepage": "https://github.com/KCostanzo/CloudSound#readme",
   "engines": {
-    "node": "4.1.1",
-    "npm": "2.1.x"
+    "node": "^4.1.1",
+    "npm": "^2.1.x"
   }
 }
