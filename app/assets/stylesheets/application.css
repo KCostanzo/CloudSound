@@ -301,14 +301,14 @@ nav {
 
 nav h2 {
   position: absolute;
-  font-family: 'Pacifico', cursive;
+  /*font-family: 'Pacifico', cursive;*/
   /*font-family: 'Bree Sarif', sarif;*/
-  /*font-family: 'Patua One', sans-serif;*/
+  font-family: 'Patua One', sans-serif;
   font-size: 100%;
   margin-top: 0px;
   margin-left: 54px;
   /*margin-right: 30px;*/
-  letter-spacing: 4px;
+  /*letter-spacing: 4px;*/
 }
 
 nav h2:hover {

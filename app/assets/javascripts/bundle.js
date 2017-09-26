@@ -47321,9 +47321,9 @@
 			var _this = _possibleConstructorReturn(this, (ToneAlertModal.__proto__ || Object.getPrototypeOf(ToneAlertModal)).call(this, props));
 	
 			_this.state = {
-				modalOpen: true
-			};
-			return _this;
+				modalOpen: false
+				//change to false for now, to stop modal
+			};return _this;
 		}
 	
 		_createClass(ToneAlertModal, [{
