@@ -46584,10 +46584,14 @@
 					this.state.currentSong.title,
 					', \xA0 ',
 					this.state.currentSong.artist,
-					' ',
-					progress,
-					' ',
-					audioAdjust
+					React.createElement(
+						'a',
+						{ className: 'audioplayerRight' },
+						progress,
+						' ',
+						audioAdjust,
+						' '
+					)
 				);
 			} else {
 				player = React.createElement('div', null);

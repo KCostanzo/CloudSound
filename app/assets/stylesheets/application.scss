@@ -172,7 +172,9 @@ img {
 .playBar {
   position: fixed;
   background-color: #444;
-  height: 45px;
+  /*height: 45px;*/
+  margin-top: 10px;
+  margin-bottom: 0px;
   z-index: 1;
   bottom: 0px;
   width: 100%;
@@ -186,6 +188,7 @@ img {
   float: left;
   position: relative;
   margin: 15px;
+  margin-left: -80px;
   border: 1px solid black;
   width: 400px;
   z-index: 2;
@@ -203,21 +206,22 @@ img {
 
 .playControl {
   margin: 8px;
-  margin-left: -455px;
-  position: absolute;
+  /*margin-left: -455px;*/
+  position: relative;
   float: left;
   /*margin: 10px;*/
+  margin-right: 0px;
   height: 30px;
   width: 30px;
 }
 
 .playControlToggle {
-  position: absolute;
+  position: relative;
   margin: 8px;
   float: left;
   height: 30px;
   width: 30px;
-  margin-left: -502px;
+  /*margin-left: -502px;*/
 }
 
 .playControl:hover {
