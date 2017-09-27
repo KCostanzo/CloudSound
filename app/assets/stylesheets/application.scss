@@ -205,6 +205,7 @@ img {
 }
 
 .playControl {
+  display: flex;
   margin: 8px;
   /*margin-left: -455px;*/
   position: relative;
@@ -216,6 +217,7 @@ img {
 }
 
 .playControlToggle {
+  display: flex;
   position: relative;
   margin: 8px;
   float: left;
@@ -226,7 +228,27 @@ img {
 
 .playControl:hover {
   cursor: pointer;
+    display: flex;
+  margin: 8px;
+  /*margin-left: -455px;*/
+  position: relative;
+  float: left;
+  /*margin: 10px;*/
+  margin-right: 0px;
+  height: 30px;
+  width: 30px;
+  /*position: fixed;*/
 }
+.playControlToggle:hover {
+  display: flex;
+  position: relative;
+  margin: 8px;
+  float: left;
+  height: 30px;
+  width: 30px;
+  /*margin-left: -502px;*/
+}
+
 
 /*.linkArtistHome {
   position: absolute;
