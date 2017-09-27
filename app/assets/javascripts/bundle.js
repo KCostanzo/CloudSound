@@ -45940,7 +45940,7 @@
 					' ',
 					React.createElement(
 						'h2',
-						{ onClick: this.linkToHome },
+						{ className: 'navbarTitle', onClick: this.linkToHome },
 						'CloudSound'
 					),
 					React.createElement(_alertModal2.default, null),
@@ -45964,8 +45964,8 @@
 					' ',
 					React.createElement(
 						'h2',
-						{ onClick: this.linkToHome },
-						'Cloud Sound'
+						{ className: 'navbarTitle', onClick: this.linkToHome },
+						'CloudSound'
 					),
 					React.createElement(_alertModal2.default, null),
 					React.createElement('img', { src: 'http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png', onClick: this.linkToHome }),

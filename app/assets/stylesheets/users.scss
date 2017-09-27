@@ -1,3 +1,21 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+@media screen and (max-width: 1000px) {
+  .searchBox {
+    display: none;
+  }
+
+  .songSearch {
+    display: none;
+  }
+}
+
+
+@media screen and (max-width: 600px) {
+	.navbarTitle {
+		display: none;
+	}
+}
