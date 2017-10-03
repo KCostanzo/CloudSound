@@ -5,6 +5,8 @@ var SongStore = require('../stores/song_store.js');
 import IndexItem from './index_item.jsx';
 var hashHistory = require('react-router').hashHistory;
 
+//update SongActions/SongStore to redux
+
 module.exports = React.createClass({
 	getInitialState: function() {
 		return {

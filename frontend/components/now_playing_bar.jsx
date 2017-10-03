@@ -109,7 +109,9 @@ module.exports = React.createClass({
 		const audioAdjust = (<div id="outerSoundBar" ref="soundBar" onClick={this.soundAdjust} ><div id="innerSoundBar"></div></div>);
 
 		if (this.state.currentSong) {
-			player = (<div className='playBar'>{song}{playToggle}{next} {this.state.currentSong.title}, &nbsp; {this.state.currentSong.artist} {progress} {audioAdjust}</div>)
+			player = (<div className="playBar">{song}{playToggle}{next} {this.state.currentSong.title}, &nbsp; {this.state.currentSong.artist} 
+				<a className="audioplayerRight">{progress} {audioAdjust} </a>
+				</div>)
 		} else {
 			player= <div/>
 		}

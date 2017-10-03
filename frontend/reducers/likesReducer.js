@@ -1,10 +1,10 @@
-import Constants from '../constants/allConstants';
+import Constants from '../constants/allConstants.js';
 import merge from 'lodash/merge';
 
 
 const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 	// console.log("in likes reducer");
-	
+
 	switch (action.type) {
 		case Constants.LIKED_SONGS:
 			console.log("all liked songs received");
@@ -13,29 +13,31 @@ const likesRedcuer = (state = {likedSongs:[], errors:[]}, action) => {
 			return newState;
 
 		case Constants.LIKE_MADE:
-			console.log("like Case in like Reducer");
+			// console.log("like Case in like Reducer");
 			let newLikeMade = merge({},state);
 			newLikeMade.likedSongs = action.payload.songs;
 			return newLikeMade;
 
 		case Constants.UNLIKED:
-			// console.log("unlike");
-
 			let unlikeObject = merge({}, state);
-			let rmIdx = null;
+			let rmIdx = "null";
 
 			for (let i=0; i < unlikeObject.likedSongs.length; i++) {
 				if (unlikeObject.likedSongs[i].id === action.payload.song_id) {
-					// console.log("equal checked");
 					rmIdx = i;
 				}
 			};
 			// console.log(rmIdx);
-			if (rmIdx) {
+			if (rmIdx !== "null") {
 				unlikeObject.likedSongs.splice(rmIdx,1);
 			}
 
 			return unlikeObject;
+
+		case Constants.LIKES_ERR:
+			let newErrs = merge({}, state);
+			newErrs.errors.push(action.payload);
+			return newErrs;
 
 		default: 
 			return state;

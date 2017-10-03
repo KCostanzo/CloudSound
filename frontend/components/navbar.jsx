@@ -60,7 +60,7 @@ module.exports = React.createClass({
 	render: function() {
 		if (this.state.userPresent) {
 			return (
-				<nav className="logged"> <h2 onClick={this.linkToHome}>CloudSound</h2>
+				<nav className="logged"> <h2 className="navbarTitle" onClick={this.linkToHome}>CloudSound</h2>
 					<AlertModal/>
 					<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png' onClick={this.linkToHome}/>
 					<Search />
@@ -70,7 +70,7 @@ module.exports = React.createClass({
 				)
 		} else {
 			return(
-				 <nav> <h2 onClick={this.linkToHome}>Cloud Sound</h2>
+				 <nav> <h2 className="navbarTitle" onClick={this.linkToHome}>CloudSound</h2>
 				 <AlertModal/>
 				 	<img src='http://res.cloudinary.com/mr-costanzo/image/upload/v1462125883/music_app_icon_kh7smm.png' onClick={this.linkToHome} />
 				 	<Search />
