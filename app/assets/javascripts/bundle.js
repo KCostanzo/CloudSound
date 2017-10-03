@@ -25292,7 +25292,7 @@
 	
 	SongStore.findSongs = function (partialTitle) {
 		var possSongs = [];
-		if (partialTitle.length < 2) {
+		if (partialTitle.length < 1) {
 			return [];
 		}
 		var songs = SongStore.all();
@@ -46405,7 +46405,7 @@
 	    var songList = [];
 	    if (songs.length > 0) {
 	      songs.forEach(function (song) {
-	        if (songList.length < 9) {
+	        if (songList.length < 20) {
 	          songList.push(React.createElement(
 	            'li',
 	            { className: 'songListItem', key: song.id, song: song, value: song.id },
