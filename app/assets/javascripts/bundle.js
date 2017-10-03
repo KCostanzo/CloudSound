@@ -25292,7 +25292,7 @@
 	
 	SongStore.findSongs = function (partialTitle) {
 		var possSongs = [];
-		if (partialTitle.length < 2) {
+		if (partialTitle.length < 1) {
 			return [];
 		}
 		var songs = SongStore.all();
@@ -46394,7 +46394,20 @@
 	
 	  getSongs: function getSongs() {
 	    return SongStore.findSongs(this.state.songName);
+	    //return this.findSongs(this.state.songName);
 	  },
+	
+	  //findSongs(partialTitle) {
+	  //let matchedSongs = [];
+	  //this.props.songs.forEach(song => {
+	  // if (song.title.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
+	  // matchedSongs.push(song);
+	  //    } else if (song.artist.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
+	  // matchedSongs.push(song)
+	  //   }
+	  //});
+	  //return matchedSongs;
+	  //}
 	
 	  updateSong: function updateSong(e) {
 	    this.setState({ songName: e.target.value });
@@ -46405,7 +46418,7 @@
 	    var songList = [];
 	    if (songs.length > 0) {
 	      songs.forEach(function (song) {
-	        if (songList.length < 9) {
+	        if (songList.length < 20) {
 	          songList.push(React.createElement(
 	            'li',
 	            { className: 'songListItem', key: song.id, song: song, value: song.id },

@@ -30,7 +30,7 @@ var resetSongs = function(songs) {
 
 SongStore.findSongs = function(partialTitle) {
 	var possSongs = [];
-	if (partialTitle.length < 2) {
+	if (partialTitle.length < 1) {
 		return [];
 	}
 	var songs = SongStore.all();
