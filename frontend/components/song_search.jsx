@@ -25,7 +25,20 @@ module.exports = React.createClass({
 
   getSongs: function(){
     return SongStore.findSongs(this.state.songName);
+    //return this.findSongs(this.state.songName);
   },
+
+  //findSongs(partialTitle) {
+    //let matchedSongs = [];
+    //this.props.songs.forEach(song => {
+      // if (song.title.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
+      // matchedSongs.push(song);
+      //    } else if (song.artist.toLowerCase().match(".*" + partialTitle.toLowerCase() + ".*")) {
+      // matchedSongs.push(song)
+      //   }
+      //});
+    //return matchedSongs;
+  //}
 
   updateSong: function(e){
     this.setState({songName: e.target.value});
