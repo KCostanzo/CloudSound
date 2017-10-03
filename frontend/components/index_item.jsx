@@ -1,9 +1,7 @@
 var React = require('react');
 var SongActions = require('../actions/song_client_actions.js');
 var hashHistory = require('react-router').hashHistory;
-// var LikeActions = require('../actions/like_actions.js');
 var SessionStore = require('../stores/session_store.js');
-var LikeStore = require('../stores/likes_store.js');
 var PlayStore = require('../stores/play_store.js');
 import { connect } from 'react-redux';
 import { createLike, unlike } from '../actions/likeActions.js';
@@ -14,39 +12,31 @@ class IndexItem extends  React.Component {
 		super(props)
 
 		this.userPresence = this.userPresence.bind(this);
-		// this.likesUpdate = this.likesUpdate.bind(this);
 		this.artistRoute = this.artistRoute.bind(this);
 		this.createLike = this.createLike.bind(this);
 		this.unlike = this.unlike.bind(this);
 		this.buttonToggle = this.buttonToggle.bind(this);
-		// this.checkIfLiked = this.checkIfLiked.bind(this);
+		this.checkIfLiked = this.checkIfLiked.bind(this);
 
 		this.state = {
 			userLoggedIn: SessionStore.userPresent(), songPlaying: false, 
 		};
-		// songLiked: LikeStore.songLiked(this.props.song.id),
 	}
 
 	componentDidMount() {
 		this.userListener = SessionStore.addListener(this.userPresence);
-		// this.likeStoreListen = LikeStore.addListener(this.likesUpdate);
 		// this.playListen = PlayStore.addListener(this.playChange);
 		// console.log(this.props);
 	}
 
 	componentWillUnmount() {
 		this.userListener.remove();
-		this.likeStoreListen.remove();
 		// this.playListen.remove();
 	}
 
 	userPresence() {
 		this.setState({ userLoggedIn: SessionStore.userPresent() });
 	}
-
-	// likesUpdate() {
-	// 	this.setState({ songLiked: LikeStore.songLiked(this.props.song.id)})
-	// }
 
 	playSong(event) {
 		event.preventDefault();
@@ -66,31 +56,30 @@ class IndexItem extends  React.Component {
 
 	createLike(event) {
 		event.preventDefault();
-		// LikeActions.createLike(this.props.song.id);
 		this.props.createLike(this.props.song.id);
 	}
 
 	unlike(event) {
 		event.preventDefault();
-		// LikeActions.unlike(this.props.song.id);
 		this.props.unlike(this.props.song.id);
 	}
 
-	// checkIfLiked() {
-	// 	const allLikedSongs = this.props.myLikedSongs;
+	checkIfLiked() {
+		const allLikedSongs = this.props.myLikedSongs;
 
-	// 	for (let i = 0; i < allLikedSongs.length; i++) {
-	// 		if (this.props.song.id === allLikedSongs[i].id) {
-	// 			return true;
-	// 		}
-	// 	};
-	// 	console.log("out of loop")
-	// 	return false;
-	// }
+		for (let i = 0; i < allLikedSongs.length; i++) {
+			if (this.props.song.id === allLikedSongs[i].id) {
+				return true;
+			}
+		};
+		// console.log("out of loop")
+		return false;
+	}
 
 	buttonToggle() {
 		if (this.state.userLoggedIn) {
-			if (this.props.liked) {
+			if (this.checkIfLiked()) {
+				console.log("checkIfLiked")
 				return <button className="like" onClick={this.unlike}>Unlike</button>
 			} else {
 				return <button className="like" onClick={this.createLike}>Like</button>

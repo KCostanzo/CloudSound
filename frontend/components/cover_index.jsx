@@ -6,7 +6,6 @@ var SessionStore = require('../stores/session_store.js');
 var LikeStore = require('../stores/likes_store.js');
 // var IndexItem = require('./index_item.jsx');
 import IndexItem from './index_item.jsx';
-var LikeActions = require('../actions/like_actions.js');
 // import LikeAction from '../actions/likeActions';
 import {connect} from 'react-redux';
 import {getLikes} from '../actions/likeActions';
@@ -16,13 +15,28 @@ class CoverIndex extends React.Component {
 	constructor(props) {
 		super(props)
 
+		this.userChange = this.userChange.bind(this);
+
+		this.state = {
+			userLoggedIn: SessionStore.userPresent()
+		}
+
 	}
 
 	componentDidMount() {
-		// this.userListen = SessionStore.addListener(this.userChange);
+		this.userListen = SessionStore.addListener(this.userChange);
 		// console.log("fetching all songs");
-		this.props.getLikes();
 		this.props.getSongs();
+		// if (this.state.userLoggedIn) {
+			// this.props.getLikes();
+		// }
+	}
+
+	userChange() {
+		this.setState({ userLoggedIn: SessionStore.userPresent() });
+		if (this.state.userLoggedIn) {
+			this.props.getLikes();
+		}
 	}
 
 	// componentWillReceiveProps(nextProps) {
@@ -30,7 +44,7 @@ class CoverIndex extends React.Component {
 	// }
 
 	componentWillUnmount() {
-		// this.userListen.remove();
+		this.userListen.remove();
 	}
 
 	checkLikeStatus(songId) {
@@ -42,6 +56,7 @@ class CoverIndex extends React.Component {
 		};
 		// console.log("out of check like loop");
 		return false;
+		//insert in IndexItem as prop if needed liked={that.checkLikeStatus(song.id)}
 	}
 
 	//new tag line: change your tone;
@@ -53,7 +68,7 @@ class CoverIndex extends React.Component {
 					<ul>
 						{
 							this.props.songs.map(function(song) {
-								return <IndexItem song={song} key={song.id} liked={that.checkLikeStatus(song.id)}/>
+								return <IndexItem song={song} key={song.id}/>
 							})
 						}
 					</ul>

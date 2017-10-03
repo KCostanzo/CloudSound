@@ -14,6 +14,9 @@ import IndexItem from './index_item.jsx';
 // var Base64 = require('base-64');
 // var CryptoJS = require('crypto-js');
 
+//use mapStateToProps to change Index Item source from old likeStore to new redux state as this.props.likedSongs which should fix page updating properly with state
+//LikeActions and LikeStore can be changed to redux
+
 
 export default class UserIndex extends React.Component {
 	constructor(props) {
@@ -24,6 +27,7 @@ export default class UserIndex extends React.Component {
 			songIds: [], songs: [], modalOpen: false, errors: [], mySongs: []
 		};
 	}
+
 	componentDidMount() {
 		// this.songListen = SongStore.addListener(this.songChange);
 		// SongActions.fetchSongs();
@@ -110,6 +114,11 @@ export default class UserIndex extends React.Component {
 			);
 	}
 }
+
+// const mapStateToProps = state => ({
+// 	likedSongs: state.likes.likedSongs
+// })
+
 
 					// <ul>
 					// 	{
