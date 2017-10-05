@@ -52,6 +52,7 @@ class IndexItem extends  React.Component {
 		event.preventDefault();
 		// var betterRoute = this.props.song.artist.split(" ").join("%20");
 		hashHistory.push("artists/"+ this.props.song.artist);
+		//this.props.history.push("artists/"+ this.props.song.artist);
 	}
 
 	createLike(event) {

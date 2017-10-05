@@ -22,3 +22,17 @@ module.exports = React.createClass({
         //     src="http://res.cloudinary.com/mr-costanzo/video/upload/v1461954942/videoplayback_rg6kkg.mp4"
         //     type="video/mp4"/>
         // </video>
+
+
+// export class myApp extends React.Component {
+
+//   render() {
+//     return (
+//     <div id='main'>
+//       <Navbar/>
+//       {this.props.children}
+//       <PlayQueue />
+//       <NowPlayingBar/>
+//     </div>)
+//   }
+// }

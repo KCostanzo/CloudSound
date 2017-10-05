@@ -2,10 +2,10 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Modal = require('react-modal');
 
-var Router = require('react-router').Router;
-var Route = require('react-router').Route;
-var IndexRoute = require('react-router').IndexRoute;
-var hashHistory = require('react-router').hashHistory;
+// var Router = require('react-router').Router;
+// var Route = require('react-router').Route;
+// var IndexRoute = require('react-router').IndexRoute;
+// var hashHistory = require('react-router').hashHistory;
 
 var Likes = require('./stores/likes_store.js');
 var ClientActions = require('./actions/client_actions.js');
@@ -18,24 +18,41 @@ import CoverPage from './components/cover_index.jsx';
 import UserIndex from './components/user_index.jsx';
 import {Provider} from 'react-redux';
 import store from './stores/configure.js';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
+import createHistory from 'history/createHashHistory';
 // console.log(store);
 // console.log(CoverPage);
+
+const history = createHistory();
 
 //refresh store
 ClientActions.fetchCurrentUser();
 
-var routes = (
-  <Route path='/' component={App}>
-  	<IndexRoute component={CoverPage} />
-  	<Route path="artists/:artist" component={ArtistIndex} />
-  	<Route path="users/:user_id" component={UserIndex} />
-  </Route>
+// var routes = (
+//   <Route path='/' component={App}>
+//   	<IndexRoute component={CoverPage} />
+//   	<Route path="artists/:artist" component={ArtistIndex} />
+//   	<Route path="users/:user_id" component={UserIndex} />
+//   </Route>
+// );
+
+const newRoutes = (
+  <App>
+    <Switch> 
+    <Route path="/artists/:artist" component={ArtistIndex} />
+    <Route path="/users/:user_id" component={UserIndex} />
+    <Route path='/' component={CoverPage} />
+    </Switch>
+  </App>
 );
+
+console.log(newRoutes);
 
 document.addEventListener('DOMContentLoaded', function() {
   Modal.setAppElement(document.body);
   ReactDOM.render(
-    <Provider store={store()}><Router history={hashHistory}>{routes}</Router></Provider>,
+    <Provider store={store()}><ConnectedRouter history={history}>{newRoutes}</ConnectedRouter></Provider>,
     document.getElementById('root')
   );
 });
