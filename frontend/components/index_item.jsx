@@ -3,6 +3,7 @@ var SongActions = require('../actions/song_client_actions.js');
 var hashHistory = require('react-router').hashHistory;
 var SessionStore = require('../stores/session_store.js');
 var PlayStore = require('../stores/play_store.js');
+// import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { createLike, unlike } from '../actions/likeActions.js';
 
@@ -52,6 +53,7 @@ class IndexItem extends  React.Component {
 		event.preventDefault();
 		// var betterRoute = this.props.song.artist.split(" ").join("%20");
 		hashHistory.push("artists/"+ this.props.song.artist);
+		// browserHistory.push('artists/' + this.props.song.artist);  need join, change route in entry file to match name with %20
 		//this.props.history.push("artists/"+ this.props.song.artist);
 	}
 
